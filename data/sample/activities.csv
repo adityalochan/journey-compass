@@ -1,0 +1,91 @@
+participant_id,date,activity_type,name
+P001,2025-10-11,course,Art of Living Part 1 (SKY)
+P001,2025-10-23,seva,Intro talk volunteer
+P001,2025-11-18,event,Weekly SKY follow-up
+P001,2025-12-11,event,Weekly SKY follow-up
+P001,2025-12-18,seva,Intro talk volunteer
+P002,2026-03-25,course,Art of Living Part 1 (SKY)
+P002,2026-04-13,event,Weekly SKY follow-up
+P002,2026-05-12,event,Yoga in the park
+P002,2026-05-27,event,Satsang
+P003,2026-09-08,course,Art of Living Part 1 (SKY)
+P003,2026-09-16,event,Guided meditation night
+P003,2026-10-10,event,Weekly SKY follow-up
+P003,2026-11-07,event,Weekly SKY follow-up
+P004,2026-01-16,course,Art of Living Part 1 (SKY)
+P004,2026-02-16,event,Guided meditation night
+P004,2026-03-11,seva,Intro talk volunteer
+P004,2026-03-17,event,Guided meditation night
+P004,2026-03-24,event,Weekly SKY follow-up
+P005,2026-03-07,course,Art of Living Part 1 (SKY)
+P005,2026-04-07,event,Guided meditation night
+P005,2026-04-23,seva,Event setup seva
+P005,2026-05-20,event,Weekly SKY follow-up
+P005,2026-06-13,event,Satsang
+P005,2026-06-23,event,Guided meditation night
+P005,2026-07-27,event,Satsang
+P005,2026-08-22,event,Weekly SKY follow-up
+P005,2026-09-03,event,Guided meditation night
+P005,2026-09-20,event,Satsang
+P005,2026-10-24,event,Guided meditation night
+P006,2026-04-06,course,Art of Living Part 1 (SKY)
+P006,2026-04-25,course,Sahaj Samadhi Meditation
+P006,2026-05-04,seva,Event setup seva
+P006,2026-06-01,event,Yoga in the park
+P006,2026-06-17,seva,Intro talk volunteer
+P006,2026-07-08,event,Weekly SKY follow-up
+P006,2026-08-09,course,Art of Living Part 2 (Silence Retreat)
+P006,2026-09-03,seva,Event setup seva
+P006,2026-09-27,course,Advanced Meditation (DSN)
+P006,2026-10-14,event,Yoga in the park
+P006,2026-11-04,event,Weekly SKY follow-up
+P007,2026-06-11,course,Art of Living Part 1 (SKY)
+P007,2026-06-26,course,Sahaj Samadhi Meditation
+P007,2026-07-14,seva,Intro talk volunteer
+P007,2026-08-18,event,Guided meditation night
+P007,2026-09-08,event,Weekly SKY follow-up
+P007,2026-10-10,event,Satsang
+P007,2026-10-19,event,Satsang
+P007,2026-11-10,event,Weekly SKY follow-up
+P008,2026-10-16,course,Art of Living Part 1 (SKY)
+P009,2026-06-25,course,Art of Living Part 1 (SKY)
+P010,2026-09-15,course,Art of Living Part 1 (SKY)
+P010,2026-10-13,event,Weekly SKY follow-up
+P011,2025-11-22,course,Art of Living Part 1 (SKY)
+P011,2025-12-27,event,Guided meditation night
+P011,2026-01-17,event,Yoga in the park
+P011,2026-02-21,seva,Intro talk volunteer
+P011,2026-03-20,event,Guided meditation night
+P011,2026-04-08,event,Yoga in the park
+P011,2026-04-16,seva,Intro talk volunteer
+P011,2026-05-01,course,Sahaj Samadhi Meditation
+P012,2026-07-05,course,Art of Living Part 1 (SKY)
+P013,2026-06-30,course,Art of Living Part 1 (SKY)
+P013,2026-08-02,course,Sahaj Samadhi Meditation
+P014,2026-02-04,course,Art of Living Part 1 (SKY)
+P014,2026-02-17,event,Satsang
+P014,2026-03-11,course,Sahaj Samadhi Meditation
+P014,2026-04-14,event,Yoga in the park
+P015,2026-03-31,course,Art of Living Part 1 (SKY)
+P015,2026-04-08,course,Sahaj Samadhi Meditation
+P015,2026-04-26,event,Yoga in the park
+P015,2026-05-15,event,Weekly SKY follow-up
+P016,2026-04-02,course,Art of Living Part 1 (SKY)
+P016,2026-05-02,event,Satsang
+P016,2026-05-13,seva,Event setup seva
+P016,2026-05-22,event,Guided meditation night
+P016,2026-06-10,seva,Intro talk volunteer
+P016,2026-06-29,event,Weekly SKY follow-up
+P017,2026-10-18,course,Art of Living Part 1 (SKY)
+P018,2026-03-31,course,Art of Living Part 1 (SKY)
+P018,2026-04-20,seva,Event setup seva
+P018,2026-05-23,course,Sahaj Samadhi Meditation
+P018,2026-06-09,course,Art of Living Part 2 (Silence Retreat)
+P018,2026-06-26,event,Yoga in the park
+P018,2026-07-10,event,Yoga in the park
+P018,2026-07-19,seva,Intro talk volunteer
+P018,2026-08-23,course,Advanced Meditation (DSN)
+P019,2026-09-26,course,Art of Living Part 1 (SKY)
+P020,2026-01-27,course,Art of Living Part 1 (SKY)
+P020,2026-02-02,event,Weekly SKY follow-up
+P020,2026-03-06,seva,Intro talk volunteer
