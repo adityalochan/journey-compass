@@ -37,6 +37,12 @@ function rampTo(target: number, then?: () => void) {
   if (!audio) return;
   const a = audio;
   window.clearInterval(fade);
+  // iPhone/iPad ignore element volume (always 1). Skip the fade there, or pause would never happen.
+  const before = a.volume;
+  a.volume = before === 0.5 ? 0.6 : 0.5;
+  const settable = a.volume !== before;
+  a.volume = before;
+  if (!settable) { then?.(); return; }
   const step = (target - a.volume) / (FADE_MS / 50);
   fade = window.setInterval(() => {
     const v = a.volume + step;
