@@ -72,7 +72,7 @@ export default function App() {
 
   return (
     <>
-      {person ? <Profile person={person} onLogout={() => { logout(); setEmail(null); }} /> : <Login onLogin={() => {}} />}
+      {person ? <Profile person={person} onLogout={() => { logout(); setEmail(null); }} /> : <Login />}
     </>
   );
 }
