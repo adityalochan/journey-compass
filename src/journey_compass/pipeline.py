@@ -13,7 +13,8 @@ from .recommender import recommend
 
 
 def run(with_messages: bool = False) -> pd.DataFrame:
-    profiles = build_profiles(load_participants(), load_activities())
+    as_of = pd.Timestamp(config.AS_OF) if config.AS_OF else None
+    profiles = build_profiles(load_participants(), load_activities(), as_of=as_of)
     results = []
     for profile in profiles.to_dict("records"):
         step = recommend(profile)

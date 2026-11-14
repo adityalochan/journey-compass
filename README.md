@@ -35,9 +35,13 @@ src/journey_compass/
   channel.py                channel suggestion
   messaging.py              LLM message drafting
   pipeline.py               runs everything end to end
-scripts/make_sample_data.py generates SYNTHETIC sample data
-data/sample/                synthetic data (committed)
-data/raw/                   real hackathon data (git-ignored)
+scripts/make_sample_data.py   generates the small SYNTHETIC sample set
+scripts/import_synthetic.py   converts data/synthetic/cohort.json into the CSV schema
+data/synthetic/               180-person SYNTHETIC cohort (default dataset, committed)
+  cohort.json                   source; participants/activities/contacts.csv are generated from it
+data/sample/                  small SYNTHETIC set (committed)
+data/raw/                     real hackathon data (git-ignored)
+docs/archive/                 earlier PRD, kept for reference only
 notebooks/                  exploration
 tests/                      pytest tests
 outputs/                    generated results (git-ignored)
@@ -49,8 +53,10 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env              # add ANTHROPIC_API_KEY (optional; templates are used without it)
 
-python scripts/make_sample_data.py
+python scripts/import_synthetic.py   # only needed if cohort.json changes
 PYTHONPATH=src python -m journey_compass.pipeline
+# Pick a dataset with JC_DATASET=synthetic (default) | sample | raw
+# The synthetic cohort is pinned to 2026-11-14; override the clock with JC_AS_OF=YYYY-MM-DD
 streamlit run app/streamlit_app.py
 pytest
 ```
