@@ -22,6 +22,7 @@ import pandas as pd
 
 from . import config, llm
 from .recommender import NextStep, best_per_type, is_do_not_contact, recommend_top
+from .recommender import _metro as metro
 
 SYSTEM = """You help Art of Living volunteer coordinators choose ONE next step for a past participant.
 You get facts about the person, sometimes volunteer notes and recent contact summaries, and a shortlist of
@@ -32,7 +33,8 @@ Choose the single best offer for this person right now, in this order of priorit
 1. A wish the person has expressed (in the notes or their own replies) comes first. If they want to serve,
    choose a seva role; if they asked about a kind of retreat or course, choose the closest match. "Not
    another course" rules out courses only; it does not mean they want less.
-2. Respect stated constraints (time, family, work, travel) and what they do not want.
+2. Respect stated constraints (time, family, work, travel) and what they do not want. Prefer local or
+   online offers; "a trip" is a real cost, so choose one only when it clearly matches a wish.
 3. If the notes express no wish, people with low engagement need a small, easy ask.
 4. Otherwise prefer the engine's ranking.
 
@@ -89,10 +91,19 @@ def facts(profile: dict, contacts: pd.DataFrame, as_of: pd.Timestamp, with_notes
     return "\n".join(lines)
 
 
-def _candidates(steps: list[NextStep], cat: pd.DataFrame) -> str:
+def _travel(step: NextStep, profile: dict) -> str:
+    if step.where == "Online":
+        return "no travel"
+    if step.where == "local centre" or metro(step.where) == metro(str(profile.get("city") or "")):
+        return "local"
+    return "a trip"
+
+
+def _candidates(steps: list[NextStep], cat: pd.DataFrame, profile: dict) -> str:
+    """One short line per offer (short keeps us under the free tier's tokens-per-minute limit)."""
     commitment = cat.set_index("offer_id")["commitment"]
-    return "\n".join(f"- id={s.offer_id} | {s.offer_type} | {s.item} | where: {s.where} | when: {s.when} "
-                     f"| size of ask {commitment.get(s.offer_id, '?')}/5 | engine score {s.score} | engine: {s.reason}"
+    return "\n".join(f"- {s.offer_id} | {s.offer_type} | {s.item} | {s.where}, {s.when}, {_travel(s, profile)} "
+                     f"| ask {commitment.get(s.offer_id, '?')}/5 | score {s.score:.1f}: {s.reason.split(' (')[0]}"
                      for s in steps)
 
 
@@ -130,7 +141,7 @@ def choose(profile: dict, cat: pd.DataFrame, as_of: pd.Timestamp, contacts: pd.D
     if not _has_context(profile, contacts):
         return keep_engine("no notes or contact summaries to read")
 
-    prompt = facts(profile, contacts, as_of, llm.notes_allowed(p)) + "\n\nShortlist:\n" + _candidates(steps, cat)
+    prompt = facts(profile, contacts, as_of, llm.notes_allowed(p)) + "\n\nShortlist:\n" + _candidates(steps, cat, profile)
     try:
         text, info = llm.chat(SYSTEM, prompt, as_json=True)
         data = _parse(text, {s.offer_id for s in steps})
