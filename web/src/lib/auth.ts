@@ -1,15 +1,21 @@
 import { supabase } from "./supabase";
 
-const KEY = "jc-session";
+export const DEMO_PASSWORD = "journey-demo-2026";
 
 export async function sendMagicLink(email: string): Promise<void> {
   const { error } = await supabase.auth.signInWithOtp({
     email: email.trim(),
     options: {
-      shouldCreateUser: true, // allow new users for testing; change to false after seeding
+      shouldCreateUser: false,
+      emailRedirectTo: `${window.location.origin}/auth/callback`,
     },
   });
   if (error) throw error;
+}
+
+export async function signInWithPassword(email: string, password: string): Promise<void> {
+  const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+  if (error) throw new Error("That email and password don't match our records.");
 }
 
 export async function currentSession(): Promise<string | null> {
