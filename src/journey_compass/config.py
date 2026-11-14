@@ -120,7 +120,6 @@ FIT_WEIGHTS = {
 TOP_K = 3
 SAME_TYPE_PENALTY = 1.2   # subtracted from an offer whose type is already in the top 3
 
-LLM_MODEL = "claude-opus-5-5"   # used by messaging.py until step 3b replaces it
 
 # ---------------------------------------------------------------------------------------------
 # LLM (step 3): optional; the engine runs fully without it
