@@ -16,13 +16,16 @@ Columns (blank means "no restriction"):
   tags           matched against interests and skills
   prerequisites  course keys the person must have done
   audience       newcomers | youth | children | corporate; blank = everyone
+  start_time     local "HH:MM" of the first session, when the source records it
+  duration_min   length of that session in minutes, when known
 """
 import pandas as pd
 
 from . import config
 
 COLUMNS = ["offer_id", "offer_type", "name", "program_key", "commitment", "start_date", "end_date",
-           "city", "venue", "languages", "tags", "prerequisites", "audience", "description", "source"]
+           "start_time", "duration_min", "city", "venue", "languages", "tags", "prerequisites", "audience",
+           "description", "source"]
 OFFER_TYPES = ["course", "retreat", "seva", "event", "reconnect"]
 
 

@@ -26,7 +26,8 @@ def test_shape_matches_the_website_types(out):
         assert person["stage"] in WEB_STAGES
         assert len(person["next_steps"]) <= 3
         for step in person["next_steps"]:
-            assert set(step) == {"offer_id", "name", "kind", "when", "why"}
+            assert {"offer_id", "name", "kind", "when", "why", "online"} <= set(step)
+            assert set(step) <= {"offer_id", "name", "kind", "when", "why", "online", "start", "durationMin"}
             assert step["kind"] in WEB_KINDS
             assert step["name"] and step["when"] and step["why"]
 

@@ -31,7 +31,8 @@ OUT = ROOT / "data" / "catalogue" / "programmes.csv"
 AS_OF = "2026-11-14"
 
 COLUMNS = ["offer_id", "offer_type", "name", "program_key", "commitment", "start_date", "end_date",
-           "city", "venue", "languages", "tags", "prerequisites", "audience", "description", "source"]
+           "start_time", "duration_min", "city", "venue", "languages", "tags", "prerequisites", "audience",
+           "description", "source"]
 
 # Harmony `type` -> (program_key, commitment, tags, prerequisites, audience)
 HARMONY_TYPES = {
@@ -65,6 +66,14 @@ EVENT_AUDIENCE = [("info session", "newcomers"), ("free intro", "newcomers"),
                   ("beyond breath", "newcomers"), ("corporate", "corporate"), ("youth", "youth")]
 
 
+def _minutes(start: str | None, end: str | None):
+    """'18:30', '21:30' -> 180. '' when unknown (Retreat Guru only records dates)."""
+    if not start or not end:
+        return ""
+    (h1, m1), (h2, m2) = (map(int, start.split(":")), map(int, end.split(":")))
+    return (h2 * 60 + m2) - (h1 * 60 + m1) if (h2, m2) > (h1, m1) else ""
+
+
 def tags_from_name(name: str) -> str:
     low = name.lower()
     tags = []
@@ -81,11 +90,14 @@ def harmony() -> list[dict]:
     for r in df.itertuples():
         key, commitment, tags, prereq, audience = HARMONY_TYPES[r.type]
         venue = json.loads(r.venue)
+        day1 = (json.loads(r.program_schedules) or [{}])[0]   # first session's local start / end
         # The "Online" programme type is hosted by a centre but delivered on Zoom.
         city = "Online" if (r.type == "Online" or "online" in venue["name"].lower()) else venue["city"]
         rows.append({"offer_id": f"hm_{r.program_id}", "offer_type": "course",
                      "name": json.loads(r.product_name)["en"], "program_key": key, "commitment": commitment,
-                     "start_date": r.start_date, "end_date": r.end_date, "city": city, "venue": venue["name"],
+                     "start_date": r.start_date, "end_date": r.end_date,
+                     "start_time": day1.get("start", ""), "duration_min": _minutes(day1.get("start"), day1.get("end")),
+                     "city": city, "venue": venue["name"],
                      "tags": tags, "prerequisites": prereq, "audience": audience,
                      "description": f"{r.category} · visibility {r.visibility}", "source": "harmony"})
     return rows
@@ -104,6 +116,8 @@ def eventbrite() -> list[dict]:
         rows.append({"offer_id": f"eb_{r.event_id}", "offer_type": "event", "name": r.name,
                      "program_key": "", "commitment": 2 if "workshop" in low else 1,
                      "start_date": r.starts_at_local[:10], "end_date": r.ends_at_local[:10],
+                     "start_time": r.starts_at_local[11:16],
+                     "duration_min": _minutes(r.starts_at_local[11:16], r.ends_at_local[11:16]),
                      "city": r.venue_city, "venue": r.venue_name, "tags": tags_from_name(name),
                      "prerequisites": "", "audience": audience, "description": "", "source": "eventbrite"})
     return rows
