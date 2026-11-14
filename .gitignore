@@ -237,3 +237,7 @@ node_modules/
 # Website source (the Python template above ignores every lib/ folder)
 !web/src/lib/
 web/dist/
+
+# Local env files with keys (Vite)
+.env.local
+.env.*.local
