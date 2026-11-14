@@ -13,7 +13,7 @@ participants.csv + activities.csv
  stage_model.py  → learned stage: New / Active / Slipping / Drifting / Dormant (+ why)
         │
         ▼
- recommender.py  → next step + human-readable reason (rule-based)
+ recommender.py  → hard rules → fit score → top 3 next steps, each with a reason
         │
         ▼
  channel.py      → WhatsApp / Email / SMS / volunteer phone call
@@ -49,6 +49,24 @@ archetype (with them the full model scored 95%, for the wrong reasons).
 The labels came from the same recipe that generated the data, so these numbers are optimistic
 for real people.
 
+## Recommendations (step 2)
+The catalogue has **standing offers** (`data/catalogue/standing_offers.csv`: seva roles, reconnect
+options, recurring events, committed) and **real upcoming programmes** built from the organisers'
+exports (`python scripts/build_catalogue.py` → `data/catalogue/programmes.csv`, local only).
+
+For each person:
+1. **Hard rules** remove what isn't allowed: do-not-contact, prerequisites, courses already done,
+   audience (newcomer intros, youth, children, corporate), language, location (their metro area,
+   online, or a residential retreat anywhere), and timing (starts within 120 days).
+2. **Fit score**: five parts, each 0–1, weighted in `config.FIT_WEIGHTS`: stage fit (how often
+   people in this stage take up this kind of offer; a starting table the step-4 feedback loop will
+   learn), size of ask vs momentum, skills/interests, next course on their path, logistics.
+3. **Top 3**, pushed towards different kinds of step, each with a reason built from the parts that
+   mattered most. Rank 1 fills `next_action` / `next_item` / `reason`; ranks 2–3 are `rec_2_*`, `rec_3_*`.
+
+On the synthetic cohort the most common first suggestion goes to 24% of people (the old rules gave
+Sahaj Samadhi to about 70%).
+
 ## Project structure
 ```
 app/streamlit_app.py        Streamlit dashboard
@@ -59,13 +77,15 @@ src/journey_compass/
   models.py                 small numpy logistic-regression model, saved as JSON
   stage_model.py            learned 5-stage classifier (+ rule fallback), with reasons
   train.py                  trains the stage model on the synthetic cohort
+  catalogue.py              loads standing offers + real upcoming programmes
   journey.py                one profile row per person, with both stage columns
-  recommender.py            next-step rules
+  recommender.py            hard rules, fit score, top 3 with reasons
   channel.py                channel suggestion
   messaging.py              LLM message drafting
   pipeline.py               runs everything end to end
 scripts/make_sample_data.py   generates the small SYNTHETIC sample set
 scripts/import_synthetic.py   converts data/synthetic/cohort.json into the CSV schema
+scripts/build_catalogue.py    builds data/catalogue/programmes.csv from "Mock data/" (local)
 data/synthetic/               180-person SYNTHETIC cohort (default dataset, committed)
   cohort.json                   source; participants/activities/contacts.csv are generated from it
 data/sample/                  small SYNTHETIC set (committed)
@@ -86,6 +106,7 @@ cp .env.example .env              # add ANTHROPIC_API_KEY (optional; templates a
 
 python scripts/import_synthetic.py   # only needed if cohort.json changes
 PYTHONPATH=src python -m journey_compass.train   # only needed if features or the cohort change
+python scripts/build_catalogue.py   # needs the organisers' "Mock data/" folder; without it only standing offers are used
 PYTHONPATH=src python -m journey_compass.pipeline
 # Pick a dataset with JC_DATASET=synthetic (default) | sample | raw
 # The synthetic cohort is pinned to 2026-11-14; override the clock with JC_AS_OF=YYYY-MM-DD

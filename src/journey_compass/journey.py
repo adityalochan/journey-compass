@@ -3,7 +3,9 @@
 Columns the existing recommender and dashboard read are unchanged:
   courses_taken, num_courses, num_events, num_seva, first_date, last_contact, last_activity,
   days_since_last, stage (Active / Cooling / Dormant)
-Added in this step:
+Added:
+  course_keys       short keys of courses done (sky, sahaj, part2...), for prerequisites
+  attended          event / seva subtypes attended (satsang, seva...), hints at interests
   journey_stage     New / Active / Slipping / Drifting / Dormant (stage is derived from it)
   stage_confidence  the model's probability for that stage
   stage_drivers     the three facts that pushed hardest towards it, in words
@@ -29,6 +31,10 @@ def _history(activities: pd.DataFrame, as_of: pd.Timestamp) -> pd.DataFrame:
         rows.append({
             "participant_id": pid,
             "courses_taken": acts.loc[acts["activity_type"] == "course", "name"].tolist(),
+            "course_keys": sorted(set(acts["course_key"]) - {""}),
+            # Event / seva subtypes they have attended (satsang, celebration, seva...): a hint of
+            # interests for people who never stated any.
+            "attended": sorted(set(acts.loc[acts["kind"] != "course", "subtype"]) - {""}),
             "num_courses": int((acts["activity_type"] == "course").sum()),
             "num_events": int((acts["activity_type"] == "event").sum()),
             "num_seva": int((acts["activity_type"] == "seva").sum()),
@@ -53,5 +59,6 @@ def build_profiles(ds: Dataset, models: dict | None = None) -> pd.DataFrame:
     }, index=feats.index).join(stages).reset_index()
 
     profiles = ds.participants.merge(_history(ds.activities, ds.as_of), on="participant_id", how="left")
-    profiles["courses_taken"] = profiles["courses_taken"].apply(lambda v: v if isinstance(v, list) else [])
+    for col in ("courses_taken", "course_keys", "attended"):
+        profiles[col] = profiles[col].apply(lambda v: v if isinstance(v, list) else [])
     return profiles.merge(journey, on="participant_id", how="left")
