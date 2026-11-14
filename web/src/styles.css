@@ -413,3 +413,19 @@ a { color: inherit; }
 .account .top-controls { margin-left: 22px; padding-left: 26px; }
 @media (max-width: 1240px) { .account-name { display: none; } }
 @media (max-width: 1080px) { .main-nav { gap: 16px; } .header-row { gap: 20px; } }
+
+/* Login: readable tagline on the photo */
+.login-art-note { color: rgba(255,255,255,.88); }
+
+/* Phones: compact one-line header so Sign out, music and theme all fit */
+@media (max-width: 640px) {
+  .site-header .container { padding: 0 14px; }
+  .header-row { gap: 10px; height: 60px; }
+  .wordmark-text { display: none; }
+  .account { gap: 8px; }
+  .account .btn-sm { padding: 5px 12px; font-size: .8rem; }
+  .account .top-controls { margin-left: 4px; padding-left: 10px; gap: 8px; }
+  .theme-toggle { width: 34px; height: 34px; }
+  .eq { width: 28px; height: 28px; }
+}
+@media (max-width: 360px) { .avatar { display: none; } }
