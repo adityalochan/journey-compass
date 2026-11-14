@@ -224,3 +224,7 @@ data/raw/*
 !data/raw/.gitkeep
 outputs/*
 !outputs/.gitkeep
+
+# Organisers' mock exports stay local (not for the repo)
+Mock data/
+data/mock/
