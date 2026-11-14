@@ -20,6 +20,7 @@ insert into public.recommendations (participant_id, rank, offer_id, name, kind, 
   ('p_a', 1, 'seva_kitchen', 'Kitchen seva', 'seva', 'At your local centre', 'Your cooking skills...', null, null),
   ('p_b', 1, 'event_x', 'Satsang', 'event', 'Feb 11 · online', 'Practise together.', '2027-02-11 09:30', 60);
 insert into public.engine_runs (participant_id, journey_stage, coordinator_reason) values ('p_a', 'Slipping', 'note: evenings');
+insert into public.acceptance_rates (stage, offer_type, prior, rate) values ('Slipping', 'seva', 0.15, 0.2);
 
 -- Logging in links the auth user to the participant row by email (trigger).
 insert into auth.users (id, email) values
@@ -75,6 +76,7 @@ set role authenticated;
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000a', false);
 do $$ begin
   if (select count(*) from public.coordinator_queue) <> 0 then raise exception 'Priya can read the coordinator queue'; end if;
+  if (select count(*) from public.acceptance_rates) <> 0 then raise exception 'Priya can read the learning table'; end if;
 end $$;
 reset role;
 
@@ -114,6 +116,7 @@ do $$ begin
 end $$;
 do $$ begin
   if (select count(*) from public.coordinator_queue) <> 2 then raise exception 'staff queue should list both requests'; end if;
+  if (select count(*) from public.acceptance_rates) <> 1 then raise exception 'staff cannot read the learning table'; end if;
   if (select notes from public.coordinator_queue where participant_id = 'p_a') <> 'evenings only'
   then raise exception 'queue is missing the volunteer notes'; end if;
   if (select coordinator_reason from public.coordinator_queue where participant_id = 'p_a') <> 'note: evenings'
