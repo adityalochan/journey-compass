@@ -120,4 +120,29 @@ FIT_WEIGHTS = {
 TOP_K = 3
 SAME_TYPE_PENALTY = 1.2   # subtracted from an offer whose type is already in the top 3
 
-LLM_MODEL = "claude-opus-5-5"
+LLM_MODEL = "claude-opus-5-5"   # used by messaging.py until step 3b replaces it
+
+# ---------------------------------------------------------------------------------------------
+# LLM (step 3): optional; the engine runs fully without it
+# ---------------------------------------------------------------------------------------------
+# Provider, set in .env as JC_LLM_PROVIDER:
+#   none   - no LLM: engine picks and template messages (default)
+#   groq   - hosted open models, free tier, rate-limited (key: GROQ_API_KEY in .env). For the demo.
+#   ollama - a model on this machine; nothing leaves the laptop. For private development.
+# Read at call time (llm.py), so changing .env needs no code change.
+LLM_PROVIDERS = {
+    "groq": {"url": "https://api.groq.com/openai/v1/chat/completions", "model": "openai/gpt-oss-120b",
+             "key_env": "GROQ_API_KEY", "requests_per_minute": 25, "local": False},
+    "ollama": {"url": "http://localhost:11434/v1/chat/completions", "model": "gemma2:9b",
+               "key_env": None, "requests_per_minute": 0, "local": True},
+}
+LLM_CACHE_FILE = OUTPUT_DIR / "llm_cache.json"
+LLM_TIMEOUT_SECONDS = 300
+LLM_RETRIES = 3
+# Volunteer notes go to a hosted provider only for synthetic data. For anyone real they go to a
+# local provider only, unless the organisation approves (JC_LLM_NOTES=1).
+NOTES_TO_HOSTED_LLM_DATASETS = {"synthetic"}
+
+SHORTLIST_TOP_N = 5          # the chooser sees the engine's top 5 ...
+SHORTLIST_PER_KIND = 3       # ... plus the best 3 allowed offers of each kind, so a wish in the
+                             # notes (e.g. a couples retreat) can be met even if it scores low
