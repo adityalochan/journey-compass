@@ -70,6 +70,14 @@ do $$ begin
   if (select status from public.interests where participant_id = 'p_b') <> 'requested' then raise exception 'Priya changed Marc''s interest'; end if;
 end $$;
 
+-- The coordinator queue is staff-only, even for rows about the caller.
+set role authenticated;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000a', false);
+do $$ begin
+  if (select count(*) from public.coordinator_queue) <> 0 then raise exception 'Priya can read the coordinator queue'; end if;
+end $$;
+reset role;
+
 -- ---------------- as Marc ----------------
 set role authenticated;
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000b', false);
@@ -104,8 +112,19 @@ do $$ begin
   if (select count(*) from public.notes) <> 2 then raise exception 'staff cannot read notes'; end if;
   if (select count(*) from public.interests) <> 2 then raise exception 'staff cannot see all interests'; end if;
 end $$;
+do $$ begin
+  if (select count(*) from public.coordinator_queue) <> 2 then raise exception 'staff queue should list both requests'; end if;
+  if (select notes from public.coordinator_queue where participant_id = 'p_a') <> 'evenings only'
+  then raise exception 'queue is missing the volunteer notes'; end if;
+  if (select coordinator_reason from public.coordinator_queue where participant_id = 'p_a') <> 'note: evenings'
+  then raise exception 'queue is missing the engine reasoning'; end if;
+end $$;
 insert into public.outcomes (participant_id, offer_id, result, recorded_by)
   values ('p_a', 'seva_kitchen', 'attended', '00000000-0000-0000-0000-0000000000c0');
+do $$ begin
+  if (select latest_outcome from public.coordinator_queue where participant_id = 'p_a') <> 'attended'
+  then raise exception 'queue does not show the latest outcome'; end if;
+end $$;
 reset role;
 
 select 'ALL RLS CHECKS PASSED' as result;
