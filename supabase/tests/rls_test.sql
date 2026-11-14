@@ -11,6 +11,7 @@ insert into public.participants (id, email, first_name) values
   ('p_a', 'priya@example.org', 'Priya'), ('p_b', 'marc@example.org', 'Marc');
 insert into public.offers (id, offer_type, name, commitment) values
   ('seva_kitchen', 'seva', 'Kitchen seva', 2), ('event_x', 'event', 'Satsang', 1);
+update public.offers set registration_url = 'https://example.org/reg/x' where id = 'event_x';
 insert into public.activities (participant_id, date, activity_type, name) values
   ('p_a', '2026-03-08', 'course', 'SKY'), ('p_b', '2025-11-16', 'course', 'SKY');
 insert into public.notes (participant_id, note) values ('p_a', 'evenings only'), ('p_b', 'retreat with partner');
@@ -86,6 +87,7 @@ select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000b
 do $$ begin
   if (select string_agg(participant_id, ',') from public.next_steps) <> 'p_b' then raise exception 'Marc sees the wrong next steps'; end if;
   if (select start from public.next_steps) <> '2027-02-11T09:30' then raise exception 'next_steps.start has the wrong format'; end if;
+  if (select "registrationUrl" from public.next_steps) <> 'https://example.org/reg/x' then raise exception 'next_steps is missing the registration link'; end if;
   if (select count(*) from public.interests) <> 1 then raise exception 'Marc sees Priya''s interests'; end if;
 end $$;
 
