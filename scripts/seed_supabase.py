@@ -27,6 +27,9 @@ ROOT = Path(__file__).parent.parent
 load_dotenv(ROOT / ".env")
 PARTICIPANTS_FILE = ROOT / "src" / "data" / "participants.json"
 STANDING_OFFERS_FILE = ROOT / "data" / "catalogue" / "standing_offers.csv"
+# Consent fields exist only in the engine's CSV, generated alongside participants.json.
+CONSENT_FILE = ROOT / "data" / "synthetic" / "participants.csv"
+CONSENT_COLUMNS = ["preferred_channel", "preferred_channel_source", "email_opt_in", "whatsapp_opt_in", "do_not_contact"]
 
 DEMO_PASSWORD = "journey-demo-2026"
 DEMO_PARTICIPANT_IDS = {"p_001", "p_002", "p_003", "p_004", "p_005"}
@@ -34,8 +37,22 @@ DEMO_COORDINATOR = {"email": "coordinator.demo@example.org", "name": "Demo Coord
 COORDINATOR = {"email": "tarunbjoseph@gmail.com", "name": "Tarun"}
 
 
-def participant_row(p: dict) -> dict:
+def load_consent() -> dict:
+    with open(CONSENT_FILE, encoding="utf-8", newline="") as f:
+        rows = {r["participant_id"]: r for r in csv.DictReader(f)}
+    as_bool = lambda v: str(v).strip().lower() in {"true", "1", "yes"}
+    return {pid: {
+        "preferred_channel": r.get("preferred_channel") or None,
+        "preferred_channel_source": r.get("preferred_channel_source") or None,
+        "email_opt_in": as_bool(r.get("email_opt_in")),
+        "whatsapp_opt_in": as_bool(r.get("whatsapp_opt_in")),
+        "do_not_contact": as_bool(r.get("do_not_contact")),
+    } for pid, r in rows.items()}
+
+
+def participant_row(p: dict, consent: dict) -> dict:
     return {
+        **consent.get(p["id"], {}),
         "id": p["id"],
         "email": p["email"],
         "first_name": p["firstName"],
@@ -166,7 +183,8 @@ def main(dry_run: bool):
         sys.exit("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set in .env")
 
     participants = json.loads(PARTICIPANTS_FILE.read_text(encoding="utf-8"))
-    rows = [participant_row(p) for p in participants]
+    consent = load_consent()
+    rows = [participant_row(p, consent) for p in participants]
     demo = [p for p in participants if p["id"] in DEMO_PARTICIPANT_IDS]
     print(f"{len(rows)} participants ({len(demo)} demo), coordinator {COORDINATOR['email']}")
     if dry_run:
