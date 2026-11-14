@@ -1,7 +1,7 @@
 import type { Participant, Stage } from "../../../src/types";
 import { daysUntil, isActive, type NextStep } from "../lib/engine";
 
-const KIND_LABEL = { course: "Course", event: "Gathering", seva: "Seva", call: "Conversation" };
+const KIND_LABEL = { course: "Course", retreat: "Retreat", event: "Gathering", seva: "Seva", call: "Conversation" };
 
 interface Props { person: Participant; stage: Stage; steps: NextStep[]; enrolled: Set<string>; onOpen: (s: NextStep) => void }
 

@@ -1,3 +1,5 @@
+> **Archived reference.** This PRD was written for an earlier TypeScript prototype ("Continuity"). The scripts, file paths and numbers it cites no longer exist in this repo. It is kept for its product reasoning (stages, consent rules, channel table, honesty matrix), which the Python engine may adopt piece by piece. The source of truth is the code in `src/journey_compass/` and the README.
+
 # PRD — Continuity
 
 **A follow-up copilot for Art of Living Canada**
