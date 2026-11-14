@@ -7,7 +7,6 @@ const DEMO_ACCOUNTS = [
   { label: "Priya Raman", email: "priya.demo@example.org" },
   { label: "Marc Lefèvre", email: "marc.demo@example.org" },
   { label: "Daniel Osei", email: "daniel.demo@example.org" },
-  { label: "Coordinator", email: "coordinator.demo@example.org" },
 ];
 
 export default function Login() {
