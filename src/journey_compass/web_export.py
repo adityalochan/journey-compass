@@ -52,6 +52,17 @@ def web_name(step: NextStep, offer: pd.Series) -> str:
     return head if head and tail.strip() in {offer["city"], "Online"} else step.item
 
 
+def web_timing(offer: pd.Series) -> dict:
+    """Optional fields the website's badges and calendar file use. `start` only when the source
+    records a real start time; we never invent one."""
+    out = {"online": offer["city"] == "Online"}
+    if pd.notna(offer["start_date"]) and offer.get("start_time"):
+        out["start"] = f"{offer['start_date']:%Y-%m-%d}T{offer['start_time']}"
+        if str(offer.get("duration_min") or "").strip():
+            out["durationMin"] = int(float(offer["duration_min"]))
+    return out
+
+
 def _words(value) -> set:
     return {v.strip().lower() for v in str(value or "").split(";") if v.strip() and str(value) != "nan"}
 
@@ -125,7 +136,8 @@ def build(k: int = config.TOP_K) -> dict:
             "stage": WEB_STAGE[profile["journey_stage"]],
             "next_steps": [{"offer_id": s.offer_id, "name": web_name(s, offers.loc[s.offer_id]), "kind": web_kind(s),
                             "when": web_when(offers.loc[s.offer_id]),
-                            "why": (angle if (n == 0 and angle) else participant_why(s, offers.loc[s.offer_id], profile))}
+                            "why": (angle if (n == 0 and angle) else participant_why(s, offers.loc[s.offer_id], profile)),
+                            **web_timing(offers.loc[s.offer_id])}
                            for n, s in enumerate(steps)],
         }
     return {"as_of": str(ds.as_of.date()), "dataset": ds.name, "ai": use_llm, "participants": people}
