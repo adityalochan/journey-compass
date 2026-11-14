@@ -434,3 +434,46 @@ a { color: inherit; }
   .eq { width: 28px; height: 28px; }
 }
 @media (max-width: 360px) { .avatar { display: none; } }
+
+/* Wider layout: content fills more of laptop and desktop screens */
+.container { max-width: 1320px; padding: 0 40px; }
+.rq { max-width: 980px; }
+.lede { max-width: 70ch; }
+@media (min-width: 1500px) {
+  .container { max-width: 1480px; }
+  body { font-size: 18px; }
+  .section { padding: 104px 0; }
+  .board { --node: 72px; --sq-h: 240px; }
+  .sq-title { font-size: .95rem; max-width: 210px; }
+  .stats strong { font-size: 2.3rem; }
+  .step h3 { font-size: 1.45rem; }
+}
+@media (max-width: 640px) { .container { padding: 0 18px; } }
+
+/* Hero + quote band: fill wide screens */
+.hero { min-height: min(62vh, 620px); display: flex; align-items: center; padding: 96px 0; }
+.hero .container { width: 100%; }
+.hero h1 { font-size: clamp(2.4rem, 5.6vw, 5rem); max-width: 22ch; margin-bottom: 1rem; }
+.hero .lede { font-size: clamp(1.15rem, 1.6vw, 1.6rem); max-width: 48ch; }
+.hero .eyebrow { font-size: clamp(.78rem, .9vw, .95rem); }
+.hero .btn { padding: 14px 32px; font-size: 1.05rem; }
+.quote-band { padding: 96px 0; }
+.quote-band .rq { max-width: 1240px; }
+.quote-band .rq blockquote { max-width: none; margin: 0 auto; }
+.quote-band .rq-text p, .quote-band p { font-size: clamp(1.6rem, 2.9vw, 2.6rem); line-height: 1.4; }
+.quote-band .rq-long p { font-size: clamp(1.25rem, 2vw, 1.85rem); }
+.quote-band .rq-text { min-height: 16rem; }
+.quote-band figcaption { font-size: clamp(1rem, 1.2vw, 1.2rem); margin-top: 14px; }
+@media (max-width: 640px) { .hero { min-height: 0; padding: 72px 0; } .quote-band { padding: 64px 0; } .quote-band .rq-text { min-height: 12rem; } }
+
+/* Floating scroll hint, visible across the whole profile page */
+.scroll-hint { position: fixed; left: 50%; bottom: 22px; z-index: 30; transform: translateX(-50%); display: flex; align-items: center; gap: 6px;
+  border: 0; border-radius: 999px; padding: 10px 14px 10px 20px; background: var(--indigo); color: #fff; font: 500 .9rem var(--sans);
+  box-shadow: 0 10px 28px rgba(60,40,95,.35); cursor: pointer; transition: opacity .35s ease, transform .35s ease; }
+.scroll-hint:hover { background: var(--indigo-soft); }
+.scroll-hint strong { font-weight: 700; }
+.scroll-hint svg { animation: hint-bounce 1.6s ease-in-out infinite; }
+.scroll-hint.is-hidden { opacity: 0; transform: translateX(-50%) translateY(16px); pointer-events: none; }
+@keyframes hint-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+@media (prefers-reduced-motion: reduce) { .scroll-hint svg { animation: none; } }
+@media (max-width: 640px) { .scroll-hint { bottom: 14px; font-size: .82rem; padding: 8px 12px 8px 16px; } }
