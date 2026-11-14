@@ -8,6 +8,7 @@ Safe to re-run: rows are upserted and existing login accounts are reused.
 Usage:
   python scripts/seed_supabase.py --dry-run
   python scripts/seed_supabase.py
+  python scripts/seed_supabase.py --with-programmes   # also the organisers' programme listings
 """
 
 import argparse
@@ -27,6 +28,8 @@ ROOT = Path(__file__).parent.parent
 load_dotenv(ROOT / ".env")
 PARTICIPANTS_FILE = ROOT / "src" / "data" / "participants.json"
 STANDING_OFFERS_FILE = ROOT / "data" / "catalogue" / "standing_offers.csv"
+# The organisers' programme listings, built locally from their mock data (git-ignored).
+PROGRAMMES_FILE = ROOT / "data" / "catalogue" / "programmes.csv"
 # Consent fields exist only in the engine's CSV, generated alongside participants.json.
 CONSENT_FILE = ROOT / "data" / "synthetic" / "participants.csv"
 CONSENT_COLUMNS = ["preferred_channel", "preferred_channel_source", "email_opt_in", "whatsapp_opt_in", "do_not_contact"]
@@ -125,15 +128,23 @@ def offer_row(o: dict) -> dict:
         "prerequisites": split(o.get("prerequisites")),
         "description": o.get("description") or None,
         "source": o.get("source") or None,
+        "start_time": o.get("start_time") or None,
+        "duration_min": int(float(o["duration_min"])) if o.get("duration_min") else None,
+        "venue": o.get("venue") or None,
+        "audience": o.get("audience") or None,
+        "registration_url": o.get("registration_url") or None,
     }
 
 
-def seed_offers(client):
-    # Standing offers only; the organisers' programme listings are added later, once approved.
-    with open(STANDING_OFFERS_FILE, encoding="utf-8", newline="") as f:
-        rows = [offer_row(o) for o in csv.DictReader(f)]
-    client.table("offers").upsert(rows, on_conflict="id").execute()
-    print(f"offers: {len(rows)} standing offers")
+def seed_offers(client, with_programmes: bool):
+    files = [STANDING_OFFERS_FILE] + ([PROGRAMMES_FILE] if with_programmes else [])
+    for path in files:
+        if not path.exists():
+            sys.exit(f"{path} not found. Build it with: python scripts/build_catalogue.py")
+        with open(path, encoding="utf-8", newline="") as f:
+            rows = [offer_row(o) for o in csv.DictReader(f)]
+        client.table("offers").upsert(rows, on_conflict="id").execute()
+        print(f"offers: {len(rows)} from {path.name}")
 
 
 def existing_login_ids(client) -> dict:
@@ -176,7 +187,7 @@ def ensure_password_login(client, email: str, name: str, known: dict) -> str:
     return known[key]
 
 
-def main(dry_run: bool):
+def main(dry_run: bool, with_programmes: bool):
     url = os.getenv("SUPABASE_URL")
     key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
     if not url or not key:
@@ -234,11 +245,13 @@ def main(dry_run: bool):
     print(f"Linked {linked} participants to login accounts")
 
     seed_history(client, participants)
-    seed_offers(client)
+    seed_offers(client, with_programmes)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--with-programmes", action="store_true",
+                        help="also load the organisers' programme listings (local, git-ignored)")
     args = parser.parse_args()
-    main(args.dry_run)
+    main(args.dry_run, args.with_programmes)
