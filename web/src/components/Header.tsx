@@ -13,7 +13,7 @@ export default function Header({ person, onLogout }: { person: Participant; onLo
                 strokeLinecap="round" transform={`rotate(${i * 45} 12 12)`} />
             ))}
           </svg>
-          Journey Compass
+          <span className="wordmark-text">Journey Compass</span>
         </a>
         <nav className="main-nav" aria-label="Sections">
           <a href="#wisdom">Wisdom</a>
