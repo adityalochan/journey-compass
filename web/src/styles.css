@@ -20,6 +20,7 @@
   --tint-sage: #eef6e3;
   --tint-warm: #fffaf0;
   --tint-clay: #f6e6dd;
+  --tint-sky: #e6eef6;
   color-scheme: light;
 }
 
@@ -39,6 +40,7 @@
   --tint-sage: #243020;
   --tint-warm: #2a2216;
   --tint-clay: #3a2519;
+  --tint-sky: #1f2c3a;
   color-scheme: dark;
 }
 :root[data-theme="dark"] body { background: var(--ivory); }
@@ -46,6 +48,7 @@
 :root[data-theme="dark"] .section-tint { background: var(--paper); }
 :root[data-theme="dark"] .tag-course, :root[data-theme="dark"] .badge-warm { color: #ffb45c; }
 :root[data-theme="dark"] .tag-seva { color: #9fd36a; }
+:root[data-theme="dark"] .tag-retreat, :root[data-theme="dark"] .sq-retreat .node { color: #8fb8dd; }
 :root[data-theme="dark"] .sq-course .node { color: #ffb45c; }
 :root[data-theme="dark"] .dialog-icon { color: #ffb45c; }
 :root[data-theme="dark"] .walker-bubble { background: var(--paper); }
@@ -147,6 +150,7 @@ a { color: inherit; }
 .tag { display: inline-block; font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; padding: 3px 10px; border-radius: 999px; background: var(--tint-indigo); color: var(--indigo); }
 .tag-course { background: var(--marigold-soft); color: #8a5a00; }
 .tag-seva { background: var(--tint-sage); color: #3d6448; }
+.tag-retreat { background: var(--tint-sky); color: #2f5677; }
 .tag-call { background: var(--tint-clay); color: var(--clay); }
 
 /* Next steps — numbered cards like the AOL "First Steps" row */
@@ -238,6 +242,7 @@ a { color: inherit; }
 .node:not(:disabled):hover { transform: scale(1.08); }
 .sq-course .node { border-color: var(--marigold); color: #b86200; background: var(--marigold-soft); }
 .sq-seva .node { border-color: var(--sage); color: var(--sage); background: var(--tint-sage); }
+.sq-retreat .node { border-color: #2f5677; color: #2f5677; background: var(--tint-sky); }
 .sq-here .node { background: var(--indigo); border-color: var(--indigo); color: #fff; box-shadow: 0 0 0 0 rgba(118,119,244,.5); animation: pulse 2.2s infinite; }
 .node-initials { font-weight: 700; }
 .sq-booked .node { background: var(--marigold); border-color: var(--marigold); color: #fff; }

@@ -1,0 +1,603 @@
+participant_id,date,activity_type,name,subtype,city
+p_001,2026-03-08,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_001,2026-03-29,event,Follow-up session,followup,Mississauga
+p_001,2026-04-26,event,Weekly follow-up,followup,Mississauga
+p_001,2026-05-24,event,Guru Purnima celebration,satsang,Mississauga
+p_002,2025-11-16,course,Art of Living Part 1 (SKY),sky,Montreal
+p_002,2025-12-14,event,Satsang,satsang,Montreal
+p_002,2026-01-18,event,Follow-up session,followup,Montreal
+p_003,2025-05-11,course,Art of Living Part 1 (SKY),sky,Brampton
+p_003,2025-06-21,course,Art of Living Part 2 (Silence Retreat),part2,Brampton
+p_003,2025-08-08,seva,Community kitchen seva,seva,Brampton
+p_003,2025-10-08,seva,Event seva day,seva,Brampton
+p_003,2026-01-13,event,Full Moon Meditation,satsang,Brampton
+p_003,2026-02-06,seva,Event seva day,seva,Brampton
+p_004,2026-11-06,course,Art of Living Part 1 (SKY),sky,Toronto
+p_005,2024-09-15,course,Art of Living Part 1 (SKY),sky,Vancouver
+p_005,2024-11-29,course,Art of Living Part 2 (Silence Retreat),part2,Vancouver
+p_005,2025-02-07,course,Sahaj Samadhi Meditation,sahaj,Vancouver
+p_005,2025-05-03,event,Weekend retreat,retreat,Vancouver
+p_005,2025-06-12,event,Satsang,satsang,Vancouver
+p_005,2025-07-14,seva,Community kitchen seva,seva,Vancouver
+p_006,2024-06-09,course,Art of Living Part 1 (SKY),sky,Surrey
+p_006,2024-08-06,course,Art of Living Part 2 (Silence Retreat),part2,Surrey
+p_006,2025-03-24,event,Satsang,satsang,Surrey
+p_006,2025-09-20,event,Full Moon Meditation,satsang,Surrey
+p_006,2025-11-22,course,Silence Retreat,silence,Orillia
+p_006,2025-11-22,event,Art of Silence weekend,retreat,Orillia
+p_007,2026-09-20,course,Art of Living Part 1 (SKY),sky,Quebec City
+p_007,2026-09-26,event,Practice circle,followup,Quebec City
+p_008,2024-07-14,course,YES! for Youth,yes,Calgary
+p_008,2024-08-16,event,Weekly follow-up,followup,Calgary
+p_008,2024-12-14,event,Diwali satsang,celebration,Calgary
+p_009,2025-02-16,course,Art of Living Part 1 (SKY),sky,Halifax
+p_009,2025-04-13,course,Art of Living Part 2 (Silence Retreat),part2,Halifax
+p_009,2025-07-02,event,Satsang,satsang,Halifax
+p_009,2025-08-31,event,Satsang,satsang,Halifax
+p_009,2025-11-09,event,Guru Purnima celebration,satsang,Halifax
+p_009,2026-01-18,seva,Centre cleaning seva,seva,Halifax
+p_009,2026-04-18,event,Full Moon Meditation,satsang,Halifax
+p_009,2026-07-17,event,Full Moon Meditation,satsang,Halifax
+p_009,2026-10-26,event,Satsang,satsang,Halifax
+p_010,2026-01-18,course,Art of Living Part 1 (SKY),sky,Ottawa
+p_010,2026-03-19,course,Art of Living Part 2 (Silence Retreat),part2,Ottawa
+p_010,2026-06-07,course,Sahaj Samadhi Meditation,sahaj,Ottawa
+p_010,2026-06-27,event,Full Moon Meditation,satsang,Ottawa
+p_010,2026-08-11,seva,Community kitchen seva,seva,Ottawa
+p_010,2026-09-15,event,Satsang,satsang,Ottawa
+p_011,2026-10-27,course,Art of Living Part 1 (SKY),sky,Winnipeg
+p_012,2026-10-27,course,Art of Living Part 1 (SKY),sky,Montreal
+p_013,2026-11-12,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_014,2026-11-10,course,YES! for Youth,yes,Quebec City
+p_015,2026-11-11,course,Art of Living Part 1 (SKY),sky,Montreal
+p_016,2026-11-12,course,Art of Living Part 1 (SKY),sky,Calgary
+p_017,2026-10-31,course,Art of Living Part 1 (SKY),sky,Toronto
+p_018,2026-10-25,course,Art of Living Part 1 (SKY),sky,Surrey
+p_018,2026-11-07,event,Full Moon Meditation,satsang,Surrey
+p_019,2026-10-25,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_020,2026-11-12,course,Art of Living Part 1 (SKY),sky,Montreal
+p_021,2026-11-04,course,Art of Living Part 1 (SKY),sky,Calgary
+p_022,2026-10-26,course,Art of Living Part 1 (SKY),sky,Brampton
+p_022,2026-11-05,event,Navratri celebration,celebration,Brampton
+p_023,2026-10-29,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_024,2026-11-08,course,Art of Living Part 1 (SKY),sky,Toronto
+p_025,2026-11-04,course,Art of Living Part 1 (SKY),sky,Quebec City
+p_026,2026-11-04,course,YES! for Youth,yes,Mississauga
+p_027,2026-11-07,course,Art of Living Part 1 (SKY),sky,Brampton
+p_028,2026-10-30,course,Art of Living Part 1 (SKY),sky,Montreal
+p_029,2026-10-26,course,Art of Living Part 1 (SKY),sky,Scarborough
+p_029,2026-11-08,event,Full Moon Meditation,satsang,Scarborough
+p_030,2026-10-27,course,Art of Living Part 1 (SKY),sky,Montreal
+p_031,2026-10-28,course,YES! for Youth,yes,Scarborough
+p_032,2026-10-26,course,Art of Living Part 1 (SKY),sky,Winnipeg
+p_033,2026-11-03,course,Art of Living Part 1 (SKY),sky,Burnaby
+p_034,2026-04-23,course,Art of Living Part 1 (SKY),sky,Brampton
+p_034,2026-11-08,event,Weekly follow-up,followup,Brampton
+p_034,2026-11-08,seva,Event seva day,seva,Brampton
+p_034,2026-11-09,event,Full Moon Meditation,satsang,Brampton
+p_034,2026-11-09,seva,Community kitchen seva,seva,Brampton
+p_035,2026-03-27,course,Art of Living Part 1 (SKY),sky,Brampton
+p_035,2026-06-04,course,Art of Living Part 2 (Silence Retreat),part2,Brampton
+p_035,2026-11-05,event,Full Moon Meditation,satsang,Brampton
+p_035,2026-11-06,seva,Event seva day,seva,Brampton
+p_035,2026-11-07,event,Diwali satsang,celebration,Brampton
+p_035,2026-11-07,event,Follow-up session,followup,Brampton
+p_035,2026-11-08,event,Practice circle,followup,Brampton
+p_035,2026-11-09,seva,Centre cleaning seva,seva,Brampton
+p_036,2026-04-07,course,Art of Living Part 1 (SKY),sky,Markham
+p_036,2026-10-30,event,Follow-up session,followup,Markham
+p_036,2026-11-02,event,Guru Purnima celebration,satsang,Markham
+p_036,2026-11-04,event,Navratri celebration,celebration,Markham
+p_036,2026-11-07,seva,Event seva day,seva,Markham
+p_037,2026-07-25,course,Art of Living Part 1 (SKY),sky,Scarborough
+p_038,2026-01-21,course,Art of Living Part 1 (SKY),sky,Calgary
+p_038,2026-03-19,course,Art of Living Part 2 (Silence Retreat),part2,Calgary
+p_038,2026-06-25,course,Sahaj Samadhi Meditation,sahaj,Calgary
+p_038,2026-10-30,event,Diwali satsang,celebration,Calgary
+p_038,2026-11-03,event,Diwali satsang,celebration,Calgary
+p_038,2026-11-06,seva,Centre cleaning seva,seva,Calgary
+p_039,2026-06-06,course,Art of Living Part 1 (SKY),sky,Toronto
+p_040,2026-01-01,course,Art of Living Part 1 (SKY),sky,Halifax
+p_040,2026-10-30,event,Diwali satsang,celebration,Halifax
+p_040,2026-11-02,event,Navratri celebration,celebration,Halifax
+p_040,2026-11-06,seva,Centre cleaning seva,seva,Halifax
+p_041,2026-07-16,course,Art of Living Part 1 (SKY),sky,Toronto
+p_042,2026-02-21,course,Art of Living Part 1 (SKY),sky,Toronto
+p_042,2026-04-20,course,Art of Living Part 2 (Silence Retreat),part2,Toronto
+p_042,2026-08-14,course,Sahaj Samadhi Meditation,sahaj,Toronto
+p_042,2026-11-05,seva,Centre cleaning seva,seva,Toronto
+p_042,2026-11-08,seva,Event seva day,seva,Toronto
+p_043,2026-01-05,course,Art of Living Part 1 (SKY),sky,Montreal
+p_043,2026-02-25,course,Art of Living Part 2 (Silence Retreat),part2,Montreal
+p_043,2026-11-01,event,Satsang,satsang,Montreal
+p_043,2026-11-06,seva,Event seva day,seva,Montreal
+p_044,2026-08-18,course,Art of Living Part 1 (SKY),sky,Halifax
+p_045,2026-06-21,course,Art of Living Part 1 (SKY),sky,Halifax
+p_045,2026-08-25,course,Art of Living Part 2 (Silence Retreat),part2,Halifax
+p_045,2026-11-02,event,Satsang,satsang,Halifax
+p_045,2026-11-05,event,Diwali satsang,celebration,Halifax
+p_045,2026-11-07,event,Full Moon Meditation,satsang,Halifax
+p_046,2026-07-22,course,Art of Living Part 1 (SKY),sky,Vancouver
+p_047,2026-08-26,course,Art of Living Part 1 (SKY),sky,Calgary
+p_047,2026-10-28,event,Diwali satsang,celebration,Calgary
+p_047,2026-10-30,seva,Community kitchen seva,seva,Calgary
+p_047,2026-11-01,event,Diwali satsang,celebration,Calgary
+p_047,2026-11-04,seva,Community kitchen seva,seva,Calgary
+p_047,2026-11-06,event,Guru Purnima celebration,satsang,Calgary
+p_047,2026-11-08,event,Diwali satsang,celebration,Calgary
+p_048,2026-05-20,course,Art of Living Part 1 (SKY),sky,Vancouver
+p_048,2026-11-06,seva,Centre cleaning seva,seva,Vancouver
+p_048,2026-11-08,event,Satsang,satsang,Vancouver
+p_049,2026-04-27,course,Art of Living Part 1 (SKY),sky,Brampton
+p_049,2026-11-03,event,Full Moon Meditation,satsang,Brampton
+p_049,2026-11-05,event,Guru Purnima celebration,satsang,Brampton
+p_049,2026-11-06,seva,Community kitchen seva,seva,Brampton
+p_049,2026-11-08,seva,Event seva day,seva,Brampton
+p_050,2026-05-07,course,Art of Living Part 1 (SKY),sky,Montreal
+p_050,2026-11-08,event,Full Moon Meditation,satsang,Montreal
+p_050,2026-11-08,seva,Community kitchen seva,seva,Montreal
+p_050,2026-11-09,event,Guru Purnima celebration,satsang,Montreal
+p_050,2026-11-09,event,Navratri celebration,celebration,Montreal
+p_051,2026-02-26,course,Art of Living Part 1 (SKY),sky,Winnipeg
+p_051,2026-10-27,event,Follow-up session,followup,Winnipeg
+p_051,2026-10-30,event,Practice circle,followup,Winnipeg
+p_051,2026-11-01,seva,Event seva day,seva,Winnipeg
+p_051,2026-11-03,event,Follow-up session,followup,Winnipeg
+p_051,2026-11-05,event,Full Moon Meditation,satsang,Winnipeg
+p_051,2026-11-08,seva,Centre cleaning seva,seva,Winnipeg
+p_052,2026-05-16,course,Art of Living Part 1 (SKY),sky,Calgary
+p_052,2026-11-06,event,Full Moon Meditation,satsang,Calgary
+p_052,2026-11-07,event,Full Moon Meditation,satsang,Calgary
+p_052,2026-11-07,event,Practice circle,followup,Calgary
+p_052,2026-11-08,seva,Event seva day,seva,Calgary
+p_052,2026-11-09,seva,Community kitchen seva,seva,Calgary
+p_053,2026-04-16,course,Art of Living Part 1 (SKY),sky,Scarborough
+p_053,2026-06-14,course,Art of Living Part 2 (Silence Retreat),part2,Scarborough
+p_053,2026-10-27,event,Practice circle,followup,Scarborough
+p_053,2026-10-30,event,Guru Purnima celebration,satsang,Scarborough
+p_053,2026-11-01,seva,Event seva day,seva,Scarborough
+p_053,2026-11-04,seva,Event seva day,seva,Scarborough
+p_053,2026-11-07,event,Full Moon Meditation,satsang,Scarborough
+p_054,2026-06-21,course,Art of Living Part 1 (SKY),sky,Calgary
+p_054,2026-11-01,seva,Centre cleaning seva,seva,Calgary
+p_054,2026-11-05,seva,Centre cleaning seva,seva,Calgary
+p_055,2026-05-21,course,Art of Living Part 1 (SKY),sky,Surrey
+p_055,2026-07-15,course,Art of Living Part 2 (Silence Retreat),part2,Surrey
+p_055,2026-11-07,event,Practice circle,followup,Surrey
+p_055,2026-11-08,seva,Centre cleaning seva,seva,Surrey
+p_056,2026-08-31,course,Art of Living Part 1 (SKY),sky,Montreal
+p_056,2026-10-29,event,Full Moon Meditation,satsang,Montreal
+p_056,2026-11-01,seva,Centre cleaning seva,seva,Montreal
+p_056,2026-11-03,seva,Centre cleaning seva,seva,Montreal
+p_056,2026-11-05,event,Guru Purnima celebration,satsang,Montreal
+p_056,2026-11-08,seva,Centre cleaning seva,seva,Montreal
+p_057,2026-04-05,course,Art of Living Part 1 (SKY),sky,Ottawa
+p_057,2026-05-06,course,Art of Living Part 2 (Silence Retreat),part2,Ottawa
+p_057,2026-11-04,event,Weekly follow-up,followup,Ottawa
+p_057,2026-11-05,event,Navratri celebration,celebration,Ottawa
+p_057,2026-11-06,seva,Centre cleaning seva,seva,Ottawa
+p_057,2026-11-08,seva,Event seva day,seva,Ottawa
+p_057,2026-11-09,seva,Community kitchen seva,seva,Ottawa
+p_058,2026-03-17,course,Art of Living Part 1 (SKY),sky,Brampton
+p_058,2026-10-27,event,Practice circle,followup,Brampton
+p_058,2026-10-31,seva,Community kitchen seva,seva,Brampton
+p_058,2026-11-03,seva,Event seva day,seva,Brampton
+p_058,2026-11-07,seva,Community kitchen seva,seva,Brampton
+p_059,2026-01-13,course,Art of Living Part 1 (SKY),sky,Markham
+p_059,2026-04-16,course,Sahaj Samadhi Meditation,sahaj,Markham
+p_059,2026-11-01,seva,Centre cleaning seva,seva,Markham
+p_059,2026-11-04,seva,Event seva day,seva,Markham
+p_059,2026-11-07,event,Follow-up session,followup,Markham
+p_060,2025-12-30,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_060,2026-02-22,course,Art of Living Part 2 (Silence Retreat),part2,Mississauga
+p_060,2026-11-01,seva,Community kitchen seva,seva,Mississauga
+p_060,2026-11-06,seva,Centre cleaning seva,seva,Mississauga
+p_061,2026-08-01,course,Art of Living Part 1 (SKY),sky,Winnipeg
+p_061,2026-11-06,event,Follow-up session,followup,Winnipeg
+p_061,2026-11-06,event,Weekly follow-up,followup,Winnipeg
+p_061,2026-11-07,event,Full Moon Meditation,satsang,Winnipeg
+p_061,2026-11-08,seva,Community kitchen seva,seva,Winnipeg
+p_061,2026-11-09,event,Navratri celebration,celebration,Winnipeg
+p_061,2026-11-09,event,Practice circle,followup,Winnipeg
+p_062,2026-07-16,course,Art of Living Part 1 (SKY),sky,Toronto
+p_062,2026-10-28,event,Navratri celebration,celebration,Toronto
+p_062,2026-10-30,seva,Centre cleaning seva,seva,Toronto
+p_062,2026-11-02,seva,Community kitchen seva,seva,Toronto
+p_062,2026-11-05,seva,Community kitchen seva,seva,Toronto
+p_062,2026-11-07,seva,Community kitchen seva,seva,Toronto
+p_063,2026-04-25,course,Art of Living Part 1 (SKY),sky,Toronto
+p_063,2026-06-30,course,Art of Living Part 2 (Silence Retreat),part2,Toronto
+p_064,2026-01-13,course,Art of Living Part 1 (SKY),sky,Calgary
+p_064,2026-02-25,course,Art of Living Part 2 (Silence Retreat),part2,Calgary
+p_064,2026-11-02,event,Navratri celebration,celebration,Calgary
+p_064,2026-11-06,seva,Centre cleaning seva,seva,Calgary
+p_065,2026-04-26,course,Art of Living Part 1 (SKY),sky,Toronto
+p_065,2026-11-01,event,Weekly follow-up,followup,Toronto
+p_065,2026-11-05,seva,Community kitchen seva,seva,Toronto
+p_066,2026-05-19,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_066,2026-10-29,seva,Centre cleaning seva,seva,Mississauga
+p_066,2026-10-31,seva,Centre cleaning seva,seva,Mississauga
+p_066,2026-11-02,seva,Centre cleaning seva,seva,Mississauga
+p_066,2026-11-04,event,Weekly follow-up,followup,Mississauga
+p_066,2026-11-06,event,Diwali satsang,celebration,Mississauga
+p_066,2026-11-08,seva,Community kitchen seva,seva,Mississauga
+p_067,2026-01-04,course,Art of Living Part 1 (SKY),sky,Surrey
+p_067,2026-02-22,course,Art of Living Part 2 (Silence Retreat),part2,Surrey
+p_067,2026-11-07,event,Full Moon Meditation,satsang,Surrey
+p_067,2026-11-08,event,Weekly follow-up,followup,Surrey
+p_067,2026-11-08,seva,Community kitchen seva,seva,Surrey
+p_067,2026-11-09,event,Diwali satsang,celebration,Surrey
+p_068,2026-08-18,course,Art of Living Part 1 (SKY),sky,Toronto
+p_068,2026-11-07,event,Guru Purnima celebration,satsang,Toronto
+p_068,2026-11-09,seva,Event seva day,seva,Toronto
+p_069,2026-08-31,course,Art of Living Part 1 (SKY),sky,Ottawa
+p_069,2026-10-31,event,Satsang,satsang,Ottawa
+p_069,2026-11-02,event,Full Moon Meditation,satsang,Ottawa
+p_069,2026-11-04,event,Full Moon Meditation,satsang,Ottawa
+p_069,2026-11-06,event,Satsang,satsang,Ottawa
+p_069,2026-11-08,seva,Centre cleaning seva,seva,Ottawa
+p_070,2026-02-09,course,Art of Living Part 1 (SKY),sky,Surrey
+p_070,2026-10-29,seva,Community kitchen seva,seva,Surrey
+p_070,2026-11-01,event,Diwali satsang,celebration,Surrey
+p_070,2026-11-04,seva,Centre cleaning seva,seva,Surrey
+p_070,2026-11-07,seva,Centre cleaning seva,seva,Surrey
+p_071,2026-02-01,course,Art of Living Part 1 (SKY),sky,Vancouver
+p_071,2026-06-02,course,Sahaj Samadhi Meditation,sahaj,Vancouver
+p_071,2026-11-04,seva,Event seva day,seva,Vancouver
+p_071,2026-11-06,seva,Centre cleaning seva,seva,Vancouver
+p_071,2026-11-07,seva,Centre cleaning seva,seva,Vancouver
+p_071,2026-11-09,seva,Community kitchen seva,seva,Vancouver
+p_072,2026-07-27,course,Art of Living Part 1 (SKY),sky,Vancouver
+p_073,2026-08-13,course,Art of Living Part 1 (SKY),sky,Surrey
+p_074,2026-08-04,course,Art of Living Part 1 (SKY),sky,Laval
+p_074,2026-10-30,event,Full Moon Meditation,satsang,Laval
+p_074,2026-11-05,event,Satsang,satsang,Laval
+p_075,2026-05-29,course,Art of Living Part 1 (SKY),sky,Brampton
+p_075,2026-07-06,course,Art of Living Part 2 (Silence Retreat),part2,Brampton
+p_075,2026-11-09,event,Navratri celebration,celebration,Brampton
+p_075,2026-11-09,event,Navratri celebration,celebration,Brampton
+p_075,2026-11-10,seva,Centre cleaning seva,seva,Brampton
+p_076,2026-08-17,course,Art of Living Part 1 (SKY),sky,Toronto
+p_077,2026-06-11,course,Art of Living Part 1 (SKY),sky,Montreal
+p_077,2026-07-13,course,Art of Living Part 2 (Silence Retreat),part2,Montreal
+p_077,2026-11-09,event,Navratri celebration,celebration,Montreal
+p_077,2026-11-09,event,Navratri celebration,celebration,Montreal
+p_077,2026-11-09,event,Satsang,satsang,Montreal
+p_077,2026-11-10,event,Diwali satsang,celebration,Montreal
+p_077,2026-11-10,seva,Centre cleaning seva,seva,Montreal
+p_078,2026-06-15,course,Art of Living Part 1 (SKY),sky,Scarborough
+p_078,2026-08-02,course,Art of Living Part 2 (Silence Retreat),part2,Scarborough
+p_078,2026-11-05,event,Follow-up session,followup,Scarborough
+p_078,2026-11-07,event,Practice circle,followup,Scarborough
+p_079,2026-06-11,course,Art of Living Part 1 (SKY),sky,Vancouver
+p_079,2026-11-06,seva,Centre cleaning seva,seva,Vancouver
+p_079,2026-11-07,seva,Community kitchen seva,seva,Vancouver
+p_079,2026-11-09,event,Diwali satsang,celebration,Vancouver
+p_080,2026-02-28,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_080,2026-10-27,seva,Centre cleaning seva,seva,Mississauga
+p_080,2026-10-31,seva,Community kitchen seva,seva,Mississauga
+p_080,2026-11-03,seva,Community kitchen seva,seva,Mississauga
+p_080,2026-11-07,event,Weekly follow-up,followup,Mississauga
+p_081,2026-07-15,course,Art of Living Part 1 (SKY),sky,Brampton
+p_081,2026-08-29,course,Art of Living Part 2 (Silence Retreat),part2,Brampton
+p_081,2026-11-08,event,Guru Purnima celebration,satsang,Brampton
+p_081,2026-11-09,event,Follow-up session,followup,Brampton
+p_081,2026-11-09,event,Satsang,satsang,Brampton
+p_081,2026-11-09,seva,Community kitchen seva,seva,Brampton
+p_081,2026-11-09,seva,Event seva day,seva,Brampton
+p_081,2026-11-10,seva,Event seva day,seva,Brampton
+p_082,2026-02-04,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_082,2026-03-26,course,Art of Living Part 2 (Silence Retreat),part2,Mississauga
+p_082,2026-11-03,seva,Event seva day,seva,Mississauga
+p_082,2026-11-05,event,Guru Purnima celebration,satsang,Mississauga
+p_082,2026-11-08,event,Full Moon Meditation,satsang,Mississauga
+p_083,2026-06-06,course,Art of Living Part 1 (SKY),sky,Vancouver
+p_083,2026-07-09,course,Art of Living Part 2 (Silence Retreat),part2,Vancouver
+p_083,2026-11-03,event,Full Moon Meditation,satsang,Vancouver
+p_083,2026-11-05,event,Navratri celebration,celebration,Vancouver
+p_083,2026-11-08,event,Full Moon Meditation,satsang,Vancouver
+p_084,2025-12-26,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_084,2026-10-07,event,Navratri celebration,celebration,Mississauga
+p_084,2026-10-18,seva,Event seva day,seva,Mississauga
+p_084,2026-10-30,seva,Community kitchen seva,seva,Mississauga
+p_085,2025-05-01,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_085,2026-09-23,seva,Community kitchen seva,seva,Mississauga
+p_085,2026-10-17,event,Guru Purnima celebration,satsang,Mississauga
+p_086,2025-12-17,course,Art of Living Part 1 (SKY),sky,Toronto
+p_086,2026-01-28,course,Art of Living Part 2 (Silence Retreat),part2,Toronto
+p_086,2026-10-10,event,Navratri celebration,celebration,Toronto
+p_086,2026-10-20,event,Diwali satsang,celebration,Toronto
+p_086,2026-10-31,event,Navratri celebration,celebration,Toronto
+p_087,2025-04-17,course,Art of Living Part 1 (SKY),sky,Markham
+p_087,2026-10-10,event,Guru Purnima celebration,satsang,Markham
+p_087,2026-10-25,seva,Centre cleaning seva,seva,Markham
+p_088,2026-03-31,course,Art of Living Part 1 (SKY),sky,Quebec City
+p_088,2026-10-12,event,Navratri celebration,celebration,Quebec City
+p_088,2026-10-27,event,Follow-up session,followup,Quebec City
+p_089,2025-11-15,course,Art of Living Part 1 (SKY),sky,Edmonton
+p_089,2026-09-18,event,Practice circle,followup,Edmonton
+p_089,2026-10-05,event,Satsang,satsang,Edmonton
+p_089,2026-10-23,event,Full Moon Meditation,satsang,Edmonton
+p_090,2025-12-03,course,Art of Living Part 1 (SKY),sky,Halifax
+p_090,2026-10-11,event,Satsang,satsang,Halifax
+p_091,2025-03-24,course,Art of Living Part 1 (SKY),sky,Vancouver
+p_091,2025-12-12,course,Silence Retreat,silence,Orillia
+p_091,2026-09-25,event,Weekly follow-up,followup,Vancouver
+p_091,2026-10-18,event,Weekly follow-up,followup,Vancouver
+p_092,2025-04-06,course,Art of Living Part 1 (SKY),sky,Toronto
+p_092,2026-10-08,event,Diwali satsang,celebration,Toronto
+p_092,2026-10-24,seva,Event seva day,seva,Toronto
+p_093,2025-11-13,course,Art of Living Part 1 (SKY),sky,Scarborough
+p_093,2026-10-05,seva,Event seva day,seva,Scarborough
+p_094,2025-10-15,course,Art of Living Part 1 (SKY),sky,Toronto
+p_094,2026-10-03,seva,Event seva day,seva,Toronto
+p_094,2026-10-16,event,Satsang,satsang,Toronto
+p_094,2026-10-28,event,Satsang,satsang,Toronto
+p_095,2025-11-02,course,Art of Living Part 1 (SKY),sky,Toronto
+p_095,2026-01-01,course,Art of Living Part 2 (Silence Retreat),part2,Toronto
+p_095,2026-09-16,event,Weekly follow-up,followup,Toronto
+p_095,2026-10-04,event,Practice circle,followup,Toronto
+p_095,2026-10-23,seva,Centre cleaning seva,seva,Toronto
+p_096,2025-06-14,course,Art of Living Part 1 (SKY),sky,Calgary
+p_096,2025-09-26,course,Sahaj Samadhi Meditation,sahaj,Calgary
+p_096,2026-09-30,event,Guru Purnima celebration,satsang,Calgary
+p_096,2026-10-20,event,Diwali satsang,celebration,Calgary
+p_097,2026-03-29,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_097,2026-09-28,event,Full Moon Meditation,satsang,Mississauga
+p_097,2026-10-12,event,Follow-up session,followup,Mississauga
+p_097,2026-10-27,event,Full Moon Meditation,satsang,Mississauga
+p_098,2025-11-17,course,Art of Living Part 1 (SKY),sky,Victoria
+p_098,2026-01-23,course,Art of Living Part 2 (Silence Retreat),part2,Victoria
+p_098,2026-09-30,event,Practice circle,followup,Victoria
+p_098,2026-10-14,event,Satsang,satsang,Victoria
+p_098,2026-10-27,event,Navratri celebration,celebration,Victoria
+p_099,2026-01-21,course,Art of Living Part 1 (SKY),sky,Vancouver
+p_099,2026-10-03,event,Practice circle,followup,Vancouver
+p_099,2026-10-15,event,Guru Purnima celebration,satsang,Vancouver
+p_099,2026-10-28,event,Navratri celebration,celebration,Vancouver
+p_100,2025-12-27,course,Art of Living Part 1 (SKY),sky,Scarborough
+p_100,2026-10-02,event,Navratri celebration,celebration,Scarborough
+p_100,2026-10-21,event,Weekly follow-up,followup,Scarborough
+p_101,2026-02-09,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_101,2026-09-26,event,Follow-up session,followup,Mississauga
+p_101,2026-10-18,seva,Event seva day,seva,Mississauga
+p_102,2025-07-29,course,Art of Living Part 1 (SKY),sky,Toronto
+p_102,2026-10-03,event,Diwali satsang,celebration,Toronto
+p_102,2026-10-22,event,Follow-up session,followup,Toronto
+p_103,2026-04-13,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_103,2026-09-23,event,Satsang,satsang,Mississauga
+p_103,2026-10-09,event,Full Moon Meditation,satsang,Mississauga
+p_103,2026-10-25,seva,Community kitchen seva,seva,Mississauga
+p_104,2025-06-16,course,Art of Living Part 1 (SKY),sky,Winnipeg
+p_104,2025-07-18,course,Art of Living Part 2 (Silence Retreat),part2,Winnipeg
+p_104,2026-10-05,event,Guru Purnima celebration,satsang,Winnipeg
+p_104,2026-10-23,event,Full Moon Meditation,satsang,Winnipeg
+p_105,2025-10-12,course,Art of Living Part 1 (SKY),sky,Toronto
+p_105,2026-09-28,event,Weekly follow-up,followup,Toronto
+p_105,2026-10-12,event,Diwali satsang,celebration,Toronto
+p_105,2026-10-27,seva,Community kitchen seva,seva,Toronto
+p_106,2025-05-08,course,Art of Living Part 1 (SKY),sky,Surrey
+p_106,2025-07-10,course,Art of Living Part 2 (Silence Retreat),part2,Surrey
+p_106,2026-09-28,seva,Centre cleaning seva,seva,Surrey
+p_106,2026-10-19,event,Navratri celebration,celebration,Surrey
+p_107,2025-03-24,course,Art of Living Part 1 (SKY),sky,Calgary
+p_107,2026-10-14,seva,Centre cleaning seva,seva,Calgary
+p_108,2025-11-21,course,Art of Living Part 1 (SKY),sky,Scarborough
+p_108,2025-12-31,course,Art of Living Part 2 (Silence Retreat),part2,Scarborough
+p_108,2026-10-02,event,Practice circle,followup,Scarborough
+p_108,2026-10-21,event,Satsang,satsang,Scarborough
+p_109,2025-12-19,course,Art of Living Part 1 (SKY),sky,Edmonton
+p_109,2026-09-26,event,Guru Purnima celebration,satsang,Edmonton
+p_109,2026-10-11,event,Satsang,satsang,Edmonton
+p_109,2026-10-26,event,Diwali satsang,celebration,Edmonton
+p_110,2025-12-19,course,Art of Living Part 1 (SKY),sky,Markham
+p_110,2026-01-22,course,Art of Living Part 2 (Silence Retreat),part2,Markham
+p_110,2026-10-06,event,Practice circle,followup,Markham
+p_110,2026-10-23,event,Weekly follow-up,followup,Markham
+p_111,2026-02-02,course,Art of Living Part 1 (SKY),sky,Edmonton
+p_111,2026-03-17,course,Art of Living Part 2 (Silence Retreat),part2,Edmonton
+p_111,2026-10-12,event,Guru Purnima celebration,satsang,Edmonton
+p_112,2025-12-21,course,Art of Living Part 1 (SKY),sky,Brampton
+p_112,2026-04-28,course,Sahaj Samadhi Meditation,sahaj,Brampton
+p_112,2026-09-21,seva,Community kitchen seva,seva,Brampton
+p_112,2026-10-08,event,Diwali satsang,celebration,Brampton
+p_112,2026-10-24,event,Practice circle,followup,Brampton
+p_113,2025-06-22,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_113,2026-10-03,event,Navratri celebration,celebration,Mississauga
+p_113,2026-10-16,seva,Community kitchen seva,seva,Mississauga
+p_113,2026-10-28,event,Weekly follow-up,followup,Mississauga
+p_114,2025-08-25,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_114,2026-10-04,event,Diwali satsang,celebration,Mississauga
+p_114,2026-10-23,event,Navratri celebration,celebration,Mississauga
+p_115,2025-07-23,course,Art of Living Part 1 (SKY),sky,Montreal
+p_115,2025-09-23,course,Art of Living Part 2 (Silence Retreat),part2,Montreal
+p_115,2026-10-10,event,Guru Purnima celebration,satsang,Montreal
+p_115,2026-10-26,event,Guru Purnima celebration,satsang,Montreal
+p_116,2025-08-10,course,Art of Living Part 1 (SKY),sky,Scarborough
+p_116,2025-09-29,course,Art of Living Part 2 (Silence Retreat),part2,Scarborough
+p_116,2026-10-09,event,Navratri celebration,celebration,Scarborough
+p_117,2025-09-30,course,Art of Living Part 1 (SKY),sky,Montreal
+p_117,2025-11-06,course,Art of Living Part 2 (Silence Retreat),part2,Montreal
+p_117,2026-09-24,event,Guru Purnima celebration,satsang,Montreal
+p_117,2026-10-10,event,Navratri celebration,celebration,Montreal
+p_117,2026-10-25,event,Weekly follow-up,followup,Montreal
+p_118,2026-01-18,course,Art of Living Part 1 (SKY),sky,Winnipeg
+p_118,2026-10-10,event,Diwali satsang,celebration,Winnipeg
+p_119,2025-04-26,course,Art of Living Part 1 (SKY),sky,Surrey
+p_119,2025-06-05,course,Art of Living Part 2 (Silence Retreat),part2,Surrey
+p_119,2025-08-22,course,Sahaj Samadhi Meditation,sahaj,Surrey
+p_119,2026-09-30,event,Follow-up session,followup,Surrey
+p_119,2026-10-13,event,Weekly follow-up,followup,Surrey
+p_119,2026-10-27,seva,Community kitchen seva,seva,Surrey
+p_120,2026-01-04,course,Art of Living Part 1 (SKY),sky,Burnaby
+p_120,2026-10-03,seva,Event seva day,seva,Burnaby
+p_120,2026-10-16,seva,Event seva day,seva,Burnaby
+p_120,2026-10-28,event,Navratri celebration,celebration,Burnaby
+p_121,2026-01-21,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_121,2026-03-02,course,Art of Living Part 2 (Silence Retreat),part2,Mississauga
+p_121,2026-10-10,event,Navratri celebration,celebration,Mississauga
+p_121,2026-10-25,event,Satsang,satsang,Mississauga
+p_122,2025-03-18,course,Art of Living Part 1 (SKY),sky,Halifax
+p_122,2026-09-23,event,Full Moon Meditation,satsang,Halifax
+p_123,2024-10-20,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_123,2024-11-30,course,Art of Living Part 2 (Silence Retreat),part2,Mississauga
+p_123,2026-09-13,event,Full Moon Meditation,satsang,Mississauga
+p_124,2025-01-08,course,Art of Living Part 1 (SKY),sky,Burnaby
+p_124,2026-09-06,seva,Centre cleaning seva,seva,Burnaby
+p_124,2026-10-09,event,Guru Purnima celebration,satsang,Burnaby
+p_125,2025-09-10,course,Art of Living Part 1 (SKY),sky,Ottawa
+p_125,2026-09-08,event,Navratri celebration,celebration,Ottawa
+p_125,2026-10-10,event,Follow-up session,followup,Ottawa
+p_126,2024-11-16,course,Art of Living Part 1 (SKY),sky,Laval
+p_126,2026-08-29,event,Satsang,satsang,Laval
+p_126,2026-10-04,seva,Centre cleaning seva,seva,Laval
+p_127,2025-03-19,course,Art of Living Part 1 (SKY),sky,Ottawa
+p_127,2026-09-18,event,Satsang,satsang,Ottawa
+p_128,2025-01-09,course,Art of Living Part 1 (SKY),sky,Calgary
+p_128,2025-03-05,course,Art of Living Part 2 (Silence Retreat),part2,Calgary
+p_128,2026-04-25,course,Silence Retreat,silence,Orillia
+p_128,2026-09-02,event,Guru Purnima celebration,satsang,Calgary
+p_128,2026-10-07,event,Diwali satsang,celebration,Calgary
+p_129,2024-02-20,course,Art of Living Part 1 (SKY),sky,Halifax
+p_129,2026-09-09,event,Guru Purnima celebration,satsang,Halifax
+p_130,2025-03-03,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_130,2026-09-13,event,Navratri celebration,celebration,Mississauga
+p_131,2024-08-13,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_131,2024-10-17,course,Art of Living Part 2 (Silence Retreat),part2,Mississauga
+p_131,2026-08-28,event,Satsang,satsang,Mississauga
+p_132,2024-10-07,course,Art of Living Part 1 (SKY),sky,Burnaby
+p_132,2026-09-08,event,Full Moon Meditation,satsang,Burnaby
+p_133,2025-09-18,course,Art of Living Part 1 (SKY),sky,Winnipeg
+p_133,2025-11-21,course,Art of Living Part 2 (Silence Retreat),part2,Winnipeg
+p_133,2026-08-27,event,Full Moon Meditation,satsang,Winnipeg
+p_133,2026-10-04,event,Diwali satsang,celebration,Winnipeg
+p_134,2025-07-09,course,Art of Living Part 1 (SKY),sky,Winnipeg
+p_134,2026-09-12,event,Full Moon Meditation,satsang,Winnipeg
+p_135,2025-02-03,course,Art of Living Part 1 (SKY),sky,Markham
+p_135,2025-03-16,course,Art of Living Part 2 (Silence Retreat),part2,Markham
+p_135,2025-10-27,course,Silence Retreat,silence,Orillia
+p_135,2026-08-19,event,Guru Purnima celebration,satsang,Markham
+p_135,2026-09-30,event,Guru Purnima celebration,satsang,Markham
+p_136,2025-02-16,course,Art of Living Part 1 (SKY),sky,Vancouver
+p_136,2025-07-20,course,Sahaj Samadhi Meditation,sahaj,Vancouver
+p_136,2026-09-19,seva,Community kitchen seva,seva,Vancouver
+p_137,2025-03-24,course,Art of Living Part 1 (SKY),sky,Toronto
+p_137,2025-05-04,course,Art of Living Part 2 (Silence Retreat),part2,Toronto
+p_137,2025-06-23,course,Sahaj Samadhi Meditation,sahaj,Toronto
+p_137,2025-11-21,course,Silence Retreat,silence,Orillia
+p_137,2026-09-23,event,Guru Purnima celebration,satsang,Toronto
+p_138,2024-02-27,course,Art of Living Part 1 (SKY),sky,Toronto
+p_138,2024-04-04,course,Art of Living Part 2 (Silence Retreat),part2,Toronto
+p_138,2024-06-05,course,Sahaj Samadhi Meditation,sahaj,Toronto
+p_138,2026-08-06,event,Guru Purnima celebration,satsang,Toronto
+p_138,2026-09-23,event,Weekly follow-up,followup,Toronto
+p_139,2024-08-24,course,Art of Living Part 1 (SKY),sky,Laval
+p_139,2026-08-31,event,Practice circle,followup,Laval
+p_140,2024-11-10,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_140,2026-08-26,event,Diwali satsang,celebration,Mississauga
+p_141,2024-03-15,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_141,2026-08-10,event,Weekly follow-up,followup,Mississauga
+p_141,2026-09-25,event,Navratri celebration,celebration,Mississauga
+p_142,2025-04-17,course,Art of Living Part 1 (SKY),sky,Toronto
+p_142,2026-09-20,seva,Community kitchen seva,seva,Toronto
+p_143,2024-03-17,course,Art of Living Part 1 (SKY),sky,Ottawa
+p_143,2026-08-28,event,Full Moon Meditation,satsang,Ottawa
+p_144,2024-10-19,course,Art of Living Part 1 (SKY),sky,Toronto
+p_144,2026-08-08,event,Guru Purnima celebration,satsang,Toronto
+p_144,2026-09-24,event,Follow-up session,followup,Toronto
+p_145,2024-12-15,course,Art of Living Part 1 (SKY),sky,Quebec City
+p_145,2025-04-14,course,Sahaj Samadhi Meditation,sahaj,Quebec City
+p_145,2026-09-02,event,Diwali satsang,celebration,Quebec City
+p_145,2026-10-07,event,Follow-up session,followup,Quebec City
+p_146,2024-03-06,course,Art of Living Part 1 (SKY),sky,Brampton
+p_146,2026-08-18,seva,Community kitchen seva,seva,Brampton
+p_146,2026-09-29,seva,Community kitchen seva,seva,Brampton
+p_147,2024-06-29,course,Art of Living Part 1 (SKY),sky,Surrey
+p_147,2026-09-08,seva,Community kitchen seva,seva,Surrey
+p_148,2025-05-06,course,Art of Living Part 1 (SKY),sky,Montreal
+p_148,2026-08-01,seva,Centre cleaning seva,seva,Montreal
+p_148,2026-09-20,event,Satsang,satsang,Montreal
+p_149,2024-04-20,course,Art of Living Part 1 (SKY),sky,Ottawa
+p_149,2026-09-02,event,Diwali satsang,celebration,Ottawa
+p_150,2024-07-07,course,Art of Living Part 1 (SKY),sky,Brampton
+p_150,2026-09-03,seva,Centre cleaning seva,seva,Brampton
+p_151,2024-08-11,course,Art of Living Part 1 (SKY),sky,Ottawa
+p_151,2026-08-27,seva,Community kitchen seva,seva,Ottawa
+p_151,2026-10-04,event,Diwali satsang,celebration,Ottawa
+p_152,2024-06-11,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_152,2024-08-10,course,Art of Living Part 2 (Silence Retreat),part2,Mississauga
+p_152,2025-11-24,course,Silence Retreat,silence,Orillia
+p_152,2026-09-10,seva,Community kitchen seva,seva,Mississauga
+p_152,2026-10-10,seva,Centre cleaning seva,seva,Mississauga
+p_153,2025-04-25,course,Art of Living Part 1 (SKY),sky,Toronto
+p_153,2026-08-21,event,Practice circle,followup,Toronto
+p_153,2026-10-01,event,Navratri celebration,celebration,Toronto
+p_154,2024-04-20,course,Art of Living Part 1 (SKY),sky,Quebec City
+p_154,2026-07-13,event,Diwali satsang,celebration,Quebec City
+p_155,2023-07-12,course,Art of Living Part 1 (SKY),sky,Calgary
+p_155,2026-02-08,course,Silence Retreat,silence,Orillia
+p_155,2026-05-29,seva,Community kitchen seva,seva,Calgary
+p_155,2026-08-20,seva,Community kitchen seva,seva,Calgary
+p_156,2023-01-10,course,Art of Living Part 1 (SKY),sky,Vancouver
+p_156,2026-06-12,event,Satsang,satsang,Vancouver
+p_156,2026-08-27,event,Satsang,satsang,Vancouver
+p_157,2024-03-28,course,Art of Living Part 1 (SKY),sky,Surrey
+p_157,2024-05-02,course,Art of Living Part 2 (Silence Retreat),part2,Surrey
+p_157,2026-06-18,seva,Centre cleaning seva,seva,Surrey
+p_157,2026-08-29,seva,Centre cleaning seva,seva,Surrey
+p_158,2022-12-26,course,Art of Living Part 1 (SKY),sky,Montreal
+p_158,2023-02-09,course,Art of Living Part 2 (Silence Retreat),part2,Montreal
+p_158,2026-02-14,event,Weekly follow-up,followup,Montreal
+p_158,2026-06-29,event,Guru Purnima celebration,satsang,Montreal
+p_159,2024-01-21,course,Art of Living Part 1 (SKY),sky,Burnaby
+p_159,2024-05-21,course,Sahaj Samadhi Meditation,sahaj,Burnaby
+p_160,2023-09-13,course,Art of Living Part 1 (SKY),sky,Halifax
+p_160,2023-12-16,course,Sahaj Samadhi Meditation,sahaj,Halifax
+p_160,2025-12-16,course,Silence Retreat,silence,Orillia
+p_161,2023-06-16,course,Art of Living Part 1 (SKY),sky,Calgary
+p_161,2023-08-14,course,Art of Living Part 2 (Silence Retreat),part2,Calgary
+p_161,2026-02-10,seva,Community kitchen seva,seva,Calgary
+p_161,2026-06-27,seva,Community kitchen seva,seva,Calgary
+p_162,2024-02-11,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_162,2026-06-27,seva,Community kitchen seva,seva,Mississauga
+p_163,2023-07-13,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_163,2026-06-06,event,Navratri celebration,celebration,Mississauga
+p_163,2026-08-24,event,Guru Purnima celebration,satsang,Mississauga
+p_164,2023-10-14,course,Art of Living Part 1 (SKY),sky,Brampton
+p_165,2024-06-08,course,Art of Living Part 1 (SKY),sky,Ottawa
+p_166,2023-12-30,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_167,2023-06-03,course,Art of Living Part 1 (SKY),sky,Edmonton
+p_167,2023-07-10,course,Art of Living Part 2 (Silence Retreat),part2,Edmonton
+p_167,2026-06-18,event,Weekly follow-up,followup,Edmonton
+p_168,2024-06-08,course,Art of Living Part 1 (SKY),sky,Toronto
+p_168,2026-07-22,event,Navratri celebration,celebration,Toronto
+p_169,2023-11-06,course,Art of Living Part 1 (SKY),sky,Burnaby
+p_169,2026-04-17,seva,Community kitchen seva,seva,Burnaby
+p_169,2026-07-29,event,Full Moon Meditation,satsang,Burnaby
+p_170,2023-11-03,course,Art of Living Part 1 (SKY),sky,Vancouver
+p_170,2026-03-06,event,Navratri celebration,celebration,Vancouver
+p_170,2026-07-08,event,Navratri celebration,celebration,Vancouver
+p_171,2024-06-29,course,Art of Living Part 1 (SKY),sky,Brampton
+p_171,2026-05-25,event,Diwali satsang,celebration,Brampton
+p_172,2022-12-12,course,Art of Living Part 1 (SKY),sky,Vancouver
+p_172,2023-02-17,course,Art of Living Part 2 (Silence Retreat),part2,Vancouver
+p_172,2026-05-17,event,Full Moon Meditation,satsang,Vancouver
+p_172,2026-08-14,event,Diwali satsang,celebration,Vancouver
+p_173,2023-02-18,course,Art of Living Part 1 (SKY),sky,Ottawa
+p_173,2026-05-22,seva,Community kitchen seva,seva,Ottawa
+p_174,2024-02-10,course,Art of Living Part 1 (SKY),sky,Brampton
+p_174,2026-06-16,event,Full Moon Meditation,satsang,Brampton
+p_175,2022-11-24,course,Art of Living Part 1 (SKY),sky,Surrey
+p_175,2026-05-29,event,Guru Purnima celebration,satsang,Surrey
+p_176,2024-06-09,course,Art of Living Part 1 (SKY),sky,Quebec City
+p_176,2026-08-10,seva,Event seva day,seva,Quebec City
+p_177,2024-02-12,course,Art of Living Part 1 (SKY),sky,Mississauga
+p_177,2024-04-03,course,Art of Living Part 2 (Silence Retreat),part2,Mississauga
+p_177,2026-05-03,seva,Event seva day,seva,Mississauga
+p_177,2026-08-06,event,Weekly follow-up,followup,Mississauga
+p_178,2023-09-24,course,Art of Living Part 1 (SKY),sky,Scarborough
+p_178,2026-04-16,seva,Community kitchen seva,seva,Scarborough
+p_178,2026-07-29,event,Navratri celebration,celebration,Scarborough
+p_179,2023-10-28,course,Art of Living Part 1 (SKY),sky,Brampton
+p_180,2022-10-29,course,Art of Living Part 1 (SKY),sky,Victoria
+p_180,2026-07-26,event,Satsang,satsang,Victoria

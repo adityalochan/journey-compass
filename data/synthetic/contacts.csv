@@ -1,0 +1,728 @@
+participant_id,at,channel,direction,summary
+p_001,2026-03-08T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_001,2026-05-10T10:30:00-05:00,whatsapp,out,Sent the 40-day practice sheet
+p_001,2026-05-24T10:30:00-05:00,in_person,in,"Came to satsang, stayed for tea"
+p_001,2026-07-17T10:30:00-05:00,whatsapp,out,Shared the Sahaj Samadhi dates
+p_001,2026-08-18T10:30:00-05:00,whatsapp,out,Checked in after the 40-day practice — said work got busy
+p_002,2025-11-16T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_002,2025-12-19T10:30:00-05:00,email,out,Bienvenue au groupe de pratique
+p_002,2026-07-16T10:30:00-05:00,email,out,Invitation à la retraite de décembre
+p_002,2026-07-16T10:30:00-05:00,email,in,"A répondu : peut-être, à discuter avec sa conjointe"
+p_003,2025-05-11T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_003,2025-06-21T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_003,2026-02-06T10:30:00-05:00,in_person,in,Led the kitchen team at the February seva day
+p_003,2026-06-07T10:30:00-05:00,whatsapp,out,Asked if she'd like to take Part 3
+p_003,2026-09-10T10:30:00-05:00,whatsapp,in,Said she wants to serve more but doesn't want another course right now
+p_004,2026-11-06T10:30:00-05:00,in_person,in,Completed the course — asked about the 40-day practice
+p_004,2026-11-06T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_004,2026-11-09T10:30:00-05:00,phone,out,"Welcome call, walked him through the app"
+p_004,2026-11-09T10:30:00-05:00,whatsapp,in,Sent a voice note: 'slept better than I have in months'
+p_005,2024-09-15T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_005,2024-11-29T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_005,2025-02-07T10:30:00-05:00,in_person,in,Completed Sahaj Samadhi Meditation
+p_005,2025-06-12T10:30:00-05:00,in_person,in,Came to satsang with her daughter
+p_005,2025-09-30T10:30:00-05:00,email,out,Sent the new centre address
+p_005,2026-04-18T10:30:00-05:00,email,out,Birthday note — no reply
+p_006,2024-06-09T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_006,2024-08-06T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_006,2025-11-22T10:30:00-05:00,in_person,in,Finished the silence retreat — called it the best week of his year
+p_006,2025-11-22T10:30:00-05:00,in_person,in,Completed Silence Retreat
+p_006,2026-04-28T10:30:00-05:00,whatsapp,out,Shared the advanced course dates
+p_006,2026-07-07T10:30:00-05:00,whatsapp,out,Quick check-in — no reply
+p_007,2026-09-20T10:30:00-05:00,in_person,in,Très touchée par la pratique — a posé beaucoup de questions
+p_007,2026-09-20T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_007,2026-09-26T10:30:00-05:00,email,out,Envoyé la feuille de pratique et les dates de suivi
+p_007,2026-09-26T10:30:00-05:00,email,in,"A répondu : merci, je vais essayer la pratique de 40 jours"
+p_008,2024-07-14T10:30:00-05:00,in_person,in,Completed YES! for Youth
+p_008,2024-08-16T10:30:00-05:00,in_person,in,Came to the YES! follow-up with two friends
+p_008,2026-01-18T10:30:00-05:00,email,out,Invited to volunteer at the fall event
+p_008,2026-09-02T10:30:00-05:00,whatsapp,out,Birthday message — no reply
+p_009,2025-02-16T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_009,2025-04-13T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_009,2026-04-18T10:30:00-05:00,in_person,in,Stayed after satsang to help stack chairs
+p_009,2026-07-17T10:30:00-05:00,in_person,in,Asked whether we need help with the newsletter
+p_009,2026-10-26T10:30:00-05:00,in_person,in,"Came to satsang, brought a neighbour"
+p_010,2026-01-18T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_010,2026-03-19T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_010,2026-06-07T10:30:00-05:00,in_person,in,Completed Sahaj Samadhi Meditation
+p_010,2026-08-11T10:30:00-05:00,in_person,in,Helped at the registration desk for the intro talk
+p_010,2026-09-15T10:30:00-05:00,in_person,in,Came to satsang with her sister
+p_010,2026-10-12T10:30:00-05:00,whatsapp,in,Asked about volunteering as a course coordinator
+p_011,2026-10-27T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_011,2026-11-12T10:30:00-05:00,email,out,Last touchpoint
+p_012,2026-10-27T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_012,2026-10-28T10:30:00-05:00,phone,out,Followed up after an event
+p_012,2026-11-06T10:30:00-05:00,email,out,Last touchpoint
+p_013,2026-11-12T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_013,2026-11-13T10:30:00-05:00,email,out,Last touchpoint
+p_014,2026-11-10T10:30:00-05:00,in_person,in,Completed YES! for Youth
+p_014,2026-11-13T10:30:00-05:00,email,out,Last touchpoint
+p_015,2026-11-11T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_015,2026-11-13T10:30:00-05:00,email,out,Last touchpoint
+p_016,2026-11-12T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_016,2026-11-13T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_017,2026-10-31T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_017,2026-11-01T10:30:00-05:00,whatsapp,in,Sent a practice resource
+p_017,2026-11-02T10:30:00-05:00,email,out,Last touchpoint
+p_018,2026-10-25T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_018,2026-11-02T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_019,2026-10-25T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_019,2026-10-26T10:30:00-05:00,email,out,Shared course dates
+p_019,2026-11-02T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_020,2026-11-12T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_020,2026-11-13T10:30:00-05:00,email,out,Last touchpoint
+p_021,2026-11-04T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_021,2026-11-05T10:30:00-05:00,phone,out,Followed up after an event
+p_021,2026-11-13T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_022,2026-10-26T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_022,2026-10-29T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_023,2026-10-29T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_023,2026-10-30T10:30:00-05:00,whatsapp,in,Shared course dates
+p_023,2026-11-11T10:30:00-05:00,email,out,Last touchpoint
+p_024,2026-11-08T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_024,2026-11-09T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_025,2026-11-04T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_025,2026-11-05T10:30:00-05:00,whatsapp,out,Followed up after an event
+p_025,2026-11-09T10:30:00-05:00,email,out,Last touchpoint
+p_026,2026-11-04T10:30:00-05:00,in_person,in,Completed YES! for Youth
+p_026,2026-11-05T10:30:00-05:00,whatsapp,out,Checked in
+p_026,2026-11-09T10:30:00-05:00,email,out,Last touchpoint
+p_027,2026-11-07T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_027,2026-11-08T10:30:00-05:00,whatsapp,in,Checked in
+p_027,2026-11-12T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_028,2026-10-30T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_028,2026-10-31T10:30:00-05:00,in_person,out,Followed up after an event
+p_028,2026-11-05T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_029,2026-10-26T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_029,2026-10-27T10:30:00-05:00,email,in,Checked in
+p_029,2026-11-04T10:30:00-05:00,email,out,Last touchpoint
+p_030,2026-10-27T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_030,2026-11-08T10:30:00-05:00,email,out,Last touchpoint
+p_031,2026-10-28T10:30:00-05:00,in_person,in,Completed YES! for Youth
+p_031,2026-10-29T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_031,2026-11-03T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_032,2026-10-26T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_032,2026-10-27T10:30:00-05:00,in_person,out,Sent a practice resource
+p_032,2026-11-10T10:30:00-05:00,email,out,Last touchpoint
+p_033,2026-11-03T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_033,2026-11-13T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_034,2026-04-23T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_034,2026-09-07T10:30:00-05:00,email,out,Followed up after an event
+p_034,2026-10-06T10:30:00-05:00,phone,out,Sent a practice resource
+p_034,2026-11-04T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_035,2026-03-27T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_035,2026-06-04T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_035,2026-07-30T10:30:00-05:00,phone,out,Sent a practice resource
+p_035,2026-08-26T10:30:00-05:00,phone,in,Sent a practice resource
+p_035,2026-11-01T10:30:00-05:00,email,out,Last touchpoint
+p_036,2026-04-07T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_036,2026-04-08T10:30:00-05:00,email,out,Checked in
+p_036,2026-04-10T10:30:00-05:00,phone,out,Shared course dates
+p_036,2026-06-26T10:30:00-05:00,in_person,out,Followed up after an event
+p_036,2026-08-21T10:30:00-05:00,phone,in,Checked in
+p_036,2026-10-24T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_037,2026-07-25T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_037,2026-10-05T10:30:00-05:00,in_person,out,Sent a practice resource
+p_037,2026-11-10T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_038,2026-01-21T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_038,2026-03-15T10:30:00-05:00,in_person,out,Followed up after an event
+p_038,2026-03-19T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_038,2026-06-02T10:30:00-05:00,email,out,Sent a practice resource
+p_038,2026-06-25T10:30:00-05:00,in_person,in,Completed Sahaj Samadhi Meditation
+p_038,2026-08-26T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_038,2026-10-24T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_039,2026-06-06T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_039,2026-07-16T10:30:00-05:00,whatsapp,out,Shared course dates
+p_039,2026-09-16T10:30:00-05:00,phone,out,Sent a practice resource
+p_039,2026-11-07T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_040,2026-01-01T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_040,2026-04-09T10:30:00-05:00,email,in,Shared course dates
+p_040,2026-05-06T10:30:00-05:00,phone,in,Shared course dates
+p_040,2026-06-18T10:30:00-05:00,email,out,Checked in
+p_040,2026-07-27T10:30:00-05:00,phone,in,Followed up after an event
+p_040,2026-10-23T10:30:00-05:00,email,out,Last touchpoint
+p_041,2026-07-16T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_041,2026-07-17T10:30:00-05:00,whatsapp,in,Sent a practice resource
+p_041,2026-08-06T10:30:00-05:00,in_person,out,Sent a practice resource
+p_041,2026-10-03T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_041,2026-11-07T10:30:00-05:00,email,out,Last touchpoint
+p_042,2026-02-21T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_042,2026-04-13T10:30:00-05:00,email,out,Checked in
+p_042,2026-04-20T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_042,2026-06-30T10:30:00-05:00,whatsapp,out,Checked in
+p_042,2026-08-14T10:30:00-05:00,in_person,in,Completed Sahaj Samadhi Meditation
+p_042,2026-09-03T10:30:00-05:00,phone,out,Checked in
+p_042,2026-10-31T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_043,2026-01-05T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_043,2026-02-25T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_043,2026-04-27T10:30:00-05:00,in_person,in,Checked in
+p_043,2026-06-03T10:30:00-05:00,email,in,Checked in
+p_043,2026-08-12T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_043,2026-10-25T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_044,2026-08-18T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_044,2026-10-13T10:30:00-05:00,in_person,out,Checked in
+p_044,2026-11-10T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_045,2026-06-21T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_045,2026-06-22T10:30:00-05:00,whatsapp,in,Shared course dates
+p_045,2026-06-26T10:30:00-05:00,phone,out,Followed up after an event
+p_045,2026-08-04T10:30:00-05:00,phone,in,Sent a practice resource
+p_045,2026-08-25T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_045,2026-10-28T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_046,2026-07-22T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_046,2026-07-23T10:30:00-05:00,in_person,out,Checked in
+p_046,2026-10-10T10:30:00-05:00,email,in,Shared course dates
+p_046,2026-11-07T10:30:00-05:00,email,out,Last touchpoint
+p_047,2026-08-26T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_047,2026-09-07T10:30:00-05:00,in_person,out,Shared course dates
+p_047,2026-10-23T10:30:00-05:00,email,out,Last touchpoint
+p_048,2026-05-20T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_048,2026-08-20T10:30:00-05:00,whatsapp,in,Shared course dates
+p_048,2026-11-01T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_049,2026-04-27T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_049,2026-04-28T10:30:00-05:00,whatsapp,out,Followed up after an event
+p_049,2026-05-19T10:30:00-05:00,email,out,Shared course dates
+p_049,2026-07-07T10:30:00-05:00,email,out,Sent a practice resource
+p_049,2026-08-23T10:30:00-05:00,phone,in,Sent a practice resource
+p_049,2026-10-29T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_050,2026-05-07T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_050,2026-05-08T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_050,2026-06-06T10:30:00-05:00,phone,out,Checked in
+p_050,2026-08-27T10:30:00-05:00,phone,out,Shared course dates
+p_050,2026-11-04T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_051,2026-02-26T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_051,2026-03-19T10:30:00-05:00,phone,in,Checked in
+p_051,2026-05-29T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_051,2026-07-25T10:30:00-05:00,in_person,out,Sent a practice resource
+p_051,2026-10-22T10:30:00-05:00,email,out,Last touchpoint
+p_052,2026-05-16T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_052,2026-06-21T10:30:00-05:00,whatsapp,out,Shared course dates
+p_052,2026-08-24T10:30:00-05:00,in_person,in,Followed up after an event
+p_052,2026-11-02T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_053,2026-04-16T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_053,2026-05-26T10:30:00-05:00,email,out,Followed up after an event
+p_053,2026-06-14T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_053,2026-07-01T10:30:00-05:00,phone,in,Checked in
+p_053,2026-08-03T10:30:00-05:00,email,out,Followed up after an event
+p_053,2026-10-21T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_054,2026-06-21T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_054,2026-06-22T10:30:00-05:00,email,in,Shared course dates
+p_054,2026-08-02T10:30:00-05:00,email,in,Shared course dates
+p_054,2026-10-24T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_055,2026-05-21T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_055,2026-06-20T10:30:00-05:00,email,out,Shared course dates
+p_055,2026-07-15T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_055,2026-09-07T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_055,2026-11-02T10:30:00-05:00,email,out,Last touchpoint
+p_056,2026-08-31T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_056,2026-09-01T10:30:00-05:00,in_person,out,Followed up after an event
+p_056,2026-10-24T10:30:00-05:00,email,out,Last touchpoint
+p_057,2026-04-05T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_057,2026-05-06T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_057,2026-08-13T10:30:00-05:00,whatsapp,out,Shared course dates
+p_057,2026-10-31T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_058,2026-03-17T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_058,2026-09-25T10:30:00-05:00,phone,out,Sent a practice resource
+p_058,2026-10-21T10:30:00-05:00,email,out,Last touchpoint
+p_059,2026-01-13T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_059,2026-03-31T10:30:00-05:00,email,out,Followed up after an event
+p_059,2026-04-16T10:30:00-05:00,in_person,in,Completed Sahaj Samadhi Meditation
+p_059,2026-05-25T10:30:00-05:00,whatsapp,out,Shared course dates
+p_059,2026-08-10T10:30:00-05:00,in_person,in,Checked in
+p_059,2026-10-26T10:30:00-05:00,email,out,Last touchpoint
+p_060,2025-12-30T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_060,2026-02-22T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_060,2026-05-23T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_060,2026-07-16T10:30:00-05:00,whatsapp,in,Shared course dates
+p_060,2026-09-01T10:30:00-05:00,whatsapp,out,Shared course dates
+p_060,2026-10-25T10:30:00-05:00,email,out,Last touchpoint
+p_061,2026-08-01T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_061,2026-08-07T10:30:00-05:00,email,in,Checked in
+p_061,2026-10-07T10:30:00-05:00,phone,out,Sent a practice resource
+p_061,2026-11-02T10:30:00-05:00,email,out,Last touchpoint
+p_062,2026-07-16T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_062,2026-07-17T10:30:00-05:00,whatsapp,out,Shared course dates
+p_062,2026-08-02T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_062,2026-10-22T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_063,2026-04-25T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_063,2026-04-26T10:30:00-05:00,in_person,in,Followed up after an event
+p_063,2026-05-31T10:30:00-05:00,phone,in,Sent a practice resource
+p_063,2026-06-30T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_063,2026-07-07T10:30:00-05:00,phone,in,Checked in
+p_063,2026-09-07T10:30:00-05:00,in_person,in,Sent a practice resource
+p_063,2026-11-10T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_064,2026-01-13T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_064,2026-02-25T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_064,2026-06-08T10:30:00-05:00,in_person,in,Followed up after an event
+p_064,2026-08-30T10:30:00-05:00,phone,in,Followed up after an event
+p_064,2026-10-26T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_065,2026-04-26T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_065,2026-06-29T10:30:00-05:00,phone,out,Sent a practice resource
+p_065,2026-08-21T10:30:00-05:00,in_person,out,Checked in
+p_065,2026-10-24T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_066,2026-05-19T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_066,2026-05-20T10:30:00-05:00,whatsapp,out,Shared course dates
+p_066,2026-08-04T10:30:00-05:00,email,out,Sent a practice resource
+p_066,2026-10-24T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_067,2026-01-04T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_067,2026-02-22T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_067,2026-08-24T10:30:00-05:00,phone,in,Checked in
+p_067,2026-11-03T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_068,2026-08-18T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_068,2026-08-19T10:30:00-05:00,phone,out,Checked in
+p_068,2026-11-03T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_069,2026-08-31T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_069,2026-09-01T10:30:00-05:00,phone,in,Followed up after an event
+p_069,2026-10-26T10:30:00-05:00,email,out,Last touchpoint
+p_070,2026-02-09T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_070,2026-03-25T10:30:00-05:00,whatsapp,in,Shared course dates
+p_070,2026-06-20T10:30:00-05:00,email,out,Followed up after an event
+p_070,2026-07-18T10:30:00-05:00,whatsapp,out,Shared course dates
+p_070,2026-09-12T10:30:00-05:00,in_person,in,Followed up after an event
+p_070,2026-10-23T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_071,2026-02-01T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_071,2026-02-02T10:30:00-05:00,email,out,Sent a practice resource
+p_071,2026-02-28T10:30:00-05:00,email,out,Followed up after an event
+p_071,2026-05-25T10:30:00-05:00,whatsapp,in,Followed up after an event
+p_071,2026-06-02T10:30:00-05:00,in_person,in,Completed Sahaj Samadhi Meditation
+p_071,2026-08-20T10:30:00-05:00,whatsapp,in,Checked in
+p_071,2026-10-31T10:30:00-05:00,email,out,Last touchpoint
+p_072,2026-07-27T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_072,2026-10-12T10:30:00-05:00,in_person,out,Followed up after an event
+p_072,2026-11-07T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_073,2026-08-13T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_073,2026-10-09T10:30:00-05:00,phone,out,Checked in
+p_073,2026-11-08T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_074,2026-08-04T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_074,2026-08-05T10:30:00-05:00,in_person,in,Followed up after an event
+p_074,2026-09-04T10:30:00-05:00,email,out,Checked in
+p_074,2026-10-22T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_075,2026-05-29T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_075,2026-07-06T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_075,2026-08-17T10:30:00-05:00,phone,out,Sent a practice resource
+p_075,2026-11-06T10:30:00-05:00,email,out,Last touchpoint
+p_076,2026-08-17T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_076,2026-08-18T10:30:00-05:00,phone,in,Checked in
+p_076,2026-08-25T10:30:00-05:00,in_person,out,Sent a practice resource
+p_076,2026-11-08T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_077,2026-06-11T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_077,2026-06-12T10:30:00-05:00,in_person,out,Checked in
+p_077,2026-07-13T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_077,2026-08-13T10:30:00-05:00,whatsapp,out,Checked in
+p_077,2026-11-06T10:30:00-05:00,email,out,Last touchpoint
+p_078,2026-06-15T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_078,2026-08-02T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_078,2026-08-08T10:30:00-05:00,email,in,Shared course dates
+p_078,2026-10-30T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_079,2026-06-11T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_079,2026-06-12T10:30:00-05:00,in_person,out,Checked in
+p_079,2026-08-20T10:30:00-05:00,email,out,Checked in
+p_079,2026-11-02T10:30:00-05:00,email,out,Last touchpoint
+p_080,2026-02-28T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_080,2026-06-08T10:30:00-05:00,whatsapp,out,Shared course dates
+p_080,2026-09-02T10:30:00-05:00,in_person,out,Checked in
+p_080,2026-10-21T10:30:00-05:00,email,out,Last touchpoint
+p_081,2026-07-15T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_081,2026-07-22T10:30:00-05:00,email,out,Shared course dates
+p_081,2026-08-29T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_081,2026-09-16T10:30:00-05:00,email,out,Checked in
+p_081,2026-11-05T10:30:00-05:00,email,out,Last touchpoint
+p_082,2026-02-04T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_082,2026-03-26T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_082,2026-07-20T10:30:00-05:00,email,in,Checked in
+p_082,2026-09-29T10:30:00-05:00,phone,out,Checked in
+p_082,2026-10-29T10:30:00-05:00,email,out,Last touchpoint
+p_083,2026-06-06T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_083,2026-06-27T10:30:00-05:00,phone,out,Checked in
+p_083,2026-07-09T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_083,2026-07-28T10:30:00-05:00,email,in,Checked in
+p_083,2026-09-11T10:30:00-05:00,whatsapp,out,Checked in
+p_083,2026-10-29T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_084,2025-12-26T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_084,2026-03-05T10:30:00-05:00,email,out,Followed up after an event
+p_084,2026-06-01T10:30:00-05:00,in_person,in,Sent a practice resource
+p_084,2026-08-07T10:30:00-05:00,in_person,out,Followed up after an event
+p_084,2026-09-23T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_085,2025-05-01T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_085,2026-06-13T10:30:00-05:00,email,out,Checked in
+p_085,2026-08-01T10:30:00-05:00,email,out,Shared course dates
+p_085,2026-08-27T10:30:00-05:00,email,out,Last touchpoint
+p_086,2025-12-17T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_086,2026-01-28T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_086,2026-07-05T10:30:00-05:00,in_person,out,Shared course dates
+p_086,2026-08-15T10:30:00-05:00,phone,in,Followed up after an event
+p_086,2026-09-27T10:30:00-05:00,email,out,Last touchpoint
+p_087,2025-04-17T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_087,2026-07-02T10:30:00-05:00,email,out,Sent a practice resource
+p_087,2026-09-21T10:30:00-05:00,email,out,Last touchpoint
+p_088,2026-03-31T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_088,2026-05-18T10:30:00-05:00,in_person,in,Followed up after an event
+p_088,2026-08-06T10:30:00-05:00,whatsapp,out,Shared course dates
+p_088,2026-09-25T10:30:00-05:00,email,out,Last touchpoint
+p_089,2025-11-15T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_089,2026-03-30T10:30:00-05:00,phone,in,Checked in
+p_089,2026-06-23T10:30:00-05:00,email,out,Checked in
+p_089,2026-08-28T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_090,2025-12-03T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_090,2026-05-07T10:30:00-05:00,email,out,Checked in
+p_090,2026-08-01T10:30:00-05:00,in_person,out,Shared course dates
+p_090,2026-09-08T10:30:00-05:00,email,out,Last touchpoint
+p_091,2025-03-24T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_091,2025-12-12T10:30:00-05:00,in_person,in,Completed Silence Retreat
+p_091,2026-07-09T10:30:00-05:00,in_person,out,Checked in
+p_091,2026-08-04T10:30:00-05:00,email,out,Sent a practice resource
+p_091,2026-08-30T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_092,2025-04-06T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_092,2026-05-17T10:30:00-05:00,whatsapp,out,Shared course dates
+p_092,2026-07-24T10:30:00-05:00,phone,in,Shared course dates
+p_092,2026-09-18T10:30:00-05:00,email,out,Last touchpoint
+p_093,2025-11-13T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_093,2026-07-24T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_093,2026-08-27T10:30:00-05:00,email,out,Last touchpoint
+p_094,2025-10-15T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_094,2026-03-18T10:30:00-05:00,whatsapp,in,Checked in
+p_094,2026-06-03T10:30:00-05:00,in_person,out,Sent a practice resource
+p_094,2026-08-16T10:30:00-05:00,in_person,in,Checked in
+p_094,2026-09-18T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_095,2025-11-02T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_095,2026-01-01T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_095,2026-01-26T10:30:00-05:00,email,out,Shared course dates
+p_095,2026-04-04T10:30:00-05:00,phone,in,Checked in
+p_095,2026-06-25T10:30:00-05:00,email,out,Followed up after an event
+p_095,2026-08-26T10:30:00-05:00,email,out,Last touchpoint
+p_096,2025-06-14T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_096,2025-09-26T10:30:00-05:00,in_person,in,Completed Sahaj Samadhi Meditation
+p_096,2026-06-16T10:30:00-05:00,email,out,Checked in
+p_096,2026-09-06T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_097,2026-03-29T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_097,2026-06-02T10:30:00-05:00,in_person,out,Checked in
+p_097,2026-08-02T10:30:00-05:00,phone,out,Followed up after an event
+p_097,2026-09-11T10:30:00-05:00,email,out,Last touchpoint
+p_098,2025-11-17T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_098,2026-01-23T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_098,2026-06-24T10:30:00-05:00,phone,out,Checked in
+p_098,2026-08-05T10:30:00-05:00,email,out,Checked in
+p_098,2026-09-14T10:30:00-05:00,email,out,Last touchpoint
+p_099,2026-01-21T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_099,2026-04-07T10:30:00-05:00,phone,in,Followed up after an event
+p_099,2026-05-30T10:30:00-05:00,phone,out,Followed up after an event
+p_099,2026-08-21T10:30:00-05:00,in_person,out,Sent a practice resource
+p_099,2026-09-17T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_100,2025-12-27T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_100,2026-03-10T10:30:00-05:00,in_person,out,Followed up after an event
+p_100,2026-04-28T10:30:00-05:00,phone,in,Checked in
+p_100,2026-07-26T10:30:00-05:00,phone,out,Shared course dates
+p_100,2026-09-09T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_101,2026-02-09T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_101,2026-06-11T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_101,2026-08-31T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_102,2025-07-29T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_102,2026-05-06T10:30:00-05:00,email,in,Sent a practice resource
+p_102,2026-07-23T10:30:00-05:00,whatsapp,in,Sent a practice resource
+p_102,2026-09-11T10:30:00-05:00,email,out,Last touchpoint
+p_103,2026-04-13T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_103,2026-04-14T10:30:00-05:00,phone,out,Checked in
+p_103,2026-06-17T10:30:00-05:00,in_person,in,Shared course dates
+p_103,2026-09-04T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_104,2025-06-16T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_104,2025-07-18T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_104,2026-07-21T10:30:00-05:00,in_person,out,Sent a practice resource
+p_104,2026-09-14T10:30:00-05:00,email,out,Last touchpoint
+p_105,2025-10-12T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_105,2026-07-17T10:30:00-05:00,whatsapp,in,Shared course dates
+p_105,2026-09-11T10:30:00-05:00,email,out,Last touchpoint
+p_106,2025-05-08T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_106,2025-07-10T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_106,2026-06-25T10:30:00-05:00,phone,out,Followed up after an event
+p_106,2026-09-03T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_107,2025-03-24T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_107,2026-05-25T10:30:00-05:00,email,out,Checked in
+p_107,2026-06-22T10:30:00-05:00,in_person,in,Shared course dates
+p_107,2026-09-15T10:30:00-05:00,email,out,Last touchpoint
+p_108,2025-11-21T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_108,2025-12-31T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_108,2026-05-29T10:30:00-05:00,email,in,Sent a practice resource
+p_108,2026-07-06T10:30:00-05:00,email,out,Sent a practice resource
+p_108,2026-09-09T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_109,2025-12-19T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_109,2026-04-30T10:30:00-05:00,phone,out,Followed up after an event
+p_109,2026-05-28T10:30:00-05:00,phone,in,Shared course dates
+p_109,2026-08-10T10:30:00-05:00,phone,out,Followed up after an event
+p_109,2026-09-08T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_110,2025-12-19T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_110,2026-01-22T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_110,2026-04-21T10:30:00-05:00,whatsapp,in,Followed up after an event
+p_110,2026-06-04T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_110,2026-07-01T10:30:00-05:00,phone,out,Shared course dates
+p_110,2026-09-15T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_111,2026-02-02T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_111,2026-03-17T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_111,2026-06-11T10:30:00-05:00,whatsapp,out,Followed up after an event
+p_111,2026-07-31T10:30:00-05:00,email,in,Checked in
+p_111,2026-09-10T10:30:00-05:00,email,out,Last touchpoint
+p_112,2025-12-21T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_112,2026-03-26T10:30:00-05:00,in_person,out,Checked in
+p_112,2026-04-28T10:30:00-05:00,in_person,in,Completed Sahaj Samadhi Meditation
+p_112,2026-05-08T10:30:00-05:00,phone,in,Followed up after an event
+p_112,2026-07-17T10:30:00-05:00,whatsapp,out,Shared course dates
+p_112,2026-09-02T10:30:00-05:00,email,out,Last touchpoint
+p_113,2025-06-22T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_113,2026-08-15T10:30:00-05:00,phone,out,Sent a practice resource
+p_113,2026-09-18T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_114,2025-08-25T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_114,2026-05-17T10:30:00-05:00,phone,out,Checked in
+p_114,2026-07-21T10:30:00-05:00,phone,in,Checked in
+p_114,2026-09-13T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_115,2025-07-23T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_115,2025-09-23T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_115,2026-04-11T10:30:00-05:00,email,in,Shared course dates
+p_115,2026-07-09T10:30:00-05:00,whatsapp,out,Checked in
+p_115,2026-09-22T10:30:00-05:00,email,out,Last touchpoint
+p_116,2025-08-10T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_116,2025-09-29T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_116,2026-06-23T10:30:00-05:00,email,out,Checked in
+p_116,2026-08-03T10:30:00-05:00,email,in,Sent a practice resource
+p_116,2026-09-04T10:30:00-05:00,email,out,Last touchpoint
+p_117,2025-09-30T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_117,2025-11-06T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_117,2026-01-17T10:30:00-05:00,email,out,Shared course dates
+p_117,2026-04-09T10:30:00-05:00,whatsapp,out,Shared course dates
+p_117,2026-06-24T10:30:00-05:00,phone,out,Sent a practice resource
+p_117,2026-09-06T10:30:00-05:00,email,out,Last touchpoint
+p_118,2026-01-18T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_118,2026-01-19T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_118,2026-04-11T10:30:00-05:00,whatsapp,out,Shared course dates
+p_118,2026-07-04T10:30:00-05:00,whatsapp,out,Shared course dates
+p_118,2026-09-06T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_119,2025-04-26T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_119,2025-06-05T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_119,2025-08-22T10:30:00-05:00,in_person,in,Completed Sahaj Samadhi Meditation
+p_119,2026-03-19T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_119,2026-04-15T10:30:00-05:00,phone,in,Followed up after an event
+p_119,2026-06-20T10:30:00-05:00,in_person,out,Checked in
+p_119,2026-09-13T10:30:00-05:00,email,out,Last touchpoint
+p_120,2026-01-04T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_120,2026-06-15T10:30:00-05:00,in_person,in,Followed up after an event
+p_120,2026-07-31T10:30:00-05:00,in_person,in,Checked in
+p_120,2026-09-18T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_121,2026-01-21T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_121,2026-03-02T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_121,2026-03-31T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_121,2026-06-11T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_121,2026-07-08T10:30:00-05:00,in_person,out,Shared course dates
+p_121,2026-09-21T10:30:00-05:00,email,out,Last touchpoint
+p_122,2025-03-18T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_122,2026-03-25T10:30:00-05:00,in_person,out,Sent a practice resource
+p_122,2026-05-06T10:30:00-05:00,phone,out,Checked in
+p_122,2026-08-04T10:30:00-05:00,phone,out,Last touchpoint
+p_123,2024-10-20T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_123,2024-11-30T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_123,2026-04-08T10:30:00-05:00,in_person,out,Followed up after an event
+p_123,2026-06-09T10:30:00-05:00,phone,in,Shared course dates
+p_123,2026-07-15T10:30:00-05:00,email,out,Last touchpoint
+p_124,2025-01-08T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_124,2026-08-02T10:30:00-05:00,phone,out,Last touchpoint
+p_125,2025-09-10T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_125,2026-07-10T10:30:00-05:00,in_person,out,Checked in
+p_125,2026-08-05T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_126,2024-11-16T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_126,2026-04-27T10:30:00-05:00,whatsapp,in,Checked in
+p_126,2026-07-20T10:30:00-05:00,email,out,Last touchpoint
+p_127,2025-03-19T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_127,2026-07-24T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_128,2025-01-09T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_128,2025-03-05T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_128,2026-04-25T10:30:00-05:00,in_person,in,Completed Silence Retreat
+p_128,2026-07-27T10:30:00-05:00,email,out,Last touchpoint
+p_129,2024-02-20T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_129,2026-05-23T10:30:00-05:00,phone,out,Shared course dates
+p_129,2026-07-06T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_130,2025-03-03T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_130,2026-02-05T10:30:00-05:00,email,in,Sent a practice resource
+p_130,2026-04-25T10:30:00-05:00,in_person,in,Checked in
+p_130,2026-07-15T10:30:00-05:00,email,out,Last touchpoint
+p_131,2024-08-13T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_131,2024-10-17T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_131,2026-04-13T10:30:00-05:00,phone,in,Shared course dates
+p_131,2026-06-13T10:30:00-05:00,email,out,Last touchpoint
+p_132,2024-10-07T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_132,2026-04-25T10:30:00-05:00,whatsapp,in,Sent a practice resource
+p_132,2026-07-04T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_133,2025-09-18T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_133,2025-11-21T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_133,2026-02-09T10:30:00-05:00,email,out,Checked in
+p_133,2026-04-29T10:30:00-05:00,whatsapp,in,Shared course dates
+p_133,2026-07-18T10:30:00-05:00,email,out,Last touchpoint
+p_134,2025-07-09T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_134,2026-07-12T10:30:00-05:00,email,out,Last touchpoint
+p_135,2025-02-03T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_135,2025-03-16T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_135,2025-10-27T10:30:00-05:00,in_person,in,Completed Silence Retreat
+p_135,2026-05-05T10:30:00-05:00,in_person,out,Checked in
+p_135,2026-07-06T10:30:00-05:00,phone,out,Last touchpoint
+p_136,2025-02-16T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_136,2025-07-20T10:30:00-05:00,in_person,in,Completed Sahaj Samadhi Meditation
+p_136,2026-05-06T10:30:00-05:00,email,out,Checked in
+p_136,2026-07-26T10:30:00-05:00,email,out,Last touchpoint
+p_137,2025-03-24T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_137,2025-05-04T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_137,2025-06-23T10:30:00-05:00,in_person,in,Completed Sahaj Samadhi Meditation
+p_137,2025-11-21T10:30:00-05:00,in_person,in,Completed Silence Retreat
+p_137,2026-07-03T10:30:00-05:00,phone,in,Followed up after an event
+p_137,2026-08-03T10:30:00-05:00,email,out,Last touchpoint
+p_138,2024-02-27T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_138,2024-04-04T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_138,2024-06-05T10:30:00-05:00,in_person,in,Completed Sahaj Samadhi Meditation
+p_138,2026-05-19T10:30:00-05:00,whatsapp,in,Shared course dates
+p_138,2026-06-16T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_139,2024-08-24T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_139,2026-06-19T10:30:00-05:00,email,out,Last touchpoint
+p_140,2024-11-10T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_140,2026-06-08T10:30:00-05:00,email,out,Last touchpoint
+p_141,2024-03-15T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_141,2026-06-22T10:30:00-05:00,email,out,Last touchpoint
+p_142,2025-04-17T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_142,2026-07-28T10:30:00-05:00,email,out,Last touchpoint
+p_143,2024-03-17T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_143,2026-03-24T10:30:00-05:00,email,in,Sent a practice resource
+p_143,2026-06-13T10:30:00-05:00,email,out,Last touchpoint
+p_144,2024-10-19T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_144,2026-03-19T10:30:00-05:00,in_person,out,Checked in
+p_144,2026-05-20T10:30:00-05:00,whatsapp,out,Followed up after an event
+p_144,2026-06-19T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_145,2024-12-15T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_145,2025-04-14T10:30:00-05:00,in_person,in,Completed Sahaj Samadhi Meditation
+p_145,2026-03-15T10:30:00-05:00,whatsapp,out,Checked in
+p_145,2026-06-04T10:30:00-05:00,email,out,Sent a practice resource
+p_145,2026-07-27T10:30:00-05:00,email,out,Last touchpoint
+p_146,2024-03-06T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_146,2026-03-03T10:30:00-05:00,email,in,Checked in
+p_146,2026-04-08T10:30:00-05:00,email,out,Followed up after an event
+p_146,2026-07-04T10:30:00-05:00,email,out,Last touchpoint
+p_147,2024-06-29T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_147,2026-03-08T10:30:00-05:00,phone,out,Followed up after an event
+p_147,2026-05-11T10:30:00-05:00,in_person,out,Sent a practice resource
+p_147,2026-07-05T10:30:00-05:00,phone,out,Last touchpoint
+p_148,2025-05-06T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_148,2026-06-08T10:30:00-05:00,email,out,Last touchpoint
+p_149,2024-04-20T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_149,2026-02-19T10:30:00-05:00,in_person,in,Shared course dates
+p_149,2026-05-10T10:30:00-05:00,whatsapp,in,Followed up after an event
+p_149,2026-06-22T10:30:00-05:00,email,out,Last touchpoint
+p_150,2024-07-07T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_150,2026-06-24T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_151,2024-08-11T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_151,2026-04-09T10:30:00-05:00,in_person,in,Followed up after an event
+p_151,2026-06-16T10:30:00-05:00,whatsapp,out,Followed up after an event
+p_151,2026-07-18T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_152,2024-06-11T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_152,2024-08-10T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_152,2025-11-24T10:30:00-05:00,in_person,in,Completed Silence Retreat
+p_152,2026-05-24T10:30:00-05:00,phone,out,Shared course dates
+p_152,2026-06-18T10:30:00-05:00,whatsapp,in,Followed up after an event
+p_152,2026-08-07T10:30:00-05:00,phone,out,Last touchpoint
+p_153,2025-04-25T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_153,2026-07-09T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_154,2024-04-20T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_154,2025-12-03T10:30:00-05:00,whatsapp,out,Followed up after an event
+p_154,2026-01-03T10:30:00-05:00,phone,in,Shared course dates
+p_154,2026-03-12T10:30:00-05:00,email,out,Last touchpoint
+p_155,2023-07-12T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_155,2025-11-18T10:30:00-05:00,whatsapp,out,Shared course dates
+p_155,2025-12-27T10:30:00-05:00,phone,out,Checked in
+p_155,2026-02-08T10:30:00-05:00,in_person,in,Completed Silence Retreat
+p_155,2026-03-05T10:30:00-05:00,email,out,Last touchpoint
+p_156,2023-01-10T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_156,2026-01-18T10:30:00-05:00,email,in,Sent a practice resource
+p_156,2026-03-26T10:30:00-05:00,email,out,Last touchpoint
+p_157,2024-03-28T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_157,2024-05-02T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_157,2025-12-23T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_157,2026-01-25T10:30:00-05:00,email,out,Shared course dates
+p_157,2026-04-03T10:30:00-05:00,phone,out,Last touchpoint
+p_158,2022-12-26T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_158,2023-02-09T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_158,2025-04-29T10:30:00-05:00,whatsapp,in,Followed up after an event
+p_158,2025-07-15T10:30:00-05:00,email,out,Checked in
+p_158,2025-09-30T10:30:00-05:00,email,out,Last touchpoint
+p_159,2024-01-21T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_159,2024-05-21T10:30:00-05:00,in_person,in,Completed Sahaj Samadhi Meditation
+p_159,2025-08-18T10:30:00-05:00,in_person,in,Followed up after an event
+p_159,2025-11-02T10:30:00-05:00,in_person,in,Followed up after an event
+p_159,2025-12-10T10:30:00-05:00,phone,out,Last touchpoint
+p_160,2023-09-13T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_160,2023-12-16T10:30:00-05:00,in_person,in,Completed Sahaj Samadhi Meditation
+p_160,2025-11-08T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_160,2025-12-16T10:30:00-05:00,in_person,in,Completed Silence Retreat
+p_160,2026-01-07T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_161,2023-06-16T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_161,2023-08-14T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_161,2025-05-31T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_161,2025-07-21T10:30:00-05:00,email,in,Followed up after an event
+p_161,2025-09-24T10:30:00-05:00,phone,out,Last touchpoint
+p_162,2024-02-11T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_162,2025-08-28T10:30:00-05:00,in_person,in,Checked in
+p_162,2025-11-19T10:30:00-05:00,in_person,in,Shared course dates
+p_162,2026-02-09T10:30:00-05:00,phone,out,Last touchpoint
+p_163,2023-07-13T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_163,2026-01-01T10:30:00-05:00,whatsapp,out,Checked in
+p_163,2026-03-17T10:30:00-05:00,email,out,Last touchpoint
+p_164,2023-10-14T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_164,2025-12-16T10:30:00-05:00,phone,out,Checked in
+p_164,2026-01-31T10:30:00-05:00,phone,out,Checked in
+p_164,2026-03-19T10:30:00-05:00,phone,out,Last touchpoint
+p_165,2024-06-08T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_165,2025-12-12T10:30:00-05:00,whatsapp,out,Checked in
+p_165,2026-02-18T10:30:00-05:00,phone,out,Sent a practice resource
+p_165,2026-04-27T10:30:00-05:00,email,out,Last touchpoint
+p_166,2023-12-30T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_166,2025-11-05T10:30:00-05:00,in_person,in,Checked in
+p_166,2025-12-29T10:30:00-05:00,phone,out,Followed up after an event
+p_166,2026-01-26T10:30:00-05:00,phone,out,Last touchpoint
+p_167,2023-06-03T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_167,2023-07-10T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_167,2025-11-17T10:30:00-05:00,email,out,Followed up after an event
+p_167,2025-12-19T10:30:00-05:00,whatsapp,out,Followed up after an event
+p_167,2026-01-22T10:30:00-05:00,phone,out,Last touchpoint
+p_168,2024-06-08T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_168,2026-03-31T10:30:00-05:00,email,out,Last touchpoint
+p_169,2023-11-06T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_169,2025-09-05T10:30:00-05:00,phone,out,Followed up after an event
+p_169,2025-11-02T10:30:00-05:00,in_person,out,Followed up after an event
+p_169,2025-12-31T10:30:00-05:00,email,out,Last touchpoint
+p_170,2023-11-03T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_170,2025-09-15T10:30:00-05:00,phone,out,Sent a practice resource
+p_170,2025-10-29T10:30:00-05:00,email,out,Last touchpoint
+p_171,2024-06-29T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_171,2025-10-20T10:30:00-05:00,in_person,in,Checked in
+p_171,2025-12-04T10:30:00-05:00,email,out,Last touchpoint
+p_172,2022-12-12T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_172,2023-02-17T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_172,2025-09-27T10:30:00-05:00,whatsapp,out,Shared course dates
+p_172,2025-12-02T10:30:00-05:00,phone,out,Checked in
+p_172,2026-02-15T10:30:00-05:00,email,out,Last touchpoint
+p_173,2023-02-18T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_173,2025-09-08T10:30:00-05:00,in_person,out,Checked in
+p_173,2025-11-28T10:30:00-05:00,email,out,Last touchpoint
+p_174,2024-02-10T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_174,2025-12-17T10:30:00-05:00,whatsapp,out,Shared course dates
+p_174,2026-01-17T10:30:00-05:00,email,out,Last touchpoint
+p_175,2022-11-24T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_175,2025-10-20T10:30:00-05:00,phone,out,Checked in
+p_175,2025-12-12T10:30:00-05:00,email,out,Last touchpoint
+p_176,2024-06-09T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_176,2026-01-31T10:30:00-05:00,phone,in,Checked in
+p_176,2026-04-01T10:30:00-05:00,phone,in,Checked in
+p_176,2026-05-08T10:30:00-05:00,whatsapp,out,Last touchpoint
+p_177,2024-02-12T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_177,2024-04-03T10:30:00-05:00,in_person,in,Completed SKY Part 2
+p_177,2026-01-24T10:30:00-05:00,phone,out,Last touchpoint
+p_178,2023-09-24T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_178,2025-08-14T10:30:00-05:00,in_person,out,Sent a practice resource
+p_178,2025-10-30T10:30:00-05:00,phone,out,Followed up after an event
+p_178,2025-12-30T10:30:00-05:00,phone,out,Last touchpoint
+p_179,2023-10-28T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_179,2026-02-10T10:30:00-05:00,email,out,Last touchpoint
+p_180,2022-10-29T10:30:00-05:00,in_person,in,Completed SKY Breath Meditation
+p_180,2026-01-07T10:30:00-05:00,email,out,Followed up after an event
+p_180,2026-03-11T10:30:00-05:00,whatsapp,out,Sent a practice resource
+p_180,2026-04-07T10:30:00-05:00,phone,out,Last touchpoint

@@ -1,0 +1,20 @@
+offer_id,offer_type,name,program_key,commitment,start_date,city,languages,tags,prerequisites,description,source
+seva_kitchen,seva,Kitchen seva at your local centre,,2,,,,cooking;seva;community,,Help cook and serve at satsang or a course day.,standing
+seva_registration,seva,Registration desk at the next intro session,,2,,,,registration desk;seva;community,sky,Welcome people and check them in.,standing
+seva_logistics,seva,Event logistics team for the next centre event,,3,,,,event logistics;driving;seva,sky,Set up rooms and coordinate on the day.,standing
+seva_media,seva,Photo / video / social media seva,,2,,,,photography;video editing;social media;graphic design;seva,,Capture and share centre events.,standing
+seva_tech,seva,Tech seva (Zoom host and IT help),,2,,,,IT support;seva,,Host online sessions and help with the app.,standing
+seva_translation,seva,Translation seva,,2,,,,translation;seva,,Translate flyers and course material.,standing
+seva_finance,seva,Help with the centre's accounts,,2,,,,finance;seva,,Bookkeeping and donation receipts.,standing
+seva_music,seva,Music for satsang,,2,,,,music;satsang;seva,,Lead or accompany bhajans.,standing
+seva_driving,seva,Drive seniors to satsang,,1,,,,driving;seva;community,,A ride once a month.,standing
+seva_firstaid,seva,First-aid volunteer at events,,2,,,,first aid;seva,,Be the first-aid contact on event days.,standing
+seva_garden,seva,Garden and grounds seva,,1,,,,gardening;seva,,Look after the centre garden.,standing
+seva_mentor,seva,Mentor new SKY graduates through their 40 days,,3,,,,teaching;meditation;seva;community,part2,Be a practice buddy for someone who just finished SKY.,standing
+seva_greeter,seva,Welcome newcomers at Sunday satsang,,1,,,,community;satsang;seva,sky,Be the first friendly face for new people.,standing
+reconnect_call,reconnect,A personal phone call from your coordinator,,1,,,,community,,"A short, no-ask call to see how they are.",standing
+reconnect_refresher,reconnect,Free online SKY refresher (group practice),,1,,Online,,meditation;community,sky,Practise SKY together online; no sign-up commitment.,standing
+event_online_followup,event,Weekly online SKY follow-up,,1,,Online,,meditation;community,sky,Group practice every week on Zoom.,standing
+event_local_satsang,event,Sunday satsang at your local centre,,1,,,,satsang;community;music,,Music and meditation every Sunday.,standing
+event_40day,event,40-day practice challenge in the app,,1,,Online,,meditation;wellness,sky,Daily practice with reminders and a small group.,standing
+event_yoga,event,Community yoga morning,,1,,,,yoga;wellness;community,,Gentle yoga and breathwork at the centre.,standing

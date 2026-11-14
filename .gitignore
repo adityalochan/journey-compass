@@ -225,8 +225,15 @@ data/raw/*
 outputs/*
 !outputs/.gitkeep
 
+# Organisers' mock exports stay local (not for the repo)
+Mock data/
+data/mock/
+data/catalogue/programmes.csv
+src/data/engine_output.json
+
 # Node
 node_modules/
 
 # Website source (the Python template above ignores every lib/ folder)
 !web/src/lib/
+web/dist/
