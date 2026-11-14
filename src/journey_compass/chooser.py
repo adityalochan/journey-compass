@@ -143,7 +143,7 @@ def choose(profile: dict, cat: pd.DataFrame, as_of: pd.Timestamp, contacts: pd.D
 
     prompt = facts(profile, contacts, as_of, llm.notes_allowed(p)) + "\n\nShortlist:\n" + _candidates(steps, cat, profile)
     try:
-        text, info = llm.chat(SYSTEM, prompt, as_json=True)
+        text, info = llm.chat(SYSTEM, prompt, as_json=True, temperature=0.0)  # most repeatable picks
         data = _parse(text, {s.offer_id for s in steps})
     except llm.LLMUnavailable as e:
         return keep_engine(str(e), p.model)
@@ -151,6 +151,27 @@ def choose(profile: dict, cat: pd.DataFrame, as_of: pd.Timestamp, contacts: pd.D
         return keep_engine(f"invalid answer: {e}", p.model)
     return Choice(data["offer_id"], "ai", data["coordinator_reason"], data["message_angle"], engine.offer_id,
                   note="cached" if info["cached"] else "", model=info["model"]), steps
+
+
+def final_top(steps: list[NextStep], choice: Choice, k: int = config.TOP_K) -> list[NextStep]:
+    """Rank 1 = the chosen offer (AI or engine); ranks 2..k = the engine's next best, preferring kinds
+    not already shown. `steps` is the shortlist from choose(), engine-ranked first."""
+    if not steps:
+        return []
+    first = next((s for s in steps if s.offer_id == choice.offer_id), steps[0])
+    rest = [s for s in steps if s.offer_id != first.offer_id and s.item != first.item]
+    out, kinds = [first], {first.offer_type}
+    for s in rest:                      # different kinds first...
+        if len(out) == k:
+            break
+        if s.offer_type not in kinds:
+            out.append(s); kinds.add(s.offer_type)
+    for s in rest:                      # ...then fill up if there aren't enough kinds
+        if len(out) == k:
+            break
+        if s not in out:
+            out.append(s)
+    return out
 
 
 # ---------------------------------------------------------------------------------------------

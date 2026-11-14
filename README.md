@@ -67,6 +67,27 @@ For each person:
 On the synthetic cohort the most common first suggestion goes to 24% of people (the old rules gave
 Sahaj Samadhi to about 70%).
 
+## LLM reasoning and messages (step 3, optional)
+Without an LLM everything runs on the engine and templates. With one (`JC_LLM_PROVIDER=groq` for
+the hosted free tier, `ollama` for a local model; see `.env.example`):
+
+- **Chooser** (`chooser.py`) reads volunteer notes and recent contact summaries and picks one offer
+  from a shortlist the hard rules already approved (engine top 5 + best 3 of each kind). It returns
+  a reason for the coordinator and a participant-safe angle. Invalid or failed answers keep the
+  engine's pick; the engine's pick is always kept in `engine_*` columns.
+- **Writer** (`messaging.py`) never sees notes. Every draft is checked (echoed notes, "you
+  mentioned", length, subject line, placeholders, language, invented months, greeting by name),
+  retried once, then falls back to a template.
+- **Privacy:** notes go to a hosted model only for synthetic data; for real people, local only
+  unless the organisation approves (`JC_LLM_NOTES=1`).
+- **Answer key:** `python -m journey_compass.llm_eval` checks the 10 people we know (currently 9/10
+  picks, 10/10 messages; Daniel gets seva instead of the 40-day app challenge he asked about).
+
+```bash
+PYTHONPATH=src python -m journey_compass.pipeline --messages   # all 180 people, cached in outputs/
+PYTHONPATH=src python -m journey_compass.web_export            # website uses the AI pick + angle
+```
+
 ## Participant website (web/)
 The site shows each person their journey and next steps. Its only link to the engine is
 `web/src/lib/engine.ts`, which reads `src/data/engine_output.json`:
