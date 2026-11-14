@@ -1,16 +1,6 @@
 import type { Participant } from "../../../src/types";
 
-interface Props {
-  people: Participant[];
-  selectedId: string;
-  onSelect: (id: string) => void;
-}
-
-export default function Header({ people, selectedId, onSelect }: Props) {
-  // Hand-authored demo people first, then everyone else alphabetically.
-  const sorted = [...people].sort((a, b) =>
-    Number(!a.hero) - Number(!b.hero) || a.firstName.localeCompare(b.firstName));
-
+export default function Header({ person, onLogout }: { person: Participant; onLogout: () => void }) {
   return (
     <header className="site-header">
       <div className="container header-row">
@@ -29,16 +19,11 @@ export default function Header({ people, selectedId, onSelect }: Props) {
           <a href="#journey">Your Journey</a>
           <a href="#next">Next Steps</a>
         </nav>
-        <label className="viewing-as">
-          <span>Viewing as</span>
-          <select value={selectedId} onChange={(e) => onSelect(e.target.value)}>
-            {sorted.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.firstName} {p.lastName} · {p.city}
-              </option>
-            ))}
-          </select>
-        </label>
+        <div className="account">
+          <span className="avatar" aria-hidden="true">{person.firstName[0]}{person.lastName[0]}</span>
+          <span className="account-name">{person.firstName} {person.lastName}</span>
+          <button className="btn btn-ghost btn-sm" onClick={onLogout}>Sign out</button>
+        </div>
       </div>
     </header>
   );
