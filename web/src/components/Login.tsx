@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { participants } from "../lib/data";
 import { DEMO_PASSWORD, login } from "../lib/auth";
 import RotatingQuote from "./RotatingQuote";
+import TopControls from "./TopControls";
 
 // Hand-authored demo people, one per situation, for quick sign-in during the demo.
 const DEMO_IDS = ["p_001", "p_002", "p_004"];
@@ -30,6 +31,7 @@ export default function Login({ onLogin }: { onLogin: (id: string) => void }) {
       </aside>
 
       <main className="login-main">
+        <div className="login-controls"><TopControls /></div>
         <form className="login-form" onSubmit={submit} noValidate>
           <p className="eyebrow">Welcome back</p>
           <h1>Sign in to your journey</h1>
