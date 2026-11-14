@@ -1,4 +1,5 @@
 import type { Participant } from "../../../src/types";
+import TopControls from "./TopControls";
 
 export default function Header({ person, onLogout }: { person: Participant; onLogout: () => void }) {
   return (
@@ -23,6 +24,7 @@ export default function Header({ person, onLogout }: { person: Participant; onLo
           <span className="avatar" aria-hidden="true">{person.firstName[0]}{person.lastName[0]}</span>
           <span className="account-name">{person.firstName} {person.lastName}</span>
           <button className="btn btn-ghost btn-sm" onClick={onLogout}>Sign out</button>
+          <TopControls />
         </div>
       </div>
     </header>
