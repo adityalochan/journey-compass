@@ -20,6 +20,11 @@ CATALOGUE_DIR = ROOT / "data" / "catalogue"
 PINNED_AS_OF = {"synthetic": "2026-11-14"}
 AS_OF = os.getenv("JC_AS_OF") or PINNED_AS_OF.get(DATASET)
 
+# The synthetic cohort as generated (JSON). The website reads it directly; for the engine,
+# scripts/import_synthetic.py turns it into data/synthetic/*.csv. Its archetype labels are the
+# stage model's answer key and are never an engine input.
+COHORT_FILE = ROOT / "src" / "data" / "participants.json"
+
 PARTICIPANTS_FILE = DATA_DIR / "participants.csv"
 ACTIVITIES_FILE = DATA_DIR / "activities.csv"
 CONTACTS_FILE = DATA_DIR / "contacts.csv"

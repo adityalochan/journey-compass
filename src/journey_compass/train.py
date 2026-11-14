@@ -3,7 +3,7 @@
 Run:  python -m journey_compass.train        (with PYTHONPATH=src)
 
 It always trains on data/synthetic, whatever JC_DATASET says: that is the only dataset with an
-answer key. The generator's labels are read from cohort.json here and nowhere else.
+answer key. The generator's labels are read from src/data/participants.json here and nowhere else.
 """
 from . import config
 from .data_loader import load_dataset

@@ -229,3 +229,10 @@ outputs/*
 Mock data/
 data/mock/
 data/catalogue/programmes.csv
+
+# Node
+node_modules/
+
+# Website source (the Python template above ignores every lib/ folder)
+!web/src/lib/
+web/dist/

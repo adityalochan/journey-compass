@@ -61,7 +61,7 @@ YES_NO = {  # feature -> (when 1, when 0)
 # ---------------------------------------------------------------------------------------------
 def synthetic_labels() -> pd.Series:
     """participant_id -> stage, from the generator's answer key. Training and evaluation only."""
-    cohort = json.loads((config.ROOT / "data" / "synthetic" / "cohort.json").read_text(encoding="utf-8"))
+    cohort = json.loads(config.COHORT_FILE.read_text(encoding="utf-8"))
     return pd.Series({p["id"]: config.ARCHETYPE_TO_STAGE[p["archetype"]] for p in cohort}, name="label")
 
 

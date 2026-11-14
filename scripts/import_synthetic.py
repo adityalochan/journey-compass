@@ -1,4 +1,4 @@
-"""Convert the synthetic cohort (data/synthetic/cohort.json) into the pipeline's CSV schema.
+"""Convert the synthetic cohort (src/data/participants.json) into the pipeline's CSV schema.
 
 Run:  python scripts/import_synthetic.py
 
@@ -21,7 +21,7 @@ from pathlib import Path
 import pandas as pd
 
 DIR = Path(__file__).resolve().parents[1] / "data" / "synthetic"
-SOURCE = DIR / "cohort.json"
+SOURCE = DIR.parents[1] / "src" / "data" / "participants.json"   # also read by the website
 
 # Synthetic programme ids -> course names used in config.COURSE_PATH, so the existing rules
 # apply unchanged. "part2" and "silence" are separate programmes in the generator (5 people

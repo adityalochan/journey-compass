@@ -84,10 +84,10 @@ src/journey_compass/
   messaging.py              LLM message drafting
   pipeline.py               runs everything end to end
 scripts/make_sample_data.py   generates the small SYNTHETIC sample set
-scripts/import_synthetic.py   converts data/synthetic/cohort.json into the CSV schema
+scripts/import_synthetic.py   converts src/data/participants.json into the CSV schema
 scripts/build_catalogue.py    builds data/catalogue/programmes.csv from "Mock data/" (local)
 data/synthetic/               180-person SYNTHETIC cohort (default dataset, committed)
-  cohort.json                   source; participants/activities/contacts.csv are generated from it
+                              participants/activities/contacts.csv, generated from src/data/participants.json
 data/sample/                  small SYNTHETIC set (committed)
 data/raw/                     real hackathon data (git-ignored)
 models/stage_model.json       trained stage model (committed, so the demo works without training)
@@ -104,7 +104,7 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env              # add ANTHROPIC_API_KEY (optional; templates are used without it)
 
-python scripts/import_synthetic.py   # only needed if cohort.json changes
+python scripts/import_synthetic.py   # only needed if src/data/participants.json changes
 PYTHONPATH=src python -m journey_compass.train   # only needed if features or the cohort change
 python scripts/build_catalogue.py   # needs the organisers' "Mock data/" folder; without it only standing offers are used
 PYTHONPATH=src python -m journey_compass.pipeline
