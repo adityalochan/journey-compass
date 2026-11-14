@@ -49,18 +49,29 @@ export interface NextStep {
   when: string;
   /** Written to the participant, never internal reasoning about them. */
   why: string;
+  /** Local start time, ISO without zone. Absent for a call (arranged personally). */
+  start?: string;
+  durationMin?: number;
+  /** Real capacity from the offer listing; absent when the gathering is open to all. */
+  seatsLeft?: number;
+  online?: boolean;
 }
 
+// Offer dates match PRD §9.4. Seat counts are part of the synthetic offer data.
 const OFFERS = {
-  sahaj: { name: "Sahaj Samadhi Meditation", kind: "course", when: "Nov 22" },
-  part2: { name: "SKY Part 2", kind: "course", when: "Nov 28" },
-  silence: { name: "Silence Retreat", kind: "course", when: "Dec 5" },
-  circle: { name: "40-Day Practice Circle", kind: "event", when: "Starts Nov 18" },
-  satsang: { name: "Full Moon Satsang", kind: "event", when: "Nov 24" },
-  kitchen: { name: "Community Kitchen Seva", kind: "seva", when: "Nov 21" },
-  refresh: { name: "Online Refresh Evening", kind: "event", when: "Dec 9 · online" },
+  sahaj: { name: "Sahaj Samadhi Meditation", kind: "course", when: "Sat Nov 22 · 10:00", start: "2026-11-22T10:00", durationMin: 180, seatsLeft: 6 },
+  part2: { name: "SKY Part 2", kind: "course", when: "Fri Nov 28 · 3 days", start: "2026-11-28T18:00", durationMin: 180, seatsLeft: 9 },
+  silence: { name: "Silence Retreat", kind: "course", when: "Fri Dec 5 · weekend", start: "2026-12-05T18:00", durationMin: 180, seatsLeft: 4 },
+  circle: { name: "40-Day Practice Circle", kind: "event", when: "Starts Tue Nov 18 · 7:00 pm", start: "2026-11-18T19:00", durationMin: 60, seatsLeft: 12 },
+  satsang: { name: "Full Moon Satsang", kind: "event", when: "Mon Nov 24 · 7:30 pm", start: "2026-11-24T19:30", durationMin: 90 },
+  kitchen: { name: "Community Kitchen Seva", kind: "seva", when: "Fri Nov 21 · 5:00 pm", start: "2026-11-21T17:00", durationMin: 150, seatsLeft: 5 },
+  refresh: { name: "Online Refresh Evening", kind: "event", when: "Tue Dec 9 · 7:00 pm · online", start: "2026-12-09T19:00", durationMin: 90, online: true },
   call: { name: "A conversation with your teacher", kind: "call", when: "Whenever suits you" },
 } as const;
+
+export function daysUntil(step: NextStep): number | null {
+  return step.start ? Math.ceil((new Date(step.start).getTime() - AS_OF.getTime()) / 86_400_000) : null;
+}
 
 /** Up to three next steps, best first. Empty when the person asked not to be contacted. */
 export function getRecommendations(p: Participant, stage: Stage): NextStep[] {
