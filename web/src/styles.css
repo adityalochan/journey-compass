@@ -375,7 +375,7 @@ a { color: inherit; }
 .walker-sad::before { border-color: var(--line); animation: none; }
 
 /* ---------- Floating controls: music + theme ---------- */
-.top-controls { display: flex; align-items: center; gap: 8px; }
+.top-controls { display: flex; align-items: center; gap: 18px; }
 /* in the header: far right, separated from Sign out by a gap and a thin divider */
 .account .top-controls { margin-left: 14px; padding-left: 18px; border-left: 1px solid var(--line); }
 .login-main { position: relative; }
@@ -410,6 +410,6 @@ a { color: inherit; }
 .wordmark, .main-nav a, .account-name, .account .btn, .music-label strong { white-space: nowrap; }
 .main-nav { gap: 22px; }
 .account { gap: 10px; flex-shrink: 0; }
-.account .top-controls { margin-left: 6px; padding-left: 16px; }
+.account .top-controls { margin-left: 22px; padding-left: 26px; }
 @media (max-width: 1240px) { .account-name { display: none; } }
 @media (max-width: 1080px) { .main-nav { gap: 16px; } .header-row { gap: 20px; } }
