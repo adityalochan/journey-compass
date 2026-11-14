@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../..", import.meta.url));
 const db = new PGlite();
-for (const f of ["supabase/tests/auth_stub.sql", "supabase/migrations/0001_schema.sql", "supabase/tests/rls_test.sql"]) {
+for (const f of ["supabase/tests/auth_stub.sql", "supabase/migrations/0001_schema.sql", "supabase/migrations/0002_coordinator_queue.sql", "supabase/tests/rls_test.sql"]) {
   try {
     const res = await db.exec(readFileSync(`${root}/${f}`, "utf8"));
     console.log(`ok   ${f}`);
