@@ -25,6 +25,8 @@ def template_message(profile: dict, step: NextStep) -> str:
 
 
 def draft_message(profile: dict, step: NextStep, channel: str) -> str:
+    if step.action == "none":  # do-not-contact: never draft, not even a template
+        return ""
     if not os.getenv("ANTHROPIC_API_KEY"):
         return template_message(profile, step)
 

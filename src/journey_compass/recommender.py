@@ -6,7 +6,7 @@ from . import config
 
 @dataclass
 class NextStep:
-    action: str   # follow_on_course | retreat | seva | re_engage
+    action: str   # follow_on_course | retreat | seva | re_engage | none
     item: str     # what specifically to offer
     reason: str   # why, shown to coordinators and judges
 
@@ -15,7 +15,16 @@ def next_course(courses_taken: list[str]) -> str | None:
     return next((c for c in config.COURSE_PATH if c not in courses_taken), None)
 
 
+def is_do_not_contact(profile: dict) -> bool:
+    # `in (True, 1)` rather than truthiness: a missing value from pandas is NaN, and bool(NaN) is True.
+    return profile.get("do_not_contact") in (True, 1)
+
+
 def recommend(profile: dict) -> NextStep:
+    # A hard stop: no offer, no channel, no draft. Checked first so no other rule can override it.
+    if is_do_not_contact(profile):
+        return NextStep("none", "", "Asked not to be contacted.")
+
     courses = profile["courses_taken"]
     days = profile["days_since_last"]
 
