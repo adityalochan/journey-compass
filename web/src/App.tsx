@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { participants } from "./lib/data";
 import { currentSession, logout } from "./lib/auth";
+import { supabase } from "./lib/supabase";
 import type { Participant } from "../../src/types";
 import { getRecommendations, getStage, type NextStep } from "./lib/engine";
 import { useEnrollments } from "./lib/enrollment";
 import EnrollDialog from "./components/EnrollDialog";
 import type { Mood } from "./components/Walker";
 import Login from "./components/Login";
+import AuthCallback from "./components/AuthCallback";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import QuoteSection from "./components/QuoteSection";
@@ -16,14 +18,61 @@ import Footer from "./components/Footer";
 import ScrollHint from "./components/ScrollHint";
 
 export default function App() {
-  const [id, setId] = useState<string | null>(currentSession());
-  const person = participants.find((p) => p.id === id);
+  const [email, setEmail] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isCallback, setIsCallback] = useState(false);
 
-  useEffect(() => { window.scrollTo({ top: 0 }); }, [id]);
+  useEffect(() => {
+    // Check if this is the auth callback route (has hash with access_token)
+    const hash = window.location.hash;
+    if (hash.includes("access_token")) {
+      setIsCallback(true);
+    }
+
+    // Check current session
+    async function checkSession() {
+      try {
+        const session = await currentSession();
+        setEmail(session);
+      } catch (err) {
+        console.error("Failed to check session:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    checkSession();
+
+    // Subscribe to auth changes
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        if (session?.user?.email) {
+          setEmail(session.user.email);
+          setIsCallback(false);
+        } else {
+          setEmail(null);
+        }
+      }
+    );
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
+  }, []);
+
+  if (isCallback) {
+    return <AuthCallback onReady={() => setIsCallback(false)} />;
+  }
+
+  if (loading) {
+    return <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>Loading...</div>;
+  }
+
+  const person = email ? participants.find((p) => p.email.toLowerCase() === email.toLowerCase()) : null;
 
   return (
     <>
-      {person ? <Profile person={person} onLogout={() => { logout(); setId(null); }} /> : <Login onLogin={setId} />}
+      {person ? <Profile person={person} onLogout={() => { logout(); setEmail(null); }} /> : <Login onLogin={() => {}} />}
     </>
   );
 }
