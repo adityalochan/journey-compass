@@ -11,7 +11,7 @@ const GREETING: Record<Stage, { title: string; line: string }> = {
 
 export default function Hero({ person, stage }: { person: Participant; stage: Stage }) {
   const g = GREETING[stage];
-  const since = new Date(person.joinedAt).toLocaleDateString("en-CA", { month: "long", year: "numeric" });
+  const since = new Date(`${person.joinedAt}T00:00`).toLocaleDateString("en-CA", { month: "long", year: "numeric" });
   return (
     <section className="hero" id="top">
       <div className="container">
