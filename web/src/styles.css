@@ -114,6 +114,7 @@ a { color: inherit; }
 .tag { display: inline-block; font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; padding: 3px 10px; border-radius: 999px; background: #ebe9f7; color: var(--indigo); }
 .tag-course { background: var(--marigold-soft); color: #8a5a00; }
 .tag-seva { background: #e3efe6; color: #3d6448; }
+.tag-retreat { background: #e6eef6; color: #2f5677; }
 .tag-call { background: #f6e6dd; color: var(--clay); }
 
 /* Next steps — numbered cards like the AOL "First Steps" row */

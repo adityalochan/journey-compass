@@ -1,12 +1,28 @@
+/// <reference types="vite/client" />
 /**
- * TEMPORARY engine adapter.
+ * Engine adapter: the website's only link to the recommendation engine.
  *
- * Stage scoring follows PRD §9.1–9.2 exactly. The recommendation is a simplified
- * stand-in for PRD §9.4. When Tarun pushes src/engine, replace the bodies of
- * `getStage` and `getRecommendations` with calls to his engine. The UI only
- * depends on the return types below.
+ * The Python engine writes src/data/engine_output.json (`python -m journey_compass.web_export`):
+ * each participant's stage and top 3 next steps, already written for the participant. That file
+ * is git-ignored (it holds real programme names and dates from the organisers' data), so it may be
+ * missing on a fresh checkout. In that case the stand-in below (PRD §9 stage formula and a small
+ * fixed offer list) is used, so the site always works.
+ *
+ * The UI only depends on `getStage`, `getRecommendations` and the types below.
  */
 import type { Participant, Stage } from "../../../src/types";
+
+interface EngineOutput {
+  as_of: string;
+  participants: Record<string, { stage: Stage; next_steps: NextStep[] }>;
+}
+
+// import.meta.glob returns {} when the file doesn't exist, instead of failing the build.
+const found = import.meta.glob<EngineOutput>("../../../src/data/engine_output.json", { eager: true, import: "default" });
+const engine: EngineOutput | undefined = Object.values(found)[0];
+
+/** True when the site is showing the real engine's output rather than the stand-in. */
+export const usingEngine = engine !== undefined;
 
 /** Fixed "today", matching scripts/generate-data.mjs, so the demo is stable. */
 export const AS_OF = new Date("2026-11-14T09:00:00-05:00");
@@ -18,6 +34,10 @@ export function daysSinceContact(p: Participant): number {
 }
 
 export function getStage(p: Participant): Stage {
+  return engine?.participants[p.id]?.stage ?? standInStage(p);
+}
+
+function standInStage(p: Participant): Stage {
   const s = p.signals;
   const E = Math.min(100,
     3.2 * Math.min(s.appOpens30d, 20) + 2.4 * Math.min(s.emailOpens30d, 20) +
@@ -45,7 +65,7 @@ export const isActive = (stage: Stage) => stage === "new" || stage === "practici
 
 export interface NextStep {
   name: string;
-  kind: "course" | "event" | "seva" | "call";
+  kind: "course" | "retreat" | "event" | "seva" | "call";
   when: string;
   /** Written to the participant, never internal reasoning about them. */
   why: string;
@@ -65,6 +85,11 @@ const OFFERS = {
 /** Up to three next steps, best first. Empty when the person asked not to be contacted. */
 export function getRecommendations(p: Participant, stage: Stage): NextStep[] {
   if (p.doNotContact) return [];
+  const fromEngine = engine?.participants[p.id]?.next_steps;
+  return fromEngine ?? standInRecommendations(p, stage);
+}
+
+function standInRecommendations(p: Participant, stage: Stage): NextStep[] {
   const has = (id: string) => p.courses.some((c) => c.programId === id);
   const served = p.events.some((e) => e.type === "seva");
   const teacher = p.assignedTo.split(" ")[0];
