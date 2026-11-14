@@ -4,6 +4,8 @@ Reads participants (with consent, signals and notes), activities, contacts and o
   journeys         the stage used for the participant's greeting
   recommendations  the top 3, participant-safe (the website reads them through `next_steps`)
   engine_runs      the coordinator-facing reasoning: stage, drivers, picks, reason, channel
+  acceptance_rates the learning loop: recorded outcomes update how often each stage takes up
+                   each kind of offer, and the ranking uses the learned rates (learning.py)
 
 Offers come from Supabase, not the local catalogue: a recommendation must reference an offer row.
 The dataset name (JC_DATASET, default "synthetic") decides whether notes may go to a hosted LLM,
@@ -23,6 +25,7 @@ from .catalogue import COLUMNS as CATALOGUE_COLUMNS
 from .channel import suggest_channel
 from .data_loader import Dataset, SIGNAL_COLUMNS, prepare_activities, prepare_contacts, prepare_participants
 from .journey import build_profiles
+from .learning import as_table, learned_rates
 from .pipeline import _llm_on
 from .web_export import WEB_STAGE, person_next_steps
 
@@ -113,6 +116,17 @@ def load(c) -> tuple[Dataset, pd.DataFrame]:
     return ds, offers_frame(fetch_all(c, "offers"))
 
 
+def learn(c) -> list:
+    """Learned acceptance rates from recorded outcomes. Each outcome counts against the stage the
+    person had in the run that recommended it, i.e. the engine_runs row before this run."""
+    stage_by = {r["participant_id"]: r["journey_stage"]
+                for r in fetch_all(c, "engine_runs", "participant_id,journey_stage")}
+    type_by = {o["id"]: o["offer_type"] for o in fetch_all(c, "offers", "id,offer_type")}
+    rows = [{"stage": stage_by.get(o["participant_id"]), "offer_type": type_by.get(o["offer_id"]),
+             "result": o["result"]} for o in fetch_all(c, "outcomes", "participant_id,offer_id,result")]
+    return learned_rates(rows)
+
+
 def _num(value):
     return None if value is None or pd.isna(value) else float(value)
 
@@ -159,8 +173,13 @@ def results(ds: Dataset, cat: pd.DataFrame, use_llm: bool) -> dict:
     return out
 
 
-def write(c, out: dict) -> None:
+def write(c, out: dict, rates: list) -> None:
     ids = [r["participant_id"] for r in out["journeys"]]
+    now = datetime.now(timezone.utc).isoformat()
+    c.table("acceptance_rates").upsert([
+        {"stage": r.stage, "offer_type": r.offer_type, "prior": r.prior, "rate": r.rate,
+         "successes": r.successes, "trials": r.trials, "updated_at": now} for r in rates
+    ], on_conflict="stage,offer_type").execute()
     c.table("journeys").upsert(out["journeys"], on_conflict="participant_id").execute()
     c.table("engine_runs").upsert(out["engine_runs"], on_conflict="participant_id").execute()
     for i in range(0, len(ids), 200):
@@ -173,6 +192,12 @@ def main(argv: list[str]) -> None:
     c = client()
     ds, cat = load(c)
     use_llm = _llm_on() and "--no-llm" not in argv
+    rates = learn(c)
+    config.ACCEPTANCE_RATES = as_table(rates)
+    moved = [r for r in rates if r.trials]
+    print(f"Learning: {sum(r.trials for r in moved)} outcomes")
+    for r in moved:
+        print(f"  {r.stage:<9} {r.offer_type:<9} {r.prior:.3f} -> {r.rate:.3f}  ({r.successes}/{r.trials} taken up)")
     print(f"{len(ds.participants)} participants, {len(ds.activities)} activities, "
           f"{len(ds.contacts)} contacts, {len(cat)} offers; as of {ds.as_of.date()}; AI {'on' if use_llm else 'off'}")
     out = results(ds, cat, use_llm)
@@ -183,8 +208,8 @@ def main(argv: list[str]) -> None:
     if "--dry-run" in argv:
         print("DRY RUN: nothing written.")
         return
-    write(c, out)
-    print("Written: journeys, recommendations, engine_runs")
+    write(c, out, rates)
+    print("Written: journeys, recommendations, engine_runs, acceptance_rates")
 
 
 if __name__ == "__main__":
