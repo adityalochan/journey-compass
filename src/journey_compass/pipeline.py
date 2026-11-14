@@ -6,15 +6,14 @@ import pandas as pd
 
 from . import config
 from .channel import suggest_channel
-from .data_loader import load_activities, load_participants
+from .data_loader import load_dataset
 from .journey import build_profiles
 from .messaging import draft_message
 from .recommender import recommend
 
 
 def run(with_messages: bool = False) -> pd.DataFrame:
-    as_of = pd.Timestamp(config.AS_OF) if config.AS_OF else None
-    profiles = build_profiles(load_participants(), load_activities(), as_of=as_of)
+    profiles = build_profiles(load_dataset())
     results = []
     for profile in profiles.to_dict("records"):
         step = recommend(profile)
@@ -34,5 +33,6 @@ if __name__ == "__main__":
     df = run()
     out = config.OUTPUT_DIR / "recommendations.csv"
     df.drop(columns=["courses_taken"]).to_csv(out, index=False)
-    print(df[["participant_id", "first_name", "stage", "next_action", "next_item", "channel"]].to_string(index=False))
+    print(df[["participant_id", "first_name", "journey_stage", "stage", "engagement_score", "days_to_drift",
+              "next_action", "next_item", "channel"]].to_string(index=False))
     print(f"\nSaved {len(df)} rows to {out}")
