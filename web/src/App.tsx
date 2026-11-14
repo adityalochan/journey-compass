@@ -20,9 +20,11 @@ export default function App() {
 
   useEffect(() => { window.scrollTo({ top: 0 }); }, [id]);
 
-  if (!person) return <Login onLogin={setId} />;
-
-  return <Profile person={person} onLogout={() => { logout(); setId(null); }} />;
+  return (
+    <>
+      {person ? <Profile person={person} onLogout={() => { logout(); setId(null); }} /> : <Login onLogin={setId} />}
+    </>
+  );
 }
 
 function Profile({ person, onLogout }: { person: Participant; onLogout: () => void }) {
