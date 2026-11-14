@@ -12,7 +12,7 @@ seva_firstaid,seva,First-aid volunteer at events,,2,,,,first aid;seva,,Be the fi
 seva_garden,seva,Garden and grounds seva,,1,,,,gardening;seva,,Look after the centre garden.,standing
 seva_mentor,seva,Mentor new SKY graduates through their 40 days,,3,,,,teaching;meditation;seva;community,part2,Be a practice buddy for someone who just finished SKY.,standing
 seva_greeter,seva,Welcome newcomers at Sunday satsang,,1,,,,community;satsang;seva,sky,Be the first friendly face for new people.,standing
-reconnect_call,reconnect,A personal check-in from your coordinator,,1,,,,community,,"A short, no-ask call to see how they are.",standing
+reconnect_call,reconnect,A personal phone call from your coordinator,,1,,,,community,,"A short, no-ask call to see how they are.",standing
 reconnect_refresher,reconnect,Free online SKY refresher (group practice),,1,,Online,,meditation;community,sky,Practise SKY together online; no sign-up commitment.,standing
 event_online_followup,event,Weekly online SKY follow-up,,1,,Online,,meditation;community,sky,Group practice every week on Zoom.,standing
 event_local_satsang,event,Sunday satsang at your local centre,,1,,,,satsang;community;music,,Music and meditation every Sunday.,standing

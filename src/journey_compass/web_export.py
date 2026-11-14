@@ -18,6 +18,9 @@ from . import config
 from .catalogue import load_catalogue
 from .data_loader import load_dataset
 from .journey import build_profiles
+from .chooser import choose, final_top
+from .messaging import leak_problems
+from .pipeline import _llm_on
 from .recommender import NextStep, is_do_not_contact, recommend_top
 
 WEB_STAGE = {"New": "new", "Active": "practicing", "Slipping": "slipping",
@@ -89,21 +92,43 @@ def participant_why(step: NextStep, offer: pd.Series, profile: dict) -> str:
     return "Practise together from home." if online else "Practise together with your community."
 
 
+def _angle_as_why(angle: str, profile: dict, contacts) -> str:
+    """The chooser's message angle, if it is safe to show the participant; otherwise ''."""
+    angle = (angle or "").strip()
+    if not angle or leak_problems(angle, profile, contacts):
+        return ""
+    return angle if angle.endswith((".", "!")) else angle + "."
+
+
 def build(k: int = config.TOP_K) -> dict:
     ds = load_dataset()
     cat = load_catalogue()
     offers = cat.set_index("offer_id")
     profiles = build_profiles(ds)
+    use_llm = _llm_on()
+    contacts_by_person = dict(tuple(ds.contacts.groupby("participant_id"))) if len(ds.contacts) else {}
+    empty = ds.contacts.iloc[0:0]
     people = {}
     for profile in profiles.to_dict("records"):
-        steps = [] if is_do_not_contact(profile) else [s for s in recommend_top(profile, cat, ds.as_of, k) if s.offer_id]
+        contacts = contacts_by_person.get(profile["participant_id"], empty)
+        angle = ""
+        if is_do_not_contact(profile):
+            steps = []
+        elif use_llm:
+            choice, shortlist = choose(profile, cat, ds.as_of, contacts)
+            steps = final_top(shortlist, choice, k)
+            angle = _angle_as_why(choice.message_angle, profile, contacts) if choice.source == "ai" else ""
+        else:
+            steps = recommend_top(profile, cat, ds.as_of, k)
+        steps = [s for s in steps if s.offer_id]
         people[profile["participant_id"]] = {
             "stage": WEB_STAGE[profile["journey_stage"]],
             "next_steps": [{"offer_id": s.offer_id, "name": web_name(s, offers.loc[s.offer_id]), "kind": web_kind(s),
                             "when": web_when(offers.loc[s.offer_id]),
-                            "why": participant_why(s, offers.loc[s.offer_id], profile)} for s in steps],
+                            "why": (angle if (n == 0 and angle) else participant_why(s, offers.loc[s.offer_id], profile))}
+                           for n, s in enumerate(steps)],
         }
-    return {"as_of": str(ds.as_of.date()), "dataset": ds.name, "participants": people}
+    return {"as_of": str(ds.as_of.date()), "dataset": ds.name, "ai": use_llm, "participants": people}
 
 
 def main() -> None:

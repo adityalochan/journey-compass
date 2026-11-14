@@ -114,19 +114,25 @@ def _private_texts(profile: dict, contacts: pd.DataFrame | None) -> list[str]:
     return texts
 
 
-def check(text: str, profile: dict, step: NextStep, channel: str, contacts: pd.DataFrame | None = None) -> list[str]:
+def leak_problems(text: str, profile: dict, contacts: pd.DataFrame | None = None) -> list[str]:
+    """A 4-word run shared with their notes / contact summaries, or a "you mentioned"-style phrase."""
     problems = []
-    low = text.lower()
     words = _words(text)
-    # leak: a 4-word run shared with a private text, or a "you mentioned"-style phrase
     grams = {" ".join(words[i:i + 4]) for i in range(len(words) - 3)}
     for private in _private_texts(profile, contacts):
         pw = _words(private)
         if grams & {" ".join(pw[i:i + 4]) for i in range(len(pw) - 3)}:
             problems.append("repeats wording from their notes or contact history")
             break
-    if any(p in low for p in LEAK_PHRASES):
+    if any(p in text.lower() for p in LEAK_PHRASES):
         problems.append("refers to something they mentioned / our notes")
+    return problems
+
+
+def check(text: str, profile: dict, step: NextStep, channel: str, contacts: pd.DataFrame | None = None) -> list[str]:
+    low = text.lower()
+    words = _words(text)
+    problems = leak_problems(text, profile, contacts)
     # length (the subject line doesn't count)
     body = re.sub(r"^(subject|objet)\s*:.*\n", "", text.strip(), flags=re.I)
     limit = LIMITS.get(channel, 60)
