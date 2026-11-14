@@ -13,6 +13,7 @@ import QuoteSection from "./components/QuoteSection";
 import JourneySection from "./components/JourneySection";
 import NextStepsSection from "./components/NextStepsSection";
 import Footer from "./components/Footer";
+import ScrollHint from "./components/ScrollHint";
 
 export default function App() {
   const [id, setId] = useState<string | null>(currentSession());
@@ -51,6 +52,7 @@ function Profile({ person, onLogout }: { person: Participant; onLogout: () => vo
         <NextStepsSection person={person} stage={stage} steps={steps} enrolled={enrolled} onOpen={setOpen} />
       </main>
       <Footer />
+      <ScrollHint />
       {open && (
         <EnrollDialog person={person} step={open} alreadyBooked={enrolled.has(open.name)}
           onConfirm={() => { enroll(open.name); pending.current = { kind: "happy", name: open.name, key: Date.now() }; }}
