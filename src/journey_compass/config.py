@@ -24,6 +24,9 @@ AS_OF = os.getenv("JC_AS_OF") or PINNED_AS_OF.get(DATASET)
 # scripts/import_synthetic.py turns it into data/synthetic/*.csv. Its archetype labels are the
 # stage model's answer key and are never an engine input.
 COHORT_FILE = ROOT / "src" / "data" / "participants.json"
+# What the participant website shows (stage + next steps), written by web_export.py. Git-ignored:
+# it holds real programme names and dates from the organisers' data.
+WEB_EXPORT_FILE = ROOT / "src" / "data" / "engine_output.json"
 
 PARTICIPANTS_FILE = DATA_DIR / "participants.csv"
 ACTIVITIES_FILE = DATA_DIR / "activities.csv"

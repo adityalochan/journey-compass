@@ -67,6 +67,19 @@ For each person:
 On the synthetic cohort the most common first suggestion goes to 24% of people (the old rules gave
 Sahaj Samadhi to about 70%).
 
+## Participant website (web/)
+The site shows each person their journey and next steps. Its only link to the engine is
+`web/src/lib/engine.ts`, which reads `src/data/engine_output.json`:
+
+```bash
+PYTHONPATH=src python -m journey_compass.web_export   # writes src/data/engine_output.json (git-ignored)
+cd web && npm ci && npm run dev                       # http://127.0.0.1:5173
+```
+
+Without that file (e.g. a fresh checkout) the site falls back to a small built-in stand-in.
+The export holds only what a participant may see: their stage (used for the greeting) and next
+steps written to them. It never includes notes, contact history, scores or coordinator reasons.
+
 ## Project structure
 ```
 app/streamlit_app.py        Streamlit dashboard

@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { Participant, Stage } from "../../../src/types";
 import { getRecommendations, isActive } from "../lib/engine";
 
-const KIND_LABEL = { course: "Course", event: "Gathering", seva: "Seva", call: "Conversation" };
+const KIND_LABEL = { course: "Course", retreat: "Retreat", event: "Gathering", seva: "Seva", call: "Conversation" };
 
 export default function NextStepsSection({ person, stage }: { person: Participant; stage: Stage }) {
   const steps = getRecommendations(person, stage);
