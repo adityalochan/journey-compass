@@ -12,6 +12,7 @@ DATASET = os.getenv("JC_DATASET", "synthetic")
 DATA_DIR = ROOT / "data" / DATASET
 OUTPUT_DIR = ROOT / "outputs"
 MODEL_DIR = ROOT / "models"
+CATALOGUE_DIR = ROOT / "data" / "catalogue"
 
 # "Today" for every day count. The synthetic cohort was generated against a fixed clock,
 # so pin it there to keep results stable; other datasets use the real date.
@@ -58,18 +59,10 @@ DRIFT_THRESHOLD = 20         # below this score counts as drifted; used for the 
 NEW_WINDOW_DAYS = 40         # the "40-day" window after a first course
 
 # ---------------------------------------------------------------------------------------------
-# Next-step rules (rule-based recommender; replaced in a later step)
+# Courses
 # ---------------------------------------------------------------------------------------------
-SEVA_MIN_EVENTS = 5    # events attended before suggesting a seva role
-RETREAT_MIN_COURSES = 2
-
-# Rough progression of programs; follow-on course = first one not yet taken
-COURSE_PATH = [
-    "Art of Living Part 1 (SKY)",
-    "Sahaj Samadhi Meditation",
-    "Art of Living Part 2 (Silence Retreat)",
-    "Advanced Meditation (DSN)",
-]
+# Usual progression; the first one a person hasn't done is "next on their path".
+COURSE_PATH = ["sky", "sahaj", "part2", "dsn"]
 # Course name -> short key, for datasets whose activities carry no `subtype`.
 COURSE_KEYS = {
     "Art of Living Part 1 (SKY)": "sky",
@@ -79,6 +72,44 @@ COURSE_KEYS = {
     "Advanced Meditation (DSN)": "dsn",
     "YES! for Youth": "yes",
 }
+COURSE_LABELS = {"sky": "SKY", "sahaj": "Sahaj Samadhi", "part2": "Part 2", "silence": "the Silence Retreat",
+                 "dsn": "DSN", "yes": "YES!", "blessing": "the Blessing Course", "vtp": "Volunteer Training"}
 DEEP_COURSES = {"sahaj", "part2", "silence", "dsn"}   # anything beyond the first course
+# A prerequisite is also met by these (YES! is the youth version of SKY).
+COURSE_EQUIVALENTS = {"sky": ["yes"]}
+
+# ---------------------------------------------------------------------------------------------
+# Recommendations: hard rules
+# ---------------------------------------------------------------------------------------------
+OFFER_HORIZON_DAYS = 120     # dated offers must start within this many days
+# Cities that count as "local" to each other.
+METROS = {
+    "Greater Toronto": ["Toronto", "Mississauga", "Brampton", "Scarborough", "Markham"],
+    "Greater Vancouver": ["Vancouver", "Surrey", "Burnaby"],
+    "Greater Montreal": ["Montreal", "Laval"],
+}
+
+# ---------------------------------------------------------------------------------------------
+# Recommendations: fit score
+# ---------------------------------------------------------------------------------------------
+# Starting belief: how often someone in each stage takes up each kind of offer (0..1).
+# Step 4's feedback loop updates these from real accepts / declines.
+ACCEPTANCE_PRIOR = {
+    "New":      {"course": 0.20, "retreat": 0.05, "seva": 0.10, "event": 0.35, "reconnect": 0.15},
+    "Active":   {"course": 0.25, "retreat": 0.18, "seva": 0.28, "event": 0.30, "reconnect": 0.05},
+    "Slipping": {"course": 0.10, "retreat": 0.08, "seva": 0.15, "event": 0.22, "reconnect": 0.18},
+    "Drifting": {"course": 0.05, "retreat": 0.05, "seva": 0.06, "event": 0.14, "reconnect": 0.22},
+    "Dormant":  {"course": 0.02, "retreat": 0.02, "seva": 0.03, "event": 0.08, "reconnect": 0.20},
+}
+# Each part of the fit score is 0..1; the score is their weighted sum.
+FIT_WEIGHTS = {
+    "stage_fit": 2.5,     # how often people in this stage take up this kind of offer
+    "commitment": 1.5,    # size of the ask matches their momentum (engagement score)
+    "interest": 1.2,      # tags match their skills or interests (stated, or from what they attend)
+    "progression": 1.0,   # the natural next course on their path
+    "logistics": 0.8,     # starts soon, close by
+}
+TOP_K = 3
+SAME_TYPE_PENALTY = 1.2   # subtracted from an offer whose type is already in the top 3
 
 LLM_MODEL = "claude-opus-5-5"
