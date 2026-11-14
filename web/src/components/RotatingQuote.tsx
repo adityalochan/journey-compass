@@ -37,16 +37,6 @@ export default function RotatingQuote({ className = "" }: { className?: string }
         <blockquote><p>“{q.text}”</p></blockquote>
         <figcaption>— {q.author}</figcaption>
       </div>
-      {QUOTES.length > 1 && (
-        <div className="rq-controls">
-          <button aria-label="Previous quote" onClick={() => go(-1)}>‹</button>
-          <span className="rq-progress" aria-hidden="true">
-            <span key={`${i}-${paused}`} className={paused || !visible ? "" : "run"}
-              style={{ animationDuration: `${INTERVAL_MS}ms` }} />
-          </span>
-          <button aria-label="Next quote" onClick={() => go(1)}>›</button>
-        </div>
-      )}
     </figure>
   );
 }
