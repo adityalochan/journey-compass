@@ -213,14 +213,23 @@ def _reason(o, p, stage: str, ideal: float, next_course: str | None) -> str:
 # ---------------------------------------------------------------------------------------------
 # 3. Top 3
 # ---------------------------------------------------------------------------------------------
+def _allowed_and_scored(profile: dict, cat: pd.DataFrame, as_of: pd.Timestamp):
+    allowed = cat[eligibility(profile, cat, as_of) == ""]
+    return allowed, (score(profile, allowed, as_of) if len(allowed) else None)
+
+
+def _step(o, p, attrs: dict) -> NextStep:
+    return NextStep(ACTION[o.offer_type], o["name"], _reason(o, p, attrs["stage"], attrs["ideal"], attrs["next_course"]),
+                    offer_id=o.offer_id, offer_type=o.offer_type, score=round(float(p["score"]), 2),
+                    when=p["when"], where=p["where"], parts={c: round(float(p[c]), 2) for c in config.FIT_WEIGHTS})
+
+
 def recommend_top(profile: dict, cat: pd.DataFrame, as_of: pd.Timestamp, k: int = config.TOP_K) -> list[NextStep]:
     if is_do_not_contact(profile):
         return [NextStep("none", "", "Asked not to be contacted.")]
-    allowed = cat[eligibility(profile, cat, as_of) == ""]
+    allowed, parts = _allowed_and_scored(profile, cat, as_of)
     if allowed.empty:
         return [NextStep("none", "", "No offer passes the rules (check location, language, prerequisites).")]
-    parts = score(profile, allowed, as_of)
-    stage, ideal, nxt = parts.attrs["stage"], parts.attrs["ideal"], parts.attrs["next_course"]
     remaining = parts["score"].copy()
     picked, steps = set(), []
     for _ in range(min(k, len(allowed))):
@@ -228,11 +237,8 @@ def recommend_top(profile: dict, cat: pd.DataFrame, as_of: pd.Timestamp, k: int 
         if not np.isfinite(adjusted.max()):
             break
         i = adjusted.idxmax()
-        o, p = allowed.loc[i], parts.loc[i]
-        steps.append(NextStep(ACTION[o.offer_type], o["name"], _reason(o, p, stage, ideal, nxt),
-                              offer_id=o.offer_id, offer_type=o.offer_type, score=round(float(p["score"]), 2),
-                              when=p["when"], where=p["where"],
-                              parts={c: round(float(p[c]), 2) for c in config.FIT_WEIGHTS}))
+        o = allowed.loc[i]
+        steps.append(_step(o, parts.loc[i], parts.attrs))
         picked.add(o.offer_type)
         # Same offer, or the same course in another city, can't appear twice.
         same = (allowed["offer_id"] == o.offer_id) | (
@@ -240,6 +246,29 @@ def recommend_top(profile: dict, cat: pd.DataFrame, as_of: pd.Timestamp, k: int 
             allowed["name"].map(_name_key) == _name_key(o["name"]))
         remaining[same] = -np.inf
     return steps
+
+
+def best_per_type(profile: dict, cat: pd.DataFrame, as_of: pd.Timestamp, n: int = 1) -> list[NextStep]:
+    """The n highest-scoring allowed offers of each kind (course, retreat, seva, event, reconnect).
+    The same programme twice (another city, or another source system) counts once."""
+    if is_do_not_contact(profile):
+        return []
+    allowed, parts = _allowed_and_scored(profile, cat, as_of)
+    if allowed.empty:
+        return []
+    out = []
+    for _, idx in allowed.groupby("offer_type").groups.items():
+        seen = set()
+        for i in parts.loc[idx, "score"].sort_values(ascending=False).index:
+            o = allowed.loc[i]
+            key = o.program_key or _name_key(o["name"])
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append(_step(o, parts.loc[i], parts.attrs))
+            if len(seen) == n:
+                break
+    return sorted(out, key=lambda s: -s.score)
 
 
 def recommend(profile: dict, cat: pd.DataFrame | None = None, as_of: pd.Timestamp | None = None) -> NextStep:
