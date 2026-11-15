@@ -1,6 +1,6 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import type { Participant } from "../../../src/types";
-import { daysUntil, type NextStep } from "../lib/engine";
+import { daysUntil, type NextStep } from "../lib/steps";
 import { IconCheck, KIND_ICON } from "./Icons";
 import Walker, { type Mood } from "./Walker";
 
@@ -27,7 +27,7 @@ function useCols() {
 // Courses and events only. Contact logs and volunteer notes are internal and never shown here.
 function buildSquares(p: Participant, steps: NextStep[], enrolled: Set<string>): { squares: Square[]; hidden: number } {
   const past: Square[] = [
-    ...p.courses.map((c) => ({ key: `c-${c.programId}`, kind: "course" as Kind, date: c.completedAt, title: c.name, place: `${c.city} · with ${c.teacher}` })),
+    ...p.courses.map((c) => ({ key: `c-${c.programId}`, kind: "course" as Kind, date: c.completedAt, title: c.name, place: c.teacher ? `${c.city} · with ${c.teacher}` : c.city })),
     ...p.events.map((e, n) => ({ key: `e-${n}`, kind: (e.type === "seva" ? "seva" : "event") as Kind, date: e.date, title: e.name, place: e.city })),
   ]
     .sort((a, b) => +new Date(a.date) - +new Date(b.date))
@@ -64,7 +64,7 @@ export default function JourneySection({ person, steps, enrolled, mood, onOpen }
           <div><strong>{person.courses.length}</strong><span>{person.courses.length === 1 ? "course" : "courses"}</span></div>
           <div><strong>{person.events.length - seva}</strong><span>gatherings</span></div>
           <div><strong>{seva}</strong><span>times of seva</span></div>
-          <div><strong>{person.courses[0]?.teacher.split(" ")[0] ?? "—"}</strong><span>your first teacher</span></div>
+          <div><strong>{person.assignedTo.split(" ")[0] || "—"}</strong><span>your coordinator</span></div>
         </div>
 
         {hidden > 0 && <p className="board-earlier">+ {hidden} earlier {hidden === 1 ? "step" : "steps"}</p>}

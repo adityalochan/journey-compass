@@ -1,4 +1,4 @@
-import { supabase } from "./supabase";
+import { hasSupabaseKey, supabase } from "./supabase";
 
 export const DEMO_PASSWORD = "journey-demo-2026";
 
@@ -16,8 +16,12 @@ export async function sendMagicLink(email: string): Promise<void> {
 }
 
 export async function signInWithPassword(email: string, password: string): Promise<void> {
+  if (!hasSupabaseKey) throw new Error("Login isn't set up on this copy of the site: VITE_SUPABASE_ANON_KEY is missing.");
   const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-  if (error) throw new Error("That email and password don't match our records.");
+  if (!error) return;
+  // Wrong email/password gets a friendly message; anything else (bad key, network) shows the real reason.
+  if (/invalid login credentials/i.test(error.message)) throw new Error("That email and password don't match our records.");
+  throw new Error(`Couldn't sign in: ${error.message}`);
 }
 
 export async function currentSession(): Promise<string | null> {
