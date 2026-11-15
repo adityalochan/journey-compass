@@ -6,7 +6,7 @@ export interface NextStep {
   /** Offer id from Supabase; requests in `interests` are keyed by it. */
   offer_id?: string;
   name: string;
-  kind: "course" | "event" | "seva" | "call";
+  kind: "course" | "retreat" | "event" | "seva" | "call";
   when: string;
   /** Written to the participant, never internal reasoning about them. */
   why: string;
