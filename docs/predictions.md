@@ -8,6 +8,22 @@ All run nightly in `src/journey_compass/` (via `supabase_sync.py`, started by th
 
 > **One-liner for the demo:** "One small, explainable ML model for *where* each person is, a projection for *when* they'll drift, rules plus a score for *what* to offer, an LLM that reads the notes no formula can, and a Bayesian loop that learns from every outcome."
 
+
+## Read the code (links open at the function)
+
+**Start here, the nightly run:** [`supabase_sync.py` → `main()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/supabase_sync.py#L210) loads data, then calls [`learn()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/supabase_sync.py#L126), [`results()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/supabase_sync.py#L141) and [`write()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/supabase_sync.py#L195). All weights, thresholds and model names live in [`config.py`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/config.py#L50).
+
+| Prediction | Code |
+|---|---|
+| 1. Engagement score | [`_decayed_points()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/features.py#L39) · [`to_engagement()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/features.py#L53) · [`TOUCHPOINT_POINTS`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/config.py#L50) |
+| 2. Stage (ML model) | inputs [`FEATURE_GROUPS`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/features.py#L20), [`compute_features()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/features.py#L78) · model [`SoftmaxModel`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/models.py#L49), [Adam](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/models.py#L17) · training [`train()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/stage_model.py#L101), [`cv_accuracy()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/stage_model.py#L85) · prediction [`assign_stages()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/stage_model.py#L153), [`explain()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/stage_model.py#L136) · weights [`models/stage_model.json`](https://github.com/adityalochan/journey-compass/blob/main/models/stage_model.json) |
+| 3. Drift date | [`_days_to_drift()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/features.py#L65) · [`DRIFT_THRESHOLD`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/config.py#L66) |
+| 4. Next-step ranking | [`eligibility()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/recommender.py#L96) · [`score()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/recommender.py#L135) · [`recommend_top()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/recommender.py#L227) · [`FIT_WEIGHTS`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/config.py#L118) |
+| 5. AI chooser + writer | [`SYSTEM` prompt](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/chooser.py#L27) · [`shortlist()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/chooser.py#L59) · [`choose()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/chooser.py#L125) · [`draft()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/messaging.py#L172) · [`leak_problems()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/messaging.py#L117) · [`LLM_PROVIDERS`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/config.py#L137) |
+| 6. Learning loop | [`learned_rates()`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/learning.py#L26) · [`ACCEPTANCE_PRIOR`](https://github.com/adityalochan/journey-compass/blob/main/src/journey_compass/config.py#L105) |
+
+Tip: each file starts with a plain-English comment explaining how it works; read that first. Line links point at the current `main` and can shift if the code changes.
+
 ---
 
 ## 1. Engagement score (0–100) – formula, not ML
