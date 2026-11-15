@@ -45,6 +45,9 @@ export default function CoordinatorHero({ name, covers, people, tab, onTab, focu
         </div>
       </section>
       <div className="container coh-tiles">
+        <button className={`coh-tile${on("all")}`} onClick={() => onTab("all")}>
+          <span>Everyone</span><strong>{people.length}</strong><small>{scope}</small>
+        </button>
         <button className={`coh-tile${on("outreach")}`} onClick={() => onTab("outreach")}>
           <span>Needs outreach</span><strong>{outreach}</strong><small>slipping, drifting or dormant</small>
         </button>
@@ -56,9 +59,6 @@ export default function CoordinatorHero({ name, covers, people, tab, onTab, focu
         </button>
         <button className={`coh-tile${focus === "ai" ? " is-on" : ""}`} onClick={() => onFocus?.("ai")}>
           <span>AI-picked steps</span><strong>{ai}</strong><small>chosen from volunteer notes</small>
-        </button>
-        <button className={`coh-tile${on("all")}`} onClick={() => onTab("all")}>
-          <span>Everyone</span><strong>{people.length}</strong><small>{scope}</small>
         </button>
       </div>
     </>
