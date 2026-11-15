@@ -5,6 +5,8 @@ Personalized follow-up for every participant: journey mapping, next-step recomme
 
 **Presentation:** https://aol-journey.vercel.app/presentation.pdf (15 slides, PDF; also in the repo at [`web/public/presentation.pdf`](web/public/presentation.pdf)).
 
+**Docs:** [Predictions: models, inputs and where they run](docs/predictions.md) · [Product architecture & build plan (PDF)](docs/architecture-and-build-plan.pdf) · [Database schema](docs/schema.md)
+
 | | What it does |
 |---|---|
 | **Participant site** | Your journey as a game board, AI-picked next steps with one-click enroll, daily Gurudev wisdom, the global community map, ways to stay connected |
@@ -314,6 +316,8 @@ data/raw/                     real hackathon data (git-ignored)
 models/stage_model.json       trained stage model (committed, so the demo works without training)
 Mock data/                    organisers' mock exports: kept local, git-ignored
 docs/schema.md                full database schema: diagram, columns, access rules
+docs/predictions.md           every prediction: model, inputs/outputs, code location
+docs/architecture-and-build-plan.pdf   architecture and build plan
 docs/archive/                 earlier PRD, kept for reference only
 notebooks/                  exploration
 tests/                      pytest tests
