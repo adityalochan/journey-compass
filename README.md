@@ -141,6 +141,17 @@ npm run dev                                                     # http://127.0.0
 npm run build
 ```
 
+## Tests
+```bash
+cd web && npm test                                   # website: 71 tests (Vitest + Testing Library), Supabase mocked
+cd supabase/tests && npm ci && node run.mjs          # database access rules: ends with ALL RLS CHECKS PASSED
+PYTHONPATH=src pytest                                # engine (2 chooser tests need the local data/catalogue/programmes.csv)
+```
+Website tests cover bookings (requested → confirmed, cancel, undo on error, 10-second sync), the journey
+board order, next steps and the enroll dialog, sign-in, coordinator filters and summary tiles, the
+model-insights maths, phone formatting, map distances, and that every music file and quote source
+is in place. `.github/workflows/tests.yml` runs the website and RLS tests on every pull request.
+
 ## Project structure
 ```
 web/                        participant + coordinator website (React/TS/Vite, Vercel)

@@ -43,7 +43,7 @@ export function formatPhone(input: string): string {
   if (d.length < 7) return `+1 (${d.slice(0, 3)}) ${d.slice(3)}`;
   return `+1 (${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
 }
-const phoneOk = (p: string) => p.replace(/\D/g, "").length >= 11 || (p.trim().startsWith("+") && p.replace(/\D/g, "").length >= 8);
+export const phoneOk = (p: string) => p.replace(/\D/g, "").length >= 11 || (p.trim().startsWith("+") && p.replace(/\D/g, "").length >= 8);
 
 interface Prefs { phone: string; channel: "whatsapp" | "sms"; quotes: boolean; nudges: boolean; time: "morning" | "evening" }
 const key = (id: string) => `jc-messages-${id}`;

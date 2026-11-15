@@ -1,0 +1,43 @@
+name: Tests
+
+# Runs on every pull request and push to main. Nothing here talks to the real Supabase project:
+# website tests mock it, and the RLS tests run the migrations in an in-memory Postgres (PGlite).
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  web:
+    name: Website tests + build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+  rls:
+    name: Database access rules (RLS)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: supabase/tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: node run.mjs | tee out.txt && grep -q "ALL RLS CHECKS PASSED" out.txt

@@ -27,5 +27,7 @@ export function daysUntil(step: NextStep): number | null {
   if (!step.start) return null;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  return Math.max(0, Math.ceil((new Date(step.start).getTime() - today.getTime()) / 86_400_000));
+  const start = new Date(step.start);
+  start.setHours(0, 0, 0, 0); // count calendar days: an evening session 10 days out is "10 days", today is 0
+  return Math.max(0, Math.round((start.getTime() - today.getTime()) / 86_400_000));
 }
