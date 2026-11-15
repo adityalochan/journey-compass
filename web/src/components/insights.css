@@ -272,3 +272,36 @@
 @keyframes ins-pop { from { opacity: 0; transform: scale(.98); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .ins-explorer.is-big { animation: none; } }
 @media (max-width: 640px) { .ins-explorer.is-big { inset: 0; border-radius: 0; padding: 14px; } }
+
+/* ---- A participant's request: accept or decline (coordinator card) ---- */
+.co-ask { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin: 16px 0 6px;
+  padding: 14px 16px 14px 18px; border-radius: 16px; position: relative; overflow: hidden;
+  background: linear-gradient(100deg, rgba(255,144,4,.10), rgba(118,119,244,.12));
+  box-shadow: 0 0 0 1px rgba(118,119,244,.22), 0 8px 22px rgba(60,40,95,.08); }
+.co-ask::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, #ff9004, #7677f4); }
+.co-ask-text p { margin: 2px 0 0; font-size: 1rem; color: var(--ink); }
+.co-ask-eyebrow { font: 800 .68rem var(--sans); letter-spacing: .12em; text-transform: uppercase; color: #e07a00; }
+.co-ask-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.co-ask-accept, .co-ask-decline { border: 0; border-radius: 999px; padding: 9px 18px; font: 700 .9rem var(--sans); cursor: pointer;
+  transition: transform .15s, box-shadow .15s, filter .15s; }
+.co-ask-accept { color: #fff; background: linear-gradient(90deg, #ff9004, #7677f4); box-shadow: 0 6px 16px rgba(118,119,244,.32); }
+.co-ask-decline { color: var(--ink); background: var(--paper); box-shadow: 0 0 0 1px rgba(118,119,244,.3), 0 4px 12px rgba(60,40,95,.06); }
+.co-ask-accept:hover:not(:disabled), .co-ask-decline:hover:not(:disabled) { transform: translateY(-1px); }
+.co-ask-accept:hover:not(:disabled) { box-shadow: 0 9px 22px rgba(118,119,244,.42); filter: brightness(1.05); }
+.co-ask-decline:hover:not(:disabled) { box-shadow: 0 0 0 1px rgba(118,119,244,.55), 0 6px 16px rgba(118,119,244,.14); }
+.co-ask-accept:focus-visible, .co-ask-decline:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px #7677f4; }
+.co-ask-accept:disabled, .co-ask-decline:disabled { opacity: .7; cursor: progress; }
+.co-ask-done, .co-ask-released { display: flex; align-items: center; gap: 8px; margin: 16px 0 6px; padding: 10px 14px; border-radius: 12px; font-size: .95rem; }
+.co-ask-done { color: var(--ink); background: var(--tint-sage); box-shadow: 0 0 0 1px rgba(103,162,11,.28); }
+.co-ask-tick { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--sage); color: #fff; font-weight: 800; font-size: .8rem; flex: none; }
+.co-ask-released { color: var(--muted); background: var(--ivory); box-shadow: 0 0 0 1px var(--line); }
+@media (prefers-reduced-motion: reduce) { .co-ask-accept, .co-ask-decline { transition: none; } }
+
+/* Outcome row: a thin divider between the decision (Accepted / Declined) and the follow-up (Attended / No reply). */
+.co-outcome-sep { width: 1px; height: 22px; background: var(--line); margin: 0 4px; }
+/* Declined is shown in red; the other outcome marks stay green. */
+.co-chip.co-chip-declined.is-on { background: #e5484d; border-color: #e5484d; color: #fff; }
+.co-chip.co-chip-declined:hover { border-color: #e5484d; }
+.co-saved.co-saved-declined { color: #d93d42; }
+.co-chip:disabled { opacity: .45; cursor: not-allowed; }
+.co-chip:disabled:hover { border-color: var(--line); }

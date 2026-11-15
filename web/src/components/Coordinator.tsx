@@ -91,6 +91,41 @@ const OUTCOMES: { result: Result; label: string }[] = [
 const OUTCOME_LABEL: Record<Result, string> = {
   attended: "Attended", accepted: "Accepted", declined: "Declined", no_response: "No reply",
 };
+// Outcome row: Accepted / Declined is a toggle (at most one is on). Attended and No reply are separate
+// on/off marks that can sit alongside it. Clicking a highlighted chip clears it.
+const DECISION: Result[] = ["accepted", "declined"];
+export interface OutcomeRow { participant_id: string; offer_id: string; result: Result }
+export interface OutcomeState { decision: Result | null; attended: boolean; noReply: boolean }
+
+/** True when Attended can be marked: the event's date has passed, or it has no date (seva, a call). */
+export function canMarkAttended(eventDate?: string | null, today = new Date()): boolean {
+  if (!eventDate) return true;
+  const t = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  return eventDate < t;
+}
+
+/** What is currently marked for this person's current offer (their request, else the suggested step).
+ *  rows = outcome history (oldest → newest); undefined when it hasn't loaded, then latest_outcome is used.
+ *  eventDate = the offer's start date: Attended only counts once that date has passed. */
+export function outcomeState(
+  p: Pick<Person, "participant_id" | "request_status" | "request_offer_id" | "chosen_offer_id" | "latest_outcome">,
+  rows?: OutcomeRow[],
+  eventDate?: string | null,
+): OutcomeState {
+  const offer = p.request_offer_id ?? p.chosen_offer_id;
+  const mine = rows
+    ? rows.filter((r) => r.participant_id === p.participant_id && r.offer_id === offer)
+    : p.latest_outcome && offer ? [{ participant_id: p.participant_id, offer_id: offer, result: p.latest_outcome }] : [];
+  const lastDecision = [...mine].reverse().find((r) => DECISION.includes(r.result))?.result ?? null;
+  // A request waiting for you has no decision yet; a confirmed booking is Accepted.
+  const decision = p.request_status === "requested" ? null : p.request_status === "booked" ? "accepted" : lastDecision;
+  return {
+    decision,
+    // Attended only counts for an accepted booking whose event has happened (or that has no date).
+    attended: decision === "accepted" && canMarkAttended(eventDate) && mine.some((r) => r.result === "attended"),
+    noReply: mine.some((r) => r.result === "no_response"),
+  };
+}
 
 const day = (iso: string) =>
   new Date(`${iso}T12:00:00`).toLocaleDateString("en-CA", { month: "short", day: "numeric" });
@@ -124,6 +159,8 @@ export default function Coordinator() {
 function Queue({ session }: { session: Session }) {
   const [staff, setStaff] = useState<{ name: string; covers: string | null } | null | undefined>(undefined);
   const [people, setPeople] = useState<Person[]>([]);
+  const [outcomeRows, setOutcomeRows] = useState<OutcomeRow[]>([]);
+  const [offerDates, setOfferDates] = useState<Record<string, string | null>>({});
   const [filter, setFilter] = useState<Filter>("outreach");
   const [error, setError] = useState("");
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
@@ -146,6 +183,12 @@ function Queue({ session }: { session: Session }) {
       .order("drift_date", { ascending: true, nullsFirst: false });
     if (error) setError(error.message);
     setPeople((data as Person[]) ?? []);
+    // Outcome history (staff-only, read-only) so the card can show the decision and the follow-up together.
+    const oc = await supabase.from("outcomes").select("participant_id,offer_id,result").order("recorded_at").order("id");
+    if (!oc.error) setOutcomeRows((oc.data as OutcomeRow[]) ?? []);
+    // Offer start dates: Attended can only be marked once the event has happened.
+    const of = await supabase.from("offers").select("id,start_date");
+    if (!of.error) setOfferDates(Object.fromEntries(((of.data ?? []) as { id: string; start_date: string | null }[]).map((o) => [o.id, o.start_date])));
   }
 
   useEffect(() => {
@@ -196,8 +239,9 @@ function Queue({ session }: { session: Session }) {
       participant_id: p.participant_id, offer_id: offer, result, recorded_by: session.user.id,
     });
     if (error) return setError(error.message);
-    // Keep the participant's request in sync: accepted/attended confirms it, declined releases it.
-    const next = p.request_offer_id === offer && (result === "accepted" || result === "attended") ? "booked"
+    // Keep the participant's request in sync: Accepted confirms it, Declined releases it.
+    // Attended / No reply are marks alongside the decision and leave the booking as it is.
+    const next = p.request_offer_id === offer && result === "accepted" ? "booked"
       : p.request_offer_id === offer && result === "declined" ? "cancelled" : null;
     if (next) {
       const upd = await supabase.from("interests").update({ status: next })
@@ -206,6 +250,31 @@ function Queue({ session }: { session: Session }) {
     }
     setPeople((all) => all.map((x) => (x.participant_id === p.participant_id
       ? { ...x, latest_outcome: result, request_status: next ?? x.request_status } : x)));
+    setOutcomeRows((rows) => [...rows, { participant_id: p.participant_id, offer_id: offer, result }]);
+  }
+
+  // Unselect a chip: remove that mark for this offer. Clearing Accepted / Declined on a request puts it back
+  // to "waiting" (the participant sees "Requested" again).
+  async function clearOutcome(p: Person, result: Result) {
+    const offer = p.request_offer_id ?? p.chosen_offer_id;
+    if (!offer) return;
+    const { error } = await supabase.from("outcomes").delete()
+      .eq("participant_id", p.participant_id).eq("offer_id", offer).eq("result", result);
+    if (error) return setError(error.message);
+    const reopen = p.request_offer_id === offer
+      && ((result === "accepted" && p.request_status === "booked") || (result === "declined" && p.request_status === "cancelled"));
+    if (reopen) {
+      const upd = await supabase.from("interests").update({ status: "requested" })
+        .eq("participant_id", p.participant_id).eq("offer_id", offer);
+      if (upd.error) setError(upd.error.message);
+    }
+    const left = outcomeRows.filter((r) => !(r.participant_id === p.participant_id && r.offer_id === offer && r.result === result));
+    setOutcomeRows(left);
+    setPeople((all) => all.map((x) => (x.participant_id === p.participant_id ? {
+      ...x,
+      request_status: reopen ? "requested" : x.request_status,
+      latest_outcome: [...left].reverse().find((r) => r.participant_id === p.participant_id)?.result ?? null,
+    } : x)));
   }
 
   return (
@@ -241,7 +310,9 @@ function Queue({ session }: { session: Session }) {
         {error && <p className="form-error" role="alert">{error}</p>}
         {visible.length === 0 && <p className="muted">Nobody here right now.</p>}
         <ul className="co-list">
-          {visible.map((p) => <Card key={p.participant_id} p={p} onRecord={record}
+          {visible.map((p) => <Card key={p.participant_id} p={p} onRecord={record} onClear={clearOutcome}
+            eventDate={offerDates[p.request_offer_id ?? p.chosen_offer_id ?? ""] ?? null}
+            outcome={outcomeState(p, outcomeRows, offerDates[p.request_offer_id ?? p.chosen_offer_id ?? ""] ?? null)}
             onVisualize={() => go(`/coordinator/person/${encodeURIComponent(p.participant_id)}`)} />)}
         </ul>
       </main>
@@ -255,8 +326,21 @@ function Tab({ on, onClick, children }: { on: boolean; onClick: () => void; chil
   return <button role="tab" aria-selected={on} className={`co-tab${on ? " is-on" : ""}`} onClick={onClick}>{children}</button>;
 }
 
-function Card({ p, onRecord, onVisualize }: { p: Person; onRecord: (p: Person, r: Result) => void; onVisualize: () => void }) {
+export function Card({ p, onRecord, onClear, onVisualize, outcome, eventDate }: {
+  p: Person; onRecord: (p: Person, r: Result) => void | Promise<void>; onClear?: (p: Person, r: Result) => void | Promise<void>;
+  onVisualize: () => void; outcome?: OutcomeState; eventDate?: string | null;
+}) {
+  const { decision, attended, noReply } = outcome ?? outcomeState(p, undefined, eventDate);
+  const attendable = canMarkAttended(eventDate);
+  const isOn = (r: Result) => (r === "attended" ? attended : r === "no_response" ? noReply : decision === r);
+  const toggle = (r: Result) => (isOn(r) ? onClear?.(p, r) : onRecord(p, r));
   const [copied, setCopied] = useState(false);
+  const [deciding, setDeciding] = useState<null | "accepted" | "declined">(null);
+  // Accept / decline a participant's request: same save as the outcome chips (confirms or releases the booking).
+  async function decide(r: "accepted" | "declined") {
+    setDeciding(r);
+    try { await onRecord(p, r); } finally { setDeciding(null); }
+  }
   const [showNotes, setShowNotes] = useState(false);
   const step = p.request_status === "requested" ? p.request_offer_name : p.chosen_offer_name;
 
@@ -287,7 +371,24 @@ function Card({ p, onRecord, onVisualize }: { p: Person; onRecord: (p: Person, r
       {!p.do_not_contact && (
         <>
           {p.request_status === "requested" && (
-            <p className="co-step"><strong>Requested:</strong> {step ?? "—"}</p>
+            <div className="co-ask" role="group" aria-label={`Request from ${p.first_name}`}>
+              <div className="co-ask-text">
+                <span className="co-ask-eyebrow">New request</span>
+                <p><strong>{p.first_name} asked for</strong> {step ?? "—"}</p>
+              </div>
+              <div className="co-ask-actions">
+                <button type="button" className="co-ask-accept" disabled={!!deciding} onClick={() => decide("accepted")}>
+                  {deciding === "accepted" ? "Accepting…" : "✓ Accept request"}</button>
+                <button type="button" className="co-ask-decline" disabled={!!deciding} onClick={() => decide("declined")}>
+                  {deciding === "declined" ? "Declining…" : "Decline"}</button>
+              </div>
+            </div>
+          )}
+          {p.request_status === "booked" && p.request_offer_name && (
+            <p className="co-ask-done" role="status"><span className="co-ask-tick" aria-hidden="true">✓</span><span>Confirmed: <strong>{p.request_offer_name}</strong>. {p.first_name} can see it on their journey.</span></p>
+          )}
+          {p.request_status === "cancelled" && p.request_offer_name && (
+            <p className="co-ask-released" role="status">Request declined: {p.request_offer_name}. It's been released.</p>
           )}
           {p.next_steps.length > 0 && (
             <ol className="co-steps">
@@ -315,13 +416,29 @@ function Card({ p, onRecord, onVisualize }: { p: Person; onRecord: (p: Person, r
               ))}
             </div>
           </div>
-          <div className="co-outcome">
+          <div className="co-outcome" role="group" aria-label={`Outcome for ${p.first_name}`}>
             <span className="muted">Outcome:</span>
-            {OUTCOMES.map((o) => (
-              <button key={o.result} className={`co-chip${p.latest_outcome === o.result ? " is-on" : ""}`}
-                onClick={() => onRecord(p, o.result)}>{o.label}</button>
+            {/* Accepted / Declined: a toggle, one at most. Click a highlighted chip again to clear it. */}
+            {OUTCOMES.filter((o) => DECISION.includes(o.result)).map((o) => (
+              <button key={o.result} className={`co-chip co-chip-${o.result}${isOn(o.result) ? " is-on" : ""}`} aria-pressed={isOn(o.result)}
+                title={isOn(o.result) ? "Click to clear" : undefined} onClick={() => toggle(o.result)}>{o.label}</button>
             ))}
-            {p.latest_outcome && <span className="co-saved">Saved: {OUTCOME_LABEL[p.latest_outcome]}</span>}
+            <span className="co-outcome-sep" aria-hidden="true" />
+            {/* Attended and No reply: each on or off on its own, alongside the decision. */}
+            {OUTCOMES.filter((o) => !DECISION.includes(o.result)).map((o) => {
+              // Can't have attended something that isn't accepted yet, or before the event.
+              const locked = o.result === "attended" && (decision !== "accepted" || !attendable);
+              return (
+                <button key={o.result} className={`co-chip co-chip-${o.result}${isOn(o.result) ? " is-on" : ""}`} aria-pressed={isOn(o.result)}
+                  disabled={locked} onClick={() => toggle(o.result)}
+                  title={locked ? (decision !== "accepted" ? "Accept first" : `Available after ${day(eventDate!)}`)
+                    : isOn(o.result) ? "Click to clear" : undefined}>{o.label}</button>
+              );
+            })}
+            {(decision || attended || noReply) && (
+              <span className={`co-saved${decision === "declined" && !attended && !noReply ? " co-saved-declined" : ""}`}>
+                Saved: {[decision && OUTCOME_LABEL[decision], attended && "Attended", noReply && "No reply"].filter(Boolean).join(" · ")}</span>
+            )}
           </div>
         </>
       )}
