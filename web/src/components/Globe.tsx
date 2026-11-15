@@ -83,20 +83,18 @@ export default function Globe({ centres, me, nearestIds, selectedId, onSelect }:
       const firstLabel = layers.find((l) => l.type === "symbol")?.id;
       const firstRoad = layers.find((l) => l["source-layer"] === "transportation")?.id ?? firstLabel;
 
-      // Daytime Earth from orbit: NASA Blue Marble imagery at globe zoom, blending into the crisp day street map.
-      // Two copies of the NASA imagery: the overview layer uses 64px tiles (MapLibre fetches 2 zoom levels more
-      // detail, so the whole globe is crisp on Retina screens); from regional zoom the 128px layer takes over
-      // (+1 level), which is already sharp up close without downloading extra tiles.
-      m.addSource("day-macro", { type: "raster", tiles: [DAY_EARTH], tileSize: 64, maxzoom: 8, attribution: "Earth imagery: NASA Blue Marble" });
-      m.addSource("day", { type: "raster", tiles: [DAY_EARTH], tileSize: 128, maxzoom: 8 });
-      const look = { "raster-fade-duration": 0, "raster-contrast": 0.12, "raster-saturation": 0.18, "raster-resampling": "linear" as const };
+      // Daytime Earth from orbit: NASA Blue Marble imagery at every zoom, blending into the street map up close.
+      // One layer whose tiles are drawn at about one image pixel per screen pixel (128px tiles on Retina, 256px
+      // otherwise). Smaller tiles squeezed each 256px image into fewer pixels, which made the land look grainy and
+      // distorted at whole-Earth zoom (the globe shrinks tiles without smoothing).
+      const tileSize = window.devicePixelRatio >= 1.5 ? 128 : 256;
+      m.addSource("day", { type: "raster", tiles: [DAY_EARTH], tileSize, maxzoom: 8, attribution: "Earth imagery: NASA Blue Marble" });
       m.addLayer({
-        id: "day", type: "raster", source: "day", minzoom: 3.5,
-        paint: { ...look, "raster-opacity": ["interpolate", ["linear"], ["zoom"], 3.5, 1, 5, 1, 7.5, 0] },
-      }, firstRoad);
-      m.addLayer({
-        id: "day-macro", type: "raster", source: "day-macro", maxzoom: 4.2,
-        paint: { ...look, "raster-opacity": ["interpolate", ["linear"], ["zoom"], 0, 1, 3.6, 1, 4.2, 0] },
+        id: "day", type: "raster", source: "day",
+        paint: {
+          "raster-fade-duration": 0, "raster-contrast": 0.12, "raster-saturation": 0.18, "raster-resampling": "linear",
+          "raster-opacity": ["interpolate", ["linear"], ["zoom"], 0, 1, 5, 1, 7.5, 0],
+        },
       }, firstRoad);
 
       // Street lights: a soft golden glow along major roads once you zoom in.
