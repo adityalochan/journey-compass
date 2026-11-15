@@ -45,6 +45,13 @@ export default function Login() {
       <main className="login-main">
         <div className="login-controls"><TopControls /></div>
         <form className="login-form" onSubmit={submitPassword} noValidate>
+          {/* Switch between the two sign-in screens without typing URLs (full reload: main.tsx routes by path). */}
+          <div className="role-switch" role="tablist" aria-label="Sign in as">
+            <button type="button" role="tab" aria-selected={!isCoordinator} className={!isCoordinator ? "on" : ""}
+              onClick={() => { if (isCoordinator) window.location.assign("/"); }}>Participant</button>
+            <button type="button" role="tab" aria-selected={isCoordinator} className={isCoordinator ? "on" : ""}
+              onClick={() => { if (!isCoordinator) window.location.assign("/coordinator"); }}>Coordinator</button>
+          </div>
           {isCoordinator ? (
             <>
               <p className="eyebrow">Staff only <span className="role-badge">Coordinator</span></p>

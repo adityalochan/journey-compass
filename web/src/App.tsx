@@ -95,7 +95,10 @@ function SignedIn({ email, onLogout }: { email: string; onLogout: () => void }) 
       <div className="page-message">
         <h2>We couldn't find your journey</h2>
         <p className="muted">{state.error ? `Something went wrong: ${state.error}` : `You're signed in as ${email}, but there's no participant journey for this account.`}</p>
-        <button className="btn btn-primary" onClick={onLogout}>Sign out</button>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center" }}>
+          <button className="btn btn-primary" onClick={() => window.location.assign("/coordinator")}>Go to coordinator view</button>
+          <button className="btn btn-ghost" onClick={onLogout}>Sign out</button>
+        </div>
       </div>
     );
   }

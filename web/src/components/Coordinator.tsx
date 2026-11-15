@@ -162,6 +162,7 @@ function Queue({ session }: { session: Session }) {
     return (
       <div className="co-center">
         <p>This page is for coordinators.</p>
+        <button className="btn btn-primary" onClick={() => window.location.assign("/")}>Go to participant view</button>
         <button className="btn btn-ghost" onClick={() => supabase.auth.signOut()}>Sign out</button>
       </div>
     );

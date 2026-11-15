@@ -635,3 +635,13 @@ a { color: inherit; }
 .co-header-row .top-controls { margin-left: 18px; padding-left: 18px; border-left: 1px solid var(--line); }
 :root[data-theme="dark"] .co-stage-slipping { color: #ffb45c; }
 :root[data-theme="dark"] .co-stage-practicing, :root[data-theme="dark"] .co-stage-new { color: #9fd36a; }
+
+/* Participant | Coordinator switch on the sign-in screen */
+.role-switch { display: inline-flex; align-self: flex-start; padding: 4px; gap: 4px; border-radius: 999px; background: var(--paper); border: 1px solid var(--line); box-shadow: 0 4px 14px rgba(60,40,95,.08); margin-bottom: 6px; }
+.role-switch button { border: 0; background: none; padding: 8px 18px; border-radius: 999px; font: 600 .9rem var(--sans); color: var(--muted); cursor: pointer; transition: background .2s, color .2s; }
+.role-switch button:hover:not(.on) { color: var(--indigo); }
+.role-switch button.on { background: linear-gradient(90deg, #ff9004, #7677f4); color: #fff; box-shadow: 0 4px 12px rgba(118,119,244,.3); }
+.co-center { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+/* Login panel: keep long quotes from crowding the wordmark on shorter screens */
+.rq-light p { font-size: clamp(1.15rem, 1.8vw, 1.6rem); }
+@media (max-height: 800px) { .rq-light p { font-size: clamp(1.05rem, 1.5vw, 1.35rem); } .rq-light .rq-text { min-height: 15rem; } }
