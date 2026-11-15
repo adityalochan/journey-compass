@@ -27,7 +27,7 @@ participants.csv + activities.csv
  channel.py      → WhatsApp / Email / SMS / volunteer phone call
         │
         ▼
- messaging.py    → personalized draft written by Claude (template fallback)
+ messaging.py    → personalized draft written by an LLM (Groq or local Ollama; template fallback)
         │
         ▼
  supabase_sync.py → writes journeys, recommendations, drafts to Supabase (nightly GitHub Action)
