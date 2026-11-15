@@ -1,7 +1,10 @@
 import { useEffect, useRef } from "react";
-import GlobeGL, { type GlobeInstance } from "globe.gl";
-import { Vector2 } from "three";
-import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { Map as MLMap, Marker, setWorkerUrl, type GeoJSONSource } from "maplibre-gl";
+// Bundle MapLibre's worker (with its shared chunk) into one file Vite emits, and point MapLibre at it.
+import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
+
+setWorkerUrl(workerUrl);
+import "maplibre-gl/dist/maplibre-gl.css";
 import type { Centre, Place } from "../lib/geo";
 
 interface Props {
@@ -12,130 +15,195 @@ interface Props {
   onSelect: (id: string) => void;
 }
 
-type Pin = { id: string; lat: number; lng: number; label: string; kind: "centre" | "me"; seva: boolean; near: boolean; active: boolean };
+// Free, keyless sources: OpenFreeMap Liberty day style (crisp to street level), NASA GIBS Blue Marble
+// imagery at globe zoom, and city/street lights drawn from the map's own place and road data.
+const STYLE = "https://tiles.openfreemap.org/styles/liberty";
+const DAY_EARTH = "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/2004-08-01/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg";
+
+type Pin = { id: string; lng: number; lat: number; label: string; kind: "centre" | "me"; seva: boolean; near: boolean; active: boolean };
 
 function pinElement(p: Pin, onSelect: (id: string) => void): HTMLElement {
+  const wrap = document.createElement("div");
   const el = document.createElement("button");
   el.type = "button";
   el.className = `gpin gpin-${p.kind}${p.near ? " is-near" : ""}${p.active ? " is-active" : ""}`;
   el.setAttribute("aria-label", p.kind === "me" ? "Your location" : `${p.label} centre`);
   el.innerHTML = `<span class="gpin-dot"></span><span class="gpin-label">${p.label}${p.seva ? ' <em>· seva</em>' : ""}</span>`;
-  el.style.pointerEvents = "auto";
-  if (p.kind === "centre") el.onclick = () => onSelect(p.id);
-  return el;
+  if (p.kind === "centre") el.onclick = (e) => { e.stopPropagation(); onSelect(p.id); };
+  wrap.appendChild(el);
+  return wrap;
+}
+
+function boundsOf(points: { lng: number; lat: number }[]): [[number, number], [number, number]] {
+  const lngs = points.map((p) => p.lng), lats = points.map((p) => p.lat);
+  return [[Math.min(...lngs), Math.min(...lats)], [Math.max(...lngs), Math.max(...lats)]];
 }
 
 export default function Globe({ centres, me, nearestIds, selectedId, onSelect }: Props) {
   const host = useRef<HTMLDivElement>(null);
-  const globe = useRef<GlobeInstance | null>(null);
+  const map = useRef<MLMap | null>(null);
+  const markers = useRef<Marker[]>([]);
+  const ready = useRef(false);
   const select = useRef(onSelect);
   select.current = onSelect;
+  const all = centres.map((c) => ({ lng: c.lng, lat: c.lat }));
+
+  // Overview: the whole round Earth, centred over the centres, sized to ~80% of the box.
+  const globeView = () => {
+    const el = host.current;
+    const size = el ? Math.min(el.clientWidth, el.clientHeight) : 600;
+    const zoom = Math.log2((size * 0.94 * Math.PI) / 512); // ~86% of the box on screen
+    const lng = all.reduce((a, p) => a + p.lng, 0) / Math.max(1, all.length);
+    const lat = all.reduce((a, p) => a + p.lat, 0) / Math.max(1, all.length);
+    // Look a little south of the centres so the polar cap (no map data above ~85°) stays behind the horizon.
+    return { center: [lng, lat - 14] as [number, number], zoom };
+  };
+  const fitAll = (animate = true) => {
+    const v = globeView();
+    if (animate) map.current?.flyTo({ ...v, speed: 1.2, essential: true });
+    else map.current?.jumpTo(v);
+  };
 
   // Create once
   useEffect(() => {
-    const el = host.current!;
-    const g = new GlobeGL(el, { rendererConfig: { antialias: true, alpha: true } })
-      .globeImageUrl("/globe/earth-lights.jpg") // NASA Black Marble "City Lights 2012", public domain
-      .backgroundColor("#030209") // = section purple #1a1632 after the bloom pass converts linear → sRGB
-      .atmosphereColor("#4f8dff")
-      .atmosphereAltitude(0.14)
-      .width(el.clientWidth)
-      .height(el.clientHeight)
-      .htmlElement((d: object) => pinElement(d as Pin, (id) => select.current(id)))
-      .htmlAltitude(0.01)
-      .ringColor(() => (t: number) => `rgba(255,170,60,${1 - t})`)
-      .ringMaxRadius(3.2)
-      .ringPropagationSpeed(1.6)
-      .ringRepeatPeriod(1400)
-      .arcColor(() => ["rgba(139,140,255,0.95)", "rgba(255,170,60,0.95)"])
-      .arcDashLength(0.45)
-      .arcDashGap(0.25)
-      .arcDashAnimateTime(2200)
-      .arcStroke(0.55)
-      .arcAltitudeAutoScale(0.35);
-    // Make city lights emit their own warm glow (night-from-space look) instead of only being lit.
-    g.onGlobeReady(() => {
-      const m = g.globeMaterial() as unknown as {
-        map: unknown; emissiveMap: unknown; emissive: { set: (c: string) => void };
-        emissiveIntensity: number; shininess: number; needsUpdate: boolean;
-      };
-      m.emissiveMap = m.map;
-      // Warm emissive tint: white city lights become gold, the faint blue land tint is muted.
-      (m as unknown as { color: { set: (c: string) => void } }).color.set("#7a6a5c");
-      m.emissive.set("#ffc27a");
-      m.emissiveIntensity = 1.05;
-      m.shininess = 4;
-      m.needsUpdate = true;
+    const m = new MLMap({
+      container: host.current!,
+      style: STYLE,
+      center: [-90, 45],
+      zoom: 1.6,
+      attributionControl: { compact: true },
+      renderWorldCopies: false,
+      maxPitch: 60,
     });
-    // Bloom: a soft halo around every bright city, like photos taken from the space station.
-    const bloom = new UnrealBloomPass(new Vector2(el.clientWidth, el.clientHeight), 0.7, 0.3, 0.78);
-    g.postProcessingComposer().addPass(bloom);
-    g.pointOfView({ lat: 45, lng: -92, altitude: 2.3 });
-    const c = g.controls();
-    c.autoRotate = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    c.autoRotateSpeed = 0.35;
-    c.enableZoom = true;
-    c.minDistance = 112; // globe radius is 100: allow a close look at a region
-    c.maxDistance = 520;
-    globe.current = g;
+    map.current = m;
 
-    // Stop spinning the moment the visitor touches the globe, so they can explore.
-    const stop = () => { c.autoRotate = false; };
-    c.addEventListener("start", stop);
-    el.addEventListener("pointerdown", stop);
-    el.addEventListener("wheel", stop, { passive: true });
+    m.on("style.load", () => {
+      m.setProjection({ type: "globe" });
+      const layers = m.getStyle().layers as { id: string; type: string; "source-layer"?: string }[];
+      const firstLabel = layers.find((l) => l.type === "symbol")?.id;
+      const firstRoad = layers.find((l) => l["source-layer"] === "transportation")?.id ?? firstLabel;
 
-    const ro = new ResizeObserver(() => g.width(el.clientWidth).height(el.clientHeight));
-    ro.observe(el);
-    return () => {
-      c.removeEventListener("start", stop);
-      el.removeEventListener("pointerdown", stop);
-      el.removeEventListener("wheel", stop);
-      ro.disconnect(); g._destructor(); el.innerHTML = "";
+      // Daytime Earth from orbit: NASA Blue Marble imagery at globe zoom, blending into the crisp day street map.
+      // Two copies of the NASA imagery: the overview layer uses 64px tiles (MapLibre fetches 2 zoom levels more
+      // detail, so the whole globe is crisp on Retina screens); from regional zoom the 128px layer takes over
+      // (+1 level), which is already sharp up close without downloading extra tiles.
+      m.addSource("day-macro", { type: "raster", tiles: [DAY_EARTH], tileSize: 64, maxzoom: 8, attribution: "Earth imagery: NASA Blue Marble" });
+      m.addSource("day", { type: "raster", tiles: [DAY_EARTH], tileSize: 128, maxzoom: 8 });
+      const look = { "raster-fade-duration": 0, "raster-contrast": 0.12, "raster-saturation": 0.18, "raster-resampling": "linear" as const };
+      m.addLayer({
+        id: "day", type: "raster", source: "day", minzoom: 3.5,
+        paint: { ...look, "raster-opacity": ["interpolate", ["linear"], ["zoom"], 3.5, 1, 5, 1, 7.5, 0] },
+      }, firstRoad);
+      m.addLayer({
+        id: "day-macro", type: "raster", source: "day-macro", maxzoom: 4.2,
+        paint: { ...look, "raster-opacity": ["interpolate", ["linear"], ["zoom"], 0, 1, 3.6, 1, 4.2, 0] },
+      }, firstRoad);
+
+      // Street lights: a soft golden glow along major roads once you zoom in.
+      m.addLayer({
+        id: "street-glow", type: "line", source: "openmaptiles", "source-layer": "transportation", minzoom: 4,
+        filter: ["in", ["get", "class"], ["literal", ["motorway", "trunk", "primary", "secondary"]]],
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": "#ffc861",
+          "line-width": ["interpolate", ["linear"], ["zoom"], 4, 1, 8, 3, 12, 7, 16, 14],
+          "line-blur": ["interpolate", ["linear"], ["zoom"], 4, 1, 12, 5, 16, 9],
+          "line-opacity": ["interpolate", ["linear"], ["zoom"], 4, 0.25, 8, 0.45, 14, 0.35],
+        },
+      }, firstLabel);
+
+      // City lights: a warm glow from every city and town, brighter for bigger places.
+      // World cities over 100k people (GeoNames, CC BY 4.0) so the glow shows even at whole-Earth zoom.
+      m.addSource("cities", { type: "geojson", data: "/world-cities.geojson", attribution: "Cities: GeoNames" });
+      m.addLayer({
+        id: "city-lights", type: "heatmap", source: "cities", maxzoom: 13,
+        paint: {
+          "heatmap-weight": ["interpolate", ["linear"], ["get", "p"], 100000, 0.25, 1000000, 0.7, 5000000, 1],
+          "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 0, 0.9, 4, 1.4, 9, 2.2],
+          "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 0, 3.5, 2, 6, 5, 14, 9, 30, 12, 46],
+          "heatmap-color": ["interpolate", ["linear"], ["heatmap-density"],
+            0, "rgba(255,190,80,0)", 0.15, "rgba(255,190,80,0.35)", 0.4, "rgba(255,205,110,0.7)",
+            0.7, "rgba(255,226,150,0.9)", 1, "rgba(255,248,220,1)"],
+          "heatmap-opacity": ["interpolate", ["linear"], ["zoom"], 0, 1, 9, 0.75, 12, 0.35, 13, 0],
+        },
+      }, firstLabel);
+
+      // Hide place labels at whole-Earth zoom (globe mode draws edge labels off the sphere); fade in from zoom 2.5.
+      for (const l of layers) {
+        if (l.type !== "symbol") continue;
+        m.setPaintProperty(l.id, "text-opacity", ["interpolate", ["linear"], ["zoom"], 2.4, 0, 3.2, 1]);
+        m.setPaintProperty(l.id, "icon-opacity", ["interpolate", ["linear"], ["zoom"], 2.4, 0, 3.2, 1]);
+      }
+      m.setSky({
+        "sky-color": "#3a7bd5", "horizon-color": "#a6dcff", "fog-color": "#d6ecff",
+        "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 1, 5, 1, 7, 0],
+      });
+      m.addSource("routes", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+      m.addLayer({ id: "routes-glow", type: "line", source: "routes", paint: { "line-color": "#ffb547", "line-width": 7, "line-opacity": 0.18, "line-blur": 4 } });
+      m.addLayer({ id: "routes", type: "line", source: "routes", paint: { "line-color": "#ffc15e", "line-width": 2, "line-dasharray": [2, 1.5] } });
+      ready.current = true;
+      fitAll(false);
+      draw();
+    });
+
+    const box = host.current!.parentElement!;
+    // The atmosphere ring follows the Earth's edge while you start zooming, then fades out quickly.
+    const markGlobe = () => {
+      const dz = m.getZoom() - globeView().zoom;
+      box.style.setProperty("--rim-scale", String(Math.pow(2, Math.max(-1, dz))));
+      box.classList.toggle("is-globe", dz <= 0.45);
     };
+    m.on("zoom", markGlobe);
+    m.on("zoomend", markGlobe);
+    m.on("load", () => {
+      markGlobe();
+      // Credits stay available behind the (i) button instead of a long line across the map.
+      host.current?.querySelector(".maplibregl-ctrl-attrib")?.classList.remove("maplibregl-compact-show");
+    });
+
+    const ro = new ResizeObserver(() => m.resize());
+    ro.observe(host.current!);
+    return () => { ro.disconnect(); markers.current.forEach((k) => k.remove()); m.remove(); map.current = null; ready.current = false; };
   }, []);
 
-  // Data layers
-  useEffect(() => {
-    const g = globe.current;
-    if (!g) return;
+  // Markers + routes
+  function draw() {
+    const m = map.current;
+    if (!m || !ready.current) return;
+    markers.current.forEach((k) => k.remove());
     const pins: Pin[] = centres.map((c) => ({
-      id: c.id, lat: c.lat, lng: c.lng, label: c.city, kind: "centre",
-      seva: (c as Centre & { seva?: unknown[] }).seva?.length ? true : false,
-      near: nearestIds.includes(c.id), active: c.id === selectedId,
+      id: c.id, lng: c.lng, lat: c.lat, label: c.city, kind: "centre",
+      seva: c.seva?.length > 0, near: nearestIds.includes(c.id), active: c.id === selectedId,
     }));
-    if (me) pins.push({ id: "me", lat: me.lat, lng: me.lng, label: "You", kind: "me", seva: false, near: true, active: false });
-    g.htmlElementsData(pins);
-    g.ringsData(me ? [{ lat: me.lat, lng: me.lng }] : []);
-    g.arcsData(me ? nearestIds.map((id) => centres.find((c) => c.id === id)!).filter(Boolean)
-      .map((c) => ({ startLat: me.lat, startLng: me.lng, endLat: c.lat, endLng: c.lng })) : []);
-  }, [centres, me, nearestIds, selectedId]);
+    if (me) pins.push({ id: "me", lng: me.lng, lat: me.lat, label: "You", kind: "me", seva: false, near: true, active: false });
+    markers.current = pins.map((p) =>
+      new Marker({ element: pinElement(p, (id) => select.current(id)), anchor: "left", offset: [-9, 0] }).setLngLat([p.lng, p.lat]).addTo(m));
+    const routes = me ? nearestIds.map((id) => centres.find((c) => c.id === id)).filter(Boolean).map((c) => ({
+      type: "Feature" as const, properties: {}, geometry: { type: "LineString" as const, coordinates: [[me.lng, me.lat], [c!.lng, c!.lat]] },
+    })) : [];
+    (m.getSource("routes") as GeoJSONSource | undefined)?.setData({ type: "FeatureCollection", features: routes });
+  }
+  useEffect(draw, [centres, me, nearestIds, selectedId]);
 
-  // Fly to the selected centre, or to the visitor's location
+  // Fly to the selected centre (street level, crisp), or frame you + your nearest centres
   useEffect(() => {
-    const g = globe.current;
-    if (!g) return;
-    const target = centres.find((c) => c.id === selectedId) ?? me;
-    if (!target) return;
-    g.controls().autoRotate = false;
-    g.pointOfView({ lat: target.lat, lng: target.lng, altitude: 0.75 }, 1600);
+    const m = map.current;
+    if (!m) return;
+    const c = centres.find((x) => x.id === selectedId);
+    if (c) { m.flyTo({ center: [c.lng, c.lat], zoom: 11.5, speed: 1.1, curve: 1.5, essential: true }); return; }
+    if (me) {
+      const near = centres.filter((x) => nearestIds.includes(x.id)).map((x) => ({ lng: x.lng, lat: x.lat }));
+      m.fitBounds(boundsOf([{ lng: me.lng, lat: me.lat }, ...near]), { padding: 80, maxZoom: 9, duration: 1600 });
+    }
   }, [selectedId, me?.lat, me?.lng]);
-
-  const zoom = (f: number) => {
-    const g = globe.current;
-    if (!g) return;
-    const p = g.pointOfView();
-    g.controls().autoRotate = false;
-    g.pointOfView({ ...p, altitude: Math.min(4, Math.max(0.15, p.altitude * f)) }, 500);
-  };
 
   return (
     <div className="globe-box">
-      <div ref={host} className="globe-host" aria-label="3D globe of Art of Living centres and seva locations" />
+      <div ref={host} className="globe-host" aria-label="Map of Art of Living centres and seva locations" />
       <div className="globe-zoom">
-        <button type="button" onClick={() => zoom(0.65)} aria-label="Zoom in">+</button>
-        <button type="button" onClick={() => zoom(1.5)} aria-label="Zoom out">−</button>
-        <button type="button" onClick={() => { const g = globe.current; if (g) { g.pointOfView({ lat: 45, lng: -92, altitude: 2.3 }, 900); g.controls().autoRotate = true; } }} aria-label="Reset view" title="Reset view">⟲</button>
+        <button type="button" onClick={() => map.current?.zoomIn()} aria-label="Zoom in">+</button>
+        <button type="button" onClick={() => map.current?.zoomOut()} aria-label="Zoom out">−</button>
+        <button type="button" onClick={() => fitAll()} aria-label="Show all centres" title="Show all centres">⟲</button>
       </div>
     </div>
   );

@@ -635,3 +635,79 @@ a { color: inherit; }
 .co-header-row .top-controls { margin-left: 18px; padding-left: 18px; border-left: 1px solid var(--line); }
 :root[data-theme="dark"] .co-stage-slipping { color: #ffb45c; }
 :root[data-theme="dark"] .co-stage-practicing, :root[data-theme="dark"] .co-stage-new { color: #9fd36a; }
+
+/* Participant | Coordinator switch on the sign-in screen */
+.role-switch { display: inline-flex; align-self: flex-start; padding: 4px; gap: 4px; border-radius: 999px; background: var(--paper); border: 1px solid var(--line); box-shadow: 0 4px 14px rgba(60,40,95,.08); margin-bottom: 6px; }
+.role-switch button { border: 0; background: none; padding: 8px 18px; border-radius: 999px; font: 600 .9rem var(--sans); color: var(--muted); cursor: pointer; transition: background .2s, color .2s; }
+.role-switch button:hover:not(.on) { color: var(--indigo); }
+.role-switch button.on { background: linear-gradient(90deg, #ff9004, #7677f4); color: #fff; box-shadow: 0 4px 12px rgba(118,119,244,.3); }
+.co-center { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+/* Login panel: keep long quotes from crowding the wordmark on shorter screens */
+.rq-light p { font-size: clamp(1.15rem, 1.8vw, 1.6rem); }
+@media (max-height: 800px) { .rq-light p { font-size: clamp(1.05rem, 1.5vw, 1.35rem); } .rq-light .rq-text { min-height: 15rem; } }
+
+/* ---------- Find your community: page theme around a dark Earth ---------- */
+.community { background: linear-gradient(180deg, var(--paper), var(--ivory)); color: var(--ink); }
+.community h2 { color: var(--title); }
+.community .eyebrow-light { color: #e65100; }
+:root[data-theme="dark"] .community .eyebrow-light { color: #ffb45c; }
+.community-lede { color: var(--muted); }
+.community-search input { background: var(--paper); border: 1px solid var(--line); color: var(--ink); box-shadow: 0 4px 14px rgba(60,40,95,.06); }
+.community-search input::placeholder { color: var(--muted); }
+.btn-ghost-light { color: var(--indigo); border-color: var(--indigo); }
+.btn-ghost-light:hover { background: var(--indigo); color: #fff; }
+.chip-light { color: var(--indigo); border-color: var(--indigo-soft); }
+.community-error { color: var(--clay); }
+.globe-hint { color: var(--muted); }
+.globe-loading { color: var(--muted); }
+
+/* the map: a rounded window; the dark is only the Earth */
+.globe-box { aspect-ratio: 1 / 1; border-radius: 28px; overflow: hidden; box-shadow: 0 24px 60px rgba(43,24,80,.28); background: radial-gradient(circle at 50% 45%, #2a2668 0%, #12102b 55%, #0b0a1a 100%); }
+.globe-box::before { display: none; }
+.globe-host { position: absolute; inset: 0; -webkit-mask-image: none !important; mask-image: none !important; cursor: grab; }
+.globe-host canvas { filter: none !important; }
+.globe-zoom { z-index: 3; }
+.maplibregl-ctrl-attrib { font-size: 10px; }
+.maplibregl-marker { cursor: pointer; }
+.gpin { transform: none; }
+
+/* side panel: light cards that match the page */
+.community-panel { background: var(--paper); border: 1px solid var(--line); box-shadow: 0 14px 36px rgba(60,40,95,.1); backdrop-filter: none; position: relative; overflow: auto; }
+.panel-you { color: var(--muted); } .panel-you strong { color: var(--title); }
+.centre { background: var(--ivory); border-color: var(--line); }
+.centre.is-open { background: var(--paper); box-shadow: 0 8px 22px rgba(60,40,95,.08); }
+.centre.is-nearest { border-color: #ff9004; }
+.centre-head strong { color: var(--title); } .centre-head small { color: var(--muted); }
+.centre-address { color: var(--ink); }
+.contact { background: var(--tint-indigo); } .contact strong { color: var(--title); } .contact a { color: var(--indigo); }
+.contact-role { color: #b86200; }
+:root[data-theme="dark"] .contact-role { color: #ffb45c; }
+.centre-sub { color: var(--muted); }
+.upcoming-date { color: #b86200; } .upcoming-name { color: var(--ink); } .upcoming a { color: var(--indigo); }
+:root[data-theme="dark"] .upcoming-date { color: #ffb45c; }
+.seva-box { background: var(--tint-sage); border-color: rgba(103,162,11,.35); }
+.seva-box .centre-sub { color: #3d6448; } .seva-line { color: var(--ink); } .seva-line a { color: var(--sage); }
+:root[data-theme="dark"] .seva-box .centre-sub { color: #9fd36a; }
+.panel-note { color: var(--muted); }
+.globe-host.maplibregl-map { position: absolute; inset: 0; width: 100%; height: 100%; }
+.gpin-me .gpin-label { display: none; } .gpin-me .gpin-dot { width: 16px; height: 16px; }
+/* Round Earth on the page background: no square frame around the globe */
+.globe-box { background: transparent; box-shadow: none; overflow: visible; }
+.globe-box::after { content: ""; position: absolute; inset: 9%; border-radius: 50%; z-index: -1; pointer-events: none;
+  background: radial-gradient(circle, rgba(111,141,255,.28), rgba(118,119,244,.08) 55%, transparent 72%); filter: blur(8px); }
+.globe-host.maplibregl-map { border-radius: 28px; overflow: hidden; }
+/* Centres list: exactly as tall as the map, scrolling inside */
+.community-grid { align-items: stretch; }
+.community-panel { height: 0; min-height: 100%; max-height: none; }
+/* Thin cyan atmosphere halo around the globe, like a photo from orbit */
+.globe-box::after { inset: 8.5%; background: radial-gradient(circle, transparent 60%, rgba(99,210,255,.55) 66%, rgba(47,143,224,.22) 70%, transparent 76%); filter: blur(6px); }
+/* Atmosphere rim exactly at the Earth's edge (globe = 80% of the box), only at whole-Earth zoom */
+.globe-box::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; filter: blur(2px); opacity: 0; transition: opacity .6s ease;
+  background: radial-gradient(circle closest-side, transparent 82.8%, rgba(120,215,255,.55) 85.2%, rgba(150,230,255,.9) 86.2%, rgba(70,170,255,.35) 88%, transparent 92%);
+  transform: scale(var(--rim-scale, 1)); transition: opacity .35s ease; }
+.globe-box.is-globe::after { opacity: 1; }
+/* Map credits: required by NASA / GeoNames / OpenStreetMap licences; shown on hover or focus of the (i) button */
+.globe-box .maplibregl-ctrl-attrib.maplibregl-compact-show .maplibregl-ctrl-attrib-inner { display: none; }
+.globe-box .maplibregl-ctrl-attrib.maplibregl-compact-show { padding: 2px 28px 2px 2px; min-height: 24px; }
+.globe-box .maplibregl-ctrl-attrib.maplibregl-compact-show:hover .maplibregl-ctrl-attrib-inner,
+.globe-box .maplibregl-ctrl-attrib.maplibregl-compact-show:focus-within .maplibregl-ctrl-attrib-inner { display: block; padding: 2px 6px; }
