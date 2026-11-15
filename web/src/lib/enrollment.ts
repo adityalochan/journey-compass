@@ -6,43 +6,52 @@ import type { NextStep } from "./steps";
 import { supabase } from "./supabase";
 
 export function useEnrollments(participantId: string, steps: NextStep[]) {
-  const [offerIds, setOfferIds] = useState<Set<string>>(new Set());
+  // offer_id -> "requested" (waiting for the coordinator) | "booked" (confirmed by the coordinator)
+  const [status, setStatus] = useState<Map<string, string>>(new Map());
 
   useEffect(() => {
     let live = true;
-    supabase.from("interests").select("offer_id,status").neq("status", "cancelled").then(({ data, error }) => {
+    const load = () => supabase.from("interests").select("offer_id,status").neq("status", "cancelled").then(({ data, error }) => {
       if (error) console.error("Loading requests failed:", error.message);
-      if (live && data) setOfferIds(new Set(data.map((r: { offer_id: string }) => r.offer_id)));
+      if (live && data) setStatus(new Map(data.map((r: { offer_id: string; status: string }) => [r.offer_id, r.status])));
     });
-    return () => { live = false; };
+    load();
+    // Coming back to the tab picks up a confirmation the coordinator just made.
+    const onFocus = () => { if (document.visibilityState === "visible") load(); };
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onFocus);
+    const poll = window.setInterval(onFocus, 10_000); // stay in sync with the coordinator while the page is open
+    return () => { live = false; window.clearInterval(poll); window.removeEventListener("focus", onFocus); document.removeEventListener("visibilitychange", onFocus); };
   }, [participantId]);
 
   const idFor = useCallback((name: string) => steps.find((s) => s.name === name)?.offer_id, [steps]);
-  const enrolled = new Set(steps.filter((s) => s.offer_id && offerIds.has(s.offer_id)).map((s) => s.name));
+  const enrolled = new Set(steps.filter((s) => s.offer_id && status.has(s.offer_id)).map((s) => s.name));
+  const confirmed = new Set(steps.filter((s) => s.offer_id && status.get(s.offer_id) === "booked").map((s) => s.name));
 
-  const change = (offerId: string, on: boolean) =>
-    setOfferIds((prev) => { const n = new Set(prev); if (on) n.add(offerId); else n.delete(offerId); return n; });
+  const change = (offerId: string, value: string | null) =>
+    setStatus((prev) => { const n = new Map(prev); if (value) n.set(offerId, value); else n.delete(offerId); return n; });
 
   async function enroll(name: string) {
     const offerId = idFor(name);
     if (!offerId) return;
-    change(offerId, true); // optimistic
+    change(offerId, "requested"); // optimistic
     const { error } = await supabase.from("interests").upsert(
       { participant_id: participantId, offer_id: offerId, status: "requested" },
       { onConflict: "participant_id,offer_id" });
-    if (error) { console.error("Saving request failed:", error.message); change(offerId, false); }
+    if (error) { console.error("Saving request failed:", error.message); change(offerId, null); }
   }
 
   async function unenroll(name: string) {
     const offerId = idFor(name);
     if (!offerId) return;
-    change(offerId, false); // optimistic
+    const before = status.get(offerId) ?? null;
+    change(offerId, null); // optimistic
     const { error } = await supabase.from("interests").update({ status: "cancelled" })
       .eq("participant_id", participantId).eq("offer_id", offerId);
-    if (error) { console.error("Cancelling failed:", error.message); change(offerId, true); }
+    if (error) { console.error("Cancelling failed:", error.message); change(offerId, before); }
   }
 
-  return { enrolled, enroll, unenroll };
+  return { enrolled, confirmed, enroll, unenroll };
 }
 
 export function placeFor(step: NextStep, person: Participant): string {

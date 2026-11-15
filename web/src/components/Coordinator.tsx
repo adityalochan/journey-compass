@@ -147,7 +147,14 @@ function Queue({ session }: { session: Session }) {
     setPeople((data as Person[]) ?? []);
   }
 
-  useEffect(() => { load(); }, [session.user.id]);
+  useEffect(() => {
+    load();
+    const quiet = () => { if (document.visibilityState === "visible") load(); };
+    window.addEventListener("focus", quiet);
+    document.addEventListener("visibilitychange", quiet);
+    const poll = window.setInterval(quiet, 10_000); // new participant requests appear without pressing Refresh
+    return () => { window.clearInterval(poll); window.removeEventListener("focus", quiet); document.removeEventListener("visibilitychange", quiet); };
+  }, [session.user.id]);
 
   const shown = useMemo(() => people.filter((p) =>
     filter === "all" ? true
@@ -175,7 +182,16 @@ function Queue({ session }: { session: Session }) {
       participant_id: p.participant_id, offer_id: offer, result, recorded_by: session.user.id,
     });
     if (error) return setError(error.message);
-    setPeople((all) => all.map((x) => (x.participant_id === p.participant_id ? { ...x, latest_outcome: result } : x)));
+    // Keep the participant's request in sync: accepted/attended confirms it, declined releases it.
+    const next = p.request_offer_id === offer && (result === "accepted" || result === "attended") ? "booked"
+      : p.request_offer_id === offer && result === "declined" ? "cancelled" : null;
+    if (next) {
+      const upd = await supabase.from("interests").update({ status: next })
+        .eq("participant_id", p.participant_id).eq("offer_id", offer);
+      if (upd.error) setError(upd.error.message);
+    }
+    setPeople((all) => all.map((x) => (x.participant_id === p.participant_id
+      ? { ...x, latest_outcome: result, request_status: next ?? x.request_status } : x)));
   }
 
   return (
@@ -246,6 +262,7 @@ function Card({ p, onRecord, onVisualize }: { p: Person; onRecord: (p: Person, r
           {p.drift_date && OUTREACH_STAGES.has(p.stage ?? "") &&
             <span className="co-drift" title={day(p.drift_date)}>{driftLabel(p.drift_date)}</span>}
           {p.request_status === "requested" && <span className="co-request">asked for this</span>}
+          {p.request_status === "booked" && <span className="co-confirmed">✓ confirmed</span>}
           {p.do_not_contact && <span className="co-dnc">do not contact</span>}
           <button className="btn btn-sm btn-primary co-visual" onClick={onVisualize}>Visualize</button>
         </div>

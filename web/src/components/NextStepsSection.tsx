@@ -3,9 +3,9 @@ import { daysUntil, isActive, type NextStep } from "../lib/steps";
 
 const KIND_LABEL = { course: "Course", retreat: "Retreat", event: "Gathering", seva: "Seva", call: "Conversation" };
 
-interface Props { person: Participant; stage: Stage; steps: NextStep[]; enrolled: Set<string>; onOpen: (s: NextStep) => void }
+interface Props { person: Participant; stage: Stage; steps: NextStep[]; enrolled: Set<string>; confirmed: Set<string>; onOpen: (s: NextStep) => void }
 
-export default function NextStepsSection({ stage, steps, enrolled, onOpen }: Props) {
+export default function NextStepsSection({ stage, steps, enrolled, confirmed, onOpen }: Props) {
   return (
     <section className="section section-tint" id="next">
       <div className="container">
@@ -32,7 +32,7 @@ export default function NextStepsSection({ stage, steps, enrolled, onOpen }: Pro
                   </p>
                   {booked ? (
                     <p className="step-done" role="status">
-                      Booked. See you there.{" "}
+                      {confirmed.has(s.name) ? "✓ Confirmed by your coordinator. See you there!" : "Request sent · waiting for your coordinator."}{" "}
                       <button className="btn-link-danger" onClick={() => onOpen(s)}>Change</button>
                     </p>
                   ) : (
