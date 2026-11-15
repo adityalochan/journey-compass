@@ -107,7 +107,7 @@ function SignedIn({ email, onLogout }: { email: string; onLogout: () => void }) 
 }
 
 function Profile({ person, stage, steps, onLogout }: { person: Participant; stage: Stage; steps: NextStep[]; onLogout: () => void }) {
-  const { enrolled, enroll, unenroll } = useEnrollments(person.id, steps);
+  const { enrolled, confirmed, enroll, unenroll } = useEnrollments(person.id, steps);
   const [open, setOpen] = useState<NextStep | null>(null);
   // The walker reacts to the last enroll/unenroll once the dialog closes, so the person sees it.
   const [mood, setMood] = useState<Mood | null>(null);
@@ -124,8 +124,8 @@ function Profile({ person, stage, steps, onLogout }: { person: Participant; stag
       <main>
         <Hero person={person} stage={stage} />
         <QuoteSection />
-        <JourneySection person={person} steps={steps} enrolled={enrolled} mood={mood} onOpen={setOpen} />
-        <NextStepsSection person={person} stage={stage} steps={steps} enrolled={enrolled} onOpen={setOpen} />
+        <JourneySection person={person} steps={steps} enrolled={enrolled} confirmed={confirmed} mood={mood} onOpen={setOpen} />
+        <NextStepsSection person={person} stage={stage} steps={steps} enrolled={enrolled} confirmed={confirmed} onOpen={setOpen} />
         <CommunitySection person={person} />
         <StayConnected person={person} stage={stage} steps={steps} />
       </main>

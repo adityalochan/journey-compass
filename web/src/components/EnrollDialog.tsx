@@ -9,8 +9,10 @@ interface Props { person: Participant; step: NextStep; alreadyBooked: boolean; o
 const COLORS = ["#7677f4", "#ff9004", "#67a20b", "#abacf8", "#ffd45c"];
 
 export default function EnrollDialog({ person, step, alreadyBooked, onConfirm, onCancel, onClose }: Props) {
-  const [done, setDone] = useState(alreadyBooked);
-  const [justBooked, setJustBooked] = useState(false);
+  // offer → justBooked (no cancel offered right away) · booked (opened later: can cancel) → justCancelled (no re-book offered)
+  const [phase, setPhase] = useState<"offer" | "booked" | "justBooked" | "justCancelled">(alreadyBooked ? "booked" : "offer");
+  const done = phase === "booked" || phase === "justBooked";
+  const justBooked = phase === "justBooked";
   const firstBtn = useRef<HTMLButtonElement>(null);
   const days = daysUntil(step);
   const teacher = person.assignedTo.split(" ")[0];
@@ -22,20 +24,18 @@ export default function EnrollDialog({ person, step, alreadyBooked, onConfirm, o
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [onClose, done]);
+  }, [onClose, phase]);
 
   function confirm() {
     // Courses/events with a sign-up page: open it now (still inside the click, so popups aren't blocked).
     if (step.registrationUrl) window.open(step.registrationUrl, "_blank", "noopener");
     onConfirm();
-    setJustBooked(true);
-    setDone(true);
+    setPhase("justBooked");
   }
 
   function cancel() {
     onCancel();
-    setJustBooked(false);
-    setDone(false);
+    setPhase("justCancelled");
   }
 
   return (
@@ -43,7 +43,19 @@ export default function EnrollDialog({ person, step, alreadyBooked, onConfirm, o
       <div className="dialog" role="dialog" aria-modal="true" aria-labelledby="enroll-title" onClick={(e) => e.stopPropagation()}>
         <button className="dialog-close" aria-label="Close" onClick={onClose}>×</button>
 
-        {!done ? (
+        {phase === "justCancelled" ? (
+          <div className="dialog-done">
+            <span className="dialog-icon dialog-icon-cancel">×</span>
+            <h3 id="enroll-title">{isCall ? "Call request cancelled" : "Booking cancelled"}</h3>
+            <p className="muted">
+              {isCall ? `No problem. ${teacher} won't call for now.` : `Your spot at ${step.name} has been released.`}
+              {" "}You can come back to it any time from your journey.
+            </p>
+            <div className="dialog-actions">
+              <button ref={firstBtn} className="btn btn-primary" onClick={onClose}>Back to my journey</button>
+            </div>
+          </div>
+        ) : !done ? (
           <>
             <span className="dialog-icon"><Icon /></span>
             <h3 id="enroll-title">{step.name}</h3>
@@ -87,9 +99,12 @@ export default function EnrollDialog({ person, step, alreadyBooked, onConfirm, o
               {step.registrationUrl && <a className="btn btn-primary" href={step.registrationUrl} target="_blank" rel="noopener noreferrer">Open registration page</a>}
               {step.start && <button ref={firstBtn} className={step.registrationUrl ? "btn btn-ghost" : "btn btn-primary"} onClick={() => downloadIcs(step, person)}>Add to calendar</button>}
               <button ref={step.start ? undefined : firstBtn} className="btn btn-ghost" onClick={onClose}>Back to my journey</button>
-              <button className="btn-link-danger" onClick={cancel}>
-                {isCall ? "Cancel call request" : "Cancel my spot"}
-              </button>
+              {/* Cancelling is offered when you come back to a booking later, not in the moment you make it. */}
+              {phase === "booked" && (
+                <button className="btn-link-danger" onClick={cancel}>
+                  {isCall ? "Cancel call request" : "Cancel my spot"}
+                </button>
+              )}
             </div>
           </div>
         )}

@@ -711,3 +711,121 @@ a { color: inherit; }
 .globe-box .maplibregl-ctrl-attrib.maplibregl-compact-show { padding: 2px 28px 2px 2px; min-height: 24px; }
 .globe-box .maplibregl-ctrl-attrib.maplibregl-compact-show:hover .maplibregl-ctrl-attrib-inner,
 .globe-box .maplibregl-ctrl-attrib.maplibregl-compact-show:focus-within .maplibregl-ctrl-attrib-inner { display: block; padding: 2px 6px; }
+.dialog-icon-cancel { background: var(--tint-clay); color: var(--clay); font-size: 1.8rem; font-weight: 700; }
+
+/* Booked (not yet happened) steps: green dotted path and a green node, until the date passes */
+.seg-booked::after { background: repeating-linear-gradient(90deg, var(--sage) 0 6px, transparent 6px 13px); }
+.seg-v.seg-booked::after { background: none; border-color: var(--sage); border-style: dotted; }
+.sq-booked .node { background: var(--sage); border-color: var(--sage); color: #fff; box-shadow: 0 0 0 4px var(--tint-sage); }
+.lg-booked::before { border-color: var(--sage); background: var(--sage); }
+
+/* ---------- Living paths: flowing dashes + soft pulse toward what's next ---------- */
+@keyframes path-flow { to { background-position: 18px 0; } }
+@keyframes path-flow-rev { to { background-position: -18px 0; } }
+@keyframes path-pulse-indigo { 0%, 100% { opacity: .55; filter: drop-shadow(0 0 0 transparent); } 50% { opacity: 1; filter: drop-shadow(0 0 6px var(--indigo)); } }
+@keyframes path-pulse-sage { 0%, 100% { opacity: .6; filter: drop-shadow(0 0 0 transparent); } 50% { opacity: 1; filter: drop-shadow(0 0 6px var(--sage)); } }
+
+.seg-h.seg-future::after {
+  height: 5px; top: calc(var(--node) / 2 - 2.5px);
+  background: repeating-linear-gradient(90deg, var(--indigo) 0 10px, transparent 10px 18px); background-size: 18px 100%;
+  animation: path-flow .9s linear infinite, path-pulse-indigo 1.8s ease-in-out infinite;
+}
+.board-row-rev .seg-h.seg-future::after { animation-name: path-flow-rev, path-pulse-indigo; }
+.seg-v.seg-future::after { border-color: var(--indigo); animation: path-pulse-indigo 1.8s ease-in-out infinite; }
+
+.seg-h.seg-booked::after {
+  height: 5px; top: calc(var(--node) / 2 - 2.5px);
+  background: repeating-linear-gradient(90deg, var(--sage) 0 7px, transparent 7px 14px); background-size: 14px 100%;
+  animation: path-flow 1.1s linear infinite, path-pulse-sage 2s ease-in-out infinite;
+}
+.board-row-rev .seg-h.seg-booked::after { animation-name: path-flow-rev, path-pulse-sage; }
+.seg-v.seg-booked::after { animation: path-pulse-sage 2s ease-in-out infinite; }
+:root[data-theme="dark"] .seg-h.seg-future::after { background-image: repeating-linear-gradient(90deg, #a3a4ff 0 10px, transparent 10px 18px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .seg-h.seg-future::after, .seg-v.seg-future::after, .seg-h.seg-booked::after, .seg-v.seg-booked::after { animation: none; opacity: .9; }
+}
+/* Vibrant catch-the-eye paths (override): hot pink + orange for suggestions, emerald for bookings */
+@keyframes path-flow-v { to { background-position: 36px 0; } }
+@keyframes path-flow-v-rev { to { background-position: -36px 0; } }
+@keyframes path-pulse-hot { 0%, 100% { opacity: .75; filter: drop-shadow(0 0 1px rgba(255,46,136,.4)); } 50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(255,46,136,.95)); } }
+@keyframes path-pulse-emerald { 0%, 100% { opacity: .75; filter: drop-shadow(0 0 1px rgba(0,200,150,.4)); } 50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(0,214,160,.95)); } }
+.seg-h.seg-future::after, :root[data-theme="dark"] .seg-h.seg-future::after {
+  background: repeating-linear-gradient(90deg, #ff2e88 0 10px, transparent 10px 18px, #ff9004 18px 28px, transparent 28px 36px);
+  background-size: 36px 100%;
+  animation: path-flow-v 1.1s linear infinite, path-pulse-hot 1.6s ease-in-out infinite;
+}
+.board-row-rev .seg-h.seg-future::after { animation-name: path-flow-v-rev, path-pulse-hot; }
+.seg-v.seg-future::after { border-color: #ff2e88; animation: path-pulse-hot 1.6s ease-in-out infinite; }
+.seg-h.seg-booked::after {
+  background: repeating-linear-gradient(90deg, #00c896 0 8px, transparent 8px 14px); background-size: 14px 100%;
+  animation: path-flow 1.1s linear infinite, path-pulse-emerald 1.8s ease-in-out infinite;
+}
+.board-row-rev .seg-h.seg-booked::after { animation-name: path-flow-rev, path-pulse-emerald; }
+.seg-v.seg-booked::after { border-color: #00c896; animation: path-pulse-emerald 1.8s ease-in-out infinite; }
+.sq-booked .node { background: #00c896; border-color: #00c896; box-shadow: 0 0 0 4px rgba(0,200,150,.18), 0 0 16px rgba(0,214,160,.45); }
+.lg-booked::before { border-color: #00c896; background: #00c896; }
+@media (prefers-reduced-motion: reduce) {
+  .seg-h.seg-future::after, .seg-v.seg-future::after, .seg-h.seg-booked::after, .seg-v.seg-booked::after { animation: none; opacity: 1; }
+}
+/* Suggested paths: shimmering electric violet + sky blue (override of the pink/orange) */
+@keyframes path-pulse-electric { 0%, 100% { opacity: .75; filter: drop-shadow(0 0 1px rgba(110,100,255,.45)); } 50% { opacity: 1; filter: drop-shadow(0 0 9px rgba(80,170,255,.95)); } }
+.seg-h.seg-future::after, :root[data-theme="dark"] .seg-h.seg-future::after {
+  background: repeating-linear-gradient(90deg, #7b61ff 0 10px, transparent 10px 18px, #36b6ff 18px 28px, transparent 28px 36px);
+  background-size: 36px 100%;
+  animation: path-flow-v 1.1s linear infinite, path-pulse-electric 1.6s ease-in-out infinite;
+}
+.board-row-rev .seg-h.seg-future::after { animation-name: path-flow-v-rev, path-pulse-electric; }
+.seg-v.seg-future::after { border-color: #7b61ff; animation: path-pulse-electric 1.6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .seg-h.seg-future::after, .seg-v.seg-future::after { animation: none; opacity: 1; } }
+/* Neon sign: bright core, layered glow, quick flicker (overrides the soft pulse) */
+@keyframes neon-violet {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px #8f7bff) drop-shadow(0 0 14px #36b6ff); }
+  20%, 24%, 55% { opacity: .35; filter: drop-shadow(0 0 1px #8f7bff); }
+}
+@keyframes neon-emerald {
+  0%, 30%, 34%, 70%, 74%, 100% { opacity: 1; filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px #00e0a8) drop-shadow(0 0 14px #00c896); }
+  32%, 72% { opacity: .35; filter: drop-shadow(0 0 1px #00c896); }
+}
+.seg-h.seg-future::after, :root[data-theme="dark"] .seg-h.seg-future::after {
+  background: repeating-linear-gradient(90deg, #a796ff 0 10px, transparent 10px 18px, #6fd0ff 18px 28px, transparent 28px 36px);
+  background-size: 36px 100%;
+  animation: path-flow-v 1.1s linear infinite, neon-violet 2.6s linear infinite;
+}
+.board-row-rev .seg-h.seg-future::after { animation-name: path-flow-v-rev, neon-violet; }
+.seg-v.seg-future::after { border-color: #a796ff; animation: neon-violet 2.6s linear infinite; }
+.seg-h.seg-booked::after {
+  background: repeating-linear-gradient(90deg, #3dffc8 0 8px, transparent 8px 14px); background-size: 14px 100%;
+  animation: path-flow 1.1s linear infinite, neon-emerald 3.2s linear infinite;
+}
+.board-row-rev .seg-h.seg-booked::after { animation-name: path-flow-rev, neon-emerald; }
+.seg-v.seg-booked::after { border-color: #3dffc8; animation: neon-emerald 3.2s linear infinite; }
+/* On the light theme, keep a darker edge so the neon still reads against white */
+:root:not([data-theme="dark"]) .seg-h.seg-future::after { background: repeating-linear-gradient(90deg, #7b61ff 0 10px, transparent 10px 18px, #2aa8f5 18px 28px, transparent 28px 36px); background-size: 36px 100%; }
+:root:not([data-theme="dark"]) .seg-h.seg-booked::after { background: repeating-linear-gradient(90deg, #00c896 0 8px, transparent 8px 14px); background-size: 14px 100%; }
+@media (prefers-reduced-motion: reduce) {
+  .seg-h.seg-future::after, .seg-v.seg-future::after, .seg-h.seg-booked::after, .seg-v.seg-booked::after { animation: none; opacity: 1; }
+}
+/* Final: original lines (thin purple dashes / green dots), no flow — only the neon flicker + glow on top */
+.seg-h.seg-future::after, :root[data-theme="dark"] .seg-h.seg-future::after, :root:not([data-theme="dark"]) .seg-h.seg-future::after,
+.board-row-rev .seg-h.seg-future::after {
+  height: 4px; top: calc(var(--node) / 2 - 2px);
+  background: repeating-linear-gradient(90deg, var(--indigo-soft) 0 10px, transparent 10px 18px); background-size: auto;
+  animation: neon-violet 2.6s linear infinite;
+}
+.seg-v.seg-future::after { border-color: var(--indigo-soft); border-style: dashed; animation: neon-violet 2.6s linear infinite; }
+.seg-h.seg-booked::after, :root:not([data-theme="dark"]) .seg-h.seg-booked::after, .board-row-rev .seg-h.seg-booked::after {
+  height: 4px; top: calc(var(--node) / 2 - 2px);
+  background: repeating-linear-gradient(90deg, var(--sage) 0 6px, transparent 6px 13px); background-size: auto;
+  animation: neon-emerald 3.2s linear infinite;
+}
+.seg-v.seg-booked::after { border-color: var(--sage); border-style: dotted; animation: neon-emerald 3.2s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .seg-h.seg-future::after, .seg-v.seg-future::after, .seg-h.seg-booked::after, .seg-v.seg-booked::after { animation: none; opacity: 1; }
+}
+
+/* Confirmed by the coordinator: solid green path, no flicker, a badge */
+.seg-h.seg-confirmed::after { content: ""; height: 4px; top: calc(var(--node) / 2 - 2px); background: var(--sage); animation: none; opacity: 1; }
+.seg-v.seg-confirmed::after { border-color: var(--sage); border-style: solid; animation: none; }
+.sq-confirmed .node { background: var(--sage); border-color: var(--sage); box-shadow: 0 0 0 4px var(--tint-sage); }
+.sq-confirmed-badge { margin-top: 4px; display: inline-block; padding: 2px 10px; border-radius: 999px; background: var(--sage); color: #fff; font: 700 .72rem var(--sans); letter-spacing: .02em; }

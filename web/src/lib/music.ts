@@ -13,7 +13,6 @@ export const TRACKS: Track[] = [
   { title: "Gymnopédie No. 1", composer: "Erik Satie", src: "/music/gymnopedie-1.mp3", credit: "Teknopazzo, CC0" },
   { title: "Clair de lune", composer: "Claude Debussy", src: "/music/clair-de-lune.mp3", credit: "Public domain" },
   { title: "Nocturne Op. 9 No. 2", composer: "Frédéric Chopin", src: "/music/nocturne-op9-2.mp3", credit: "CC0" },
-  { title: "Air on the G String", composer: "J. S. Bach", src: "/music/air-on-g.mp3", credit: "Public domain" },
   { title: "Rêverie", composer: "Claude Debussy", src: "/music/reverie.mp3", credit: "Public domain" },
   { title: "Träumerei", composer: "Robert Schumann", src: "/music/traumerei.mp3", credit: "Public domain" },
   { title: "Gymnopédie No. 3", composer: "Erik Satie", src: "/music/gymnopedie-3.mp3", credit: "CC0" },
