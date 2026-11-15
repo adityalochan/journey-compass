@@ -1,13 +1,7 @@
 import { useState, type FormEvent } from "react";
-import { DEMO_PASSWORD, sendMagicLink, signInWithPassword } from "../lib/auth";
+import { sendMagicLink, signInWithPassword } from "../lib/auth";
 import RotatingQuote from "./RotatingQuote";
 import TopControls from "./TopControls";
-
-const DEMO_ACCOUNTS = [
-  { label: "Priya Raman", email: "priya.demo@example.org" },
-  { label: "Marc Lefèvre", email: "marc.demo@example.org" },
-  { label: "Daniel Osei", email: "daniel.demo@example.org" },
-];
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -82,16 +76,6 @@ export default function Login() {
               <button type="button" className="btn btn-secondary btn-block" onClick={emailLink} disabled={busy}>
                 Email me a sign-in link instead
               </button>
-
-              <div className="demo-accounts">
-                <p>Demo accounts · password <code>{DEMO_PASSWORD}</code></p>
-                {DEMO_ACCOUNTS.map((a) => (
-                  <button type="button" key={a.email} className="demo-chip"
-                    onClick={() => { setEmail(a.email); setPassword(DEMO_PASSWORD); setError(""); }}>
-                    {a.label}
-                  </button>
-                ))}
-              </div>
             </>
           )}
         </form>

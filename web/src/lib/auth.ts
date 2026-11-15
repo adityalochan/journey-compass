@@ -1,7 +1,5 @@
 import { hasSupabaseKey, supabase } from "./supabase";
 
-export const DEMO_PASSWORD = "journey-demo-2026";
-
 export async function sendMagicLink(email: string): Promise<void> {
   const { error } = await supabase.auth.signInWithOtp({
     email: email.trim(),
