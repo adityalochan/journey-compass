@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { Participant } from "../../../src/types";
-import { daysUntil, type NextStep } from "../lib/engine";
+import { daysUntil, type NextStep } from "../lib/steps";
 import { downloadIcs, placeFor } from "../lib/enrollment";
 import { KIND_ICON } from "./Icons";
 
@@ -25,6 +25,8 @@ export default function EnrollDialog({ person, step, alreadyBooked, onConfirm, o
   }, [onClose, done]);
 
   function confirm() {
+    // Courses/events with a sign-up page: open it now (still inside the click, so popups aren't blocked).
+    if (step.registrationUrl) window.open(step.registrationUrl, "_blank", "noopener");
     onConfirm();
     setJustBooked(true);
     setDone(true);
@@ -74,15 +76,16 @@ export default function EnrollDialog({ person, step, alreadyBooked, onConfirm, o
             )}
             <span className="dialog-icon dialog-icon-done">✓</span>
             <h3 id="enroll-title">
-              {isCall ? `${teacher} will call you soon` : justBooked ? "You're in!" : `You're booked for ${step.name}`}
+              {isCall ? `${teacher} will call you soon` : step.registrationUrl ? (justBooked ? "Almost there!" : `You asked to join ${step.name}`) : justBooked ? "Request sent" : `You asked to join ${step.name}`}
             </h3>
             <p className="muted">
               {isCall
                 ? `${teacher} will reach out this week at a time that suits you.`
-                : `Your spot at ${step.name} is saved. ${teacher} will send you the details.`}
+                : step.registrationUrl ? "Finish signing up on the registration page. We've noted your interest." : "Request sent — we'll be in touch."}
             </p>
             <div className="dialog-actions">
-              {step.start && <button ref={firstBtn} className="btn btn-primary" onClick={() => downloadIcs(step, person)}>Add to calendar</button>}
+              {step.registrationUrl && <a className="btn btn-primary" href={step.registrationUrl} target="_blank" rel="noopener noreferrer">Open registration page</a>}
+              {step.start && <button ref={firstBtn} className={step.registrationUrl ? "btn btn-ghost" : "btn btn-primary"} onClick={() => downloadIcs(step, person)}>Add to calendar</button>}
               <button ref={step.start ? undefined : firstBtn} className="btn btn-ghost" onClick={onClose}>Back to my journey</button>
               <button className="btn-link-danger" onClick={cancel}>
                 {isCall ? "Cancel call request" : "Cancel my spot"}
