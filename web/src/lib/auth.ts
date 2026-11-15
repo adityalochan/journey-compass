@@ -7,7 +7,9 @@ export async function sendMagicLink(email: string): Promise<void> {
     email: email.trim(),
     options: {
       shouldCreateUser: false,
-      emailRedirectTo: `${window.location.origin}/auth/callback`,
+      emailRedirectTo: window.location.pathname.startsWith("/coordinator")
+        ? `${window.location.origin}/coordinator`
+        : `${window.location.origin}/auth/callback`,
     },
   });
   if (error) throw error;
