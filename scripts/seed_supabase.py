@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Seed Supabase with participants, staff, and login accounts.
 
-Demo accounts (the first five participants and a demo coordinator) sign in with
-DEMO_PASSWORD on the login page. Everyone else signs in with a magic link.
+Demo accounts (the first five participants, and Anita Rao as demo coordinator) sign in with
+private passwords from .env (DEMO_PARTICIPANT_PASSWORD, DEMO_COORDINATOR_PASSWORD). Coordinators
+listed in JC_STAFF sign in by magic link. Everyone else signs in with a magic link only.
 Safe to re-run: rows are upserted and existing login accounts are reused.
 
 Usage:
@@ -34,10 +35,20 @@ PROGRAMMES_FILE = ROOT / "data" / "catalogue" / "programmes.csv"
 CONSENT_FILE = ROOT / "data" / "synthetic" / "participants.csv"
 CONSENT_COLUMNS = ["preferred_channel", "preferred_channel_source", "email_opt_in", "whatsapp_opt_in", "do_not_contact"]
 
-DEMO_PASSWORD = "journey-demo-2026"
 DEMO_PARTICIPANT_IDS = {"p_001", "p_002", "p_003", "p_004", "p_005"}
 DEMO_COORDINATOR = {"email": "anita.demo@example.org", "name": "Anita Rao", "covers": "Anita Rao"}
-COORDINATOR = {"email": "tarunbjoseph@gmail.com", "name": "Tarun", "covers": "Anita Rao"}
+
+
+def staff_from_env() -> list[dict]:
+    """JC_STAFF in .env: "email|name|covers;email|name|covers". Empty covers = sees everyone.
+    Kept out of the repo, which is public."""
+    staff = []
+    for entry in (os.getenv("JC_STAFF") or "").split(";"):
+        parts = [x.strip() for x in entry.split("|")]
+        if parts and parts[0]:
+            staff.append({"email": parts[0], "name": parts[1] if len(parts) > 1 and parts[1] else parts[0],
+                          "covers": parts[2] if len(parts) > 2 and parts[2] else None})
+    return staff
 
 
 def load_consent() -> dict:
@@ -173,14 +184,14 @@ def ensure_login(client, email: str, name: str, known: dict) -> str:
     return known[key]
 
 
-def ensure_password_login(client, email: str, name: str, known: dict) -> str:
+def ensure_password_login(client, email: str, name: str, password: str, known: dict) -> str:
     key = email.lower()
     if key in known:
-        client.auth.admin.update_user_by_id(known[key], {"password": DEMO_PASSWORD})
+        client.auth.admin.update_user_by_id(known[key], {"password": password})
         return known[key]
     user = client.auth.admin.create_user({
         "email": email,
-        "password": DEMO_PASSWORD,
+        "password": password,
         "email_confirm": True,
         "user_metadata": {"name": name},
     })
@@ -198,7 +209,12 @@ def main(dry_run: bool, with_programmes: bool):
     consent = load_consent()
     rows = [participant_row(p, consent) for p in participants]
     demo = [p for p in participants if p["id"] in DEMO_PARTICIPANT_IDS]
-    print(f"{len(rows)} participants ({len(demo)} demo), coordinator {COORDINATOR['email']}")
+    participant_pw = os.getenv("DEMO_PARTICIPANT_PASSWORD")
+    coordinator_pw = os.getenv("DEMO_COORDINATOR_PASSWORD")
+    if not participant_pw or not coordinator_pw:
+        sys.exit("DEMO_PARTICIPANT_PASSWORD and DEMO_COORDINATOR_PASSWORD must be set in .env")
+    staff = staff_from_env()
+    print(f"{len(rows)} participants ({len(demo)} demo), {len(staff)} magic-link coordinator(s) from JC_STAFF")
     if dry_run:
         print("DRY RUN: nothing written.")
         print("Demo logins:", [p["email"] for p in demo] + [DEMO_COORDINATOR["email"]])
@@ -220,25 +236,15 @@ def main(dry_run: bool, with_programmes: bool):
     print(f"Upserted {len(rows)} participant rows")
 
     for p in demo:
-        ensure_password_login(client, p["email"], p["firstName"], known)
+        ensure_password_login(client, p["email"], p["firstName"], participant_pw, known)
     print(f"Demo participant logins ready ({len(demo)})")
 
-    demo_coord_id = ensure_password_login(client, DEMO_COORDINATOR["email"], DEMO_COORDINATOR["name"], known)
-    client.table("staff").upsert({
-        "user_id": demo_coord_id,
-        "name": DEMO_COORDINATOR["name"],
-        "email": DEMO_COORDINATOR["email"],
-        "covers": DEMO_COORDINATOR["covers"],
-    }, on_conflict="user_id").execute()
-
-    coord_id = ensure_login(client, COORDINATOR["email"], COORDINATOR["name"], known)
-    client.table("staff").upsert({
-        "user_id": coord_id,
-        "name": COORDINATOR["name"],
-        "email": COORDINATOR["email"],
-        "covers": COORDINATOR["covers"],
-    }, on_conflict="user_id").execute()
-    print("Staff: demo coordinator and Tarun")
+    staff_rows = [{**DEMO_COORDINATOR, "user_id": ensure_password_login(
+        client, DEMO_COORDINATOR["email"], DEMO_COORDINATOR["name"], coordinator_pw, known)}]
+    for person in staff:
+        staff_rows.append({**person, "user_id": ensure_login(client, person["email"], person["name"], known)})
+    client.table("staff").upsert(staff_rows, on_conflict="user_id").execute()
+    print(f"Staff: {len(staff_rows)} ({DEMO_COORDINATOR['name']} by password, {len(staff)} by magic link)")
 
     linked = 0
     for r in rows:
