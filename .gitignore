@@ -238,6 +238,7 @@ node_modules/
 !web/src/lib/
 web/dist/
 
-# Local env files (any folder)
+# Local env files with keys (any folder)
 .env.local
+.env.*.local
 *.env.local

@@ -4,6 +4,8 @@ const SECTIONS = [
   { id: "wisdom", label: "Today's wisdom" },
   { id: "journey", label: "Your journey" },
   { id: "next", label: "Your next steps" },
+  { id: "community", label: "Find your community" },
+  { id: "connect", label: "Stay connected" },
 ];
 
 /** Floating pill that points to the next section below the fold; hides at the end of the page. */

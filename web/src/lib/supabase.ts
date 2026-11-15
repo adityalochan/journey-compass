@@ -7,4 +7,7 @@ if (!SUPABASE_ANON_KEY) {
   console.warn("VITE_SUPABASE_ANON_KEY is not set in .env");
 }
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// A6: never crash the page when the key is missing (fresh checkout, preview without env vars).
+// createClient throws on an empty key, so use a placeholder; requests then fail softly until the key is set.
+export const hasSupabaseKey = Boolean(SUPABASE_ANON_KEY);
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY || "missing-anon-key");
