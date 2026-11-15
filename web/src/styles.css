@@ -710,6 +710,8 @@ a { color: inherit; }
 /* Centres list: exactly as tall as the map, scrolling inside */
 .community-grid { align-items: stretch; }
 .community-panel { height: 0; min-height: 100%; max-height: none; }
+/* One column (narrow window or phone): the list sits under the globe, so it gets its own height. */
+@media (max-width: 900px) { .community-panel { height: auto; min-height: 0; max-height: 560px; } }
 /* Thin cyan atmosphere halo around the globe, like a photo from orbit */
 .globe-box::after { inset: 8.5%; background: radial-gradient(circle, transparent 60%, rgba(99,210,255,.55) 66%, rgba(47,143,224,.22) 70%, transparent 76%); filter: blur(6px); }
 /* Atmosphere rim exactly at the Earth's edge (globe = 80% of the box), only at whole-Earth zoom */
