@@ -1,25 +1,48 @@
-// Demo-only enrollments, remembered per participant in this browser. Nothing is actually booked.
-import { useEffect, useState } from "react";
+// Task 5: enroll / request / cancel are rows in Supabase's `interests` table, keyed by offer_id.
+// The UI still asks "is this step booked?" by step name, so the hook maps names <-> offer ids.
+import { useCallback, useEffect, useState } from "react";
 import type { Participant } from "../../../src/types";
-import type { NextStep } from "./engine";
+import type { NextStep } from "./steps";
+import { supabase } from "./supabase";
 
-const key = (id: string) => `jc-enrolled-${id}`;
+export function useEnrollments(participantId: string, steps: NextStep[]) {
+  const [offerIds, setOfferIds] = useState<Set<string>>(new Set());
 
-function load(id: string): string[] {
-  try { return JSON.parse(localStorage.getItem(key(id)) ?? "[]"); } catch { return []; }
-}
+  useEffect(() => {
+    let live = true;
+    supabase.from("interests").select("offer_id,status").neq("status", "cancelled").then(({ data, error }) => {
+      if (error) console.error("Loading requests failed:", error.message);
+      if (live && data) setOfferIds(new Set(data.map((r: { offer_id: string }) => r.offer_id)));
+    });
+    return () => { live = false; };
+  }, [participantId]);
 
-export function useEnrollments(personId: string) {
-  const [names, setNames] = useState<string[]>(() => load(personId));
-  useEffect(() => setNames(load(personId)), [personId]);
+  const idFor = useCallback((name: string) => steps.find((s) => s.name === name)?.offer_id, [steps]);
+  const enrolled = new Set(steps.filter((s) => s.offer_id && offerIds.has(s.offer_id)).map((s) => s.name));
 
-  function save(next: string[]) {
-    setNames(next);
-    try { localStorage.setItem(key(personId), JSON.stringify(next)); } catch { /* storage blocked */ }
+  const change = (offerId: string, on: boolean) =>
+    setOfferIds((prev) => { const n = new Set(prev); if (on) n.add(offerId); else n.delete(offerId); return n; });
+
+  async function enroll(name: string) {
+    const offerId = idFor(name);
+    if (!offerId) return;
+    change(offerId, true); // optimistic
+    const { error } = await supabase.from("interests").upsert(
+      { participant_id: participantId, offer_id: offerId, status: "requested" },
+      { onConflict: "participant_id,offer_id" });
+    if (error) { console.error("Saving request failed:", error.message); change(offerId, false); }
   }
-  const enroll = (name: string) => save(names.includes(name) ? names : [...names, name]);
-  const unenroll = (name: string) => save(names.filter((n) => n !== name));
-  return { enrolled: new Set(names), enroll, unenroll };
+
+  async function unenroll(name: string) {
+    const offerId = idFor(name);
+    if (!offerId) return;
+    change(offerId, false); // optimistic
+    const { error } = await supabase.from("interests").update({ status: "cancelled" })
+      .eq("participant_id", participantId).eq("offer_id", offerId);
+    if (error) { console.error("Cancelling failed:", error.message); change(offerId, true); }
+  }
+
+  return { enrolled, enroll, unenroll };
 }
 
 export function placeFor(step: NextStep, person: Participant): string {

@@ -621,3 +621,7 @@ a { color: inherit; }
 /* Bloom makes the canvas opaque: fade its square edges into the starry section as a round porthole. */
 .globe-host { -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 66%, transparent 74%); mask-image: radial-gradient(circle at 50% 50%, #000 66%, transparent 74%); }
 .globe-box::before { content: ""; position: absolute; inset: 12%; border-radius: 50%; background: radial-gradient(circle, rgba(111,141,255,.22), transparent 70%); filter: blur(30px); pointer-events: none; }
+
+/* Loading / not-found message for the signed-in page */
+.page-message { min-height: 70vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; padding: 40px 20px; }
+.page-message .muted { max-width: 52ch; }
