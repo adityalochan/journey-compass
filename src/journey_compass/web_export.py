@@ -111,6 +111,30 @@ def _angle_as_why(angle: str, profile: dict, contacts) -> str:
     return angle if angle.endswith((".", "!")) else angle + "."
 
 
+def person_next_steps(profile: dict, cat: pd.DataFrame, offers: pd.DataFrame, as_of, contacts,
+                      use_llm: bool, k: int = config.TOP_K):
+    """One person's participant-safe next steps, plus the picks behind them.
+
+    Returns (next_steps, steps, choice): next_steps is what the participant sees, steps the
+    NextStep objects in the same order, choice the chooser's Choice (None without an LLM)."""
+    angle, choice = "", None
+    if is_do_not_contact(profile):
+        steps = []
+    elif use_llm:
+        choice, shortlist = choose(profile, cat, as_of, contacts)
+        steps = final_top(shortlist, choice, k)
+        angle = _angle_as_why(choice.message_angle, profile, contacts) if choice.source == "ai" else ""
+    else:
+        steps = recommend_top(profile, cat, as_of, k)
+    steps = [s for s in steps if s.offer_id]
+    next_steps = [{"offer_id": s.offer_id, "name": web_name(s, offers.loc[s.offer_id]), "kind": web_kind(s),
+                   "when": web_when(offers.loc[s.offer_id]),
+                   "why": (angle if (n == 0 and angle) else participant_why(s, offers.loc[s.offer_id], profile)),
+                   **web_timing(offers.loc[s.offer_id])}
+                  for n, s in enumerate(steps)]
+    return next_steps, steps, choice
+
+
 def build(k: int = config.TOP_K) -> dict:
     ds = load_dataset()
     cat = load_catalogue()
@@ -122,24 +146,8 @@ def build(k: int = config.TOP_K) -> dict:
     people = {}
     for profile in profiles.to_dict("records"):
         contacts = contacts_by_person.get(profile["participant_id"], empty)
-        angle = ""
-        if is_do_not_contact(profile):
-            steps = []
-        elif use_llm:
-            choice, shortlist = choose(profile, cat, ds.as_of, contacts)
-            steps = final_top(shortlist, choice, k)
-            angle = _angle_as_why(choice.message_angle, profile, contacts) if choice.source == "ai" else ""
-        else:
-            steps = recommend_top(profile, cat, ds.as_of, k)
-        steps = [s for s in steps if s.offer_id]
-        people[profile["participant_id"]] = {
-            "stage": WEB_STAGE[profile["journey_stage"]],
-            "next_steps": [{"offer_id": s.offer_id, "name": web_name(s, offers.loc[s.offer_id]), "kind": web_kind(s),
-                            "when": web_when(offers.loc[s.offer_id]),
-                            "why": (angle if (n == 0 and angle) else participant_why(s, offers.loc[s.offer_id], profile)),
-                            **web_timing(offers.loc[s.offer_id])}
-                           for n, s in enumerate(steps)],
-        }
+        next_steps, _, _ = person_next_steps(profile, cat, offers, ds.as_of, contacts, use_llm, k)
+        people[profile["participant_id"]] = {"stage": WEB_STAGE[profile["journey_stage"]], "next_steps": next_steps}
     return {"as_of": str(ds.as_of.date()), "dataset": ds.name, "ai": use_llm, "participants": people}
 
 

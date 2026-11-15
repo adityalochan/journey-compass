@@ -3,8 +3,8 @@
   1. Hard rules (never bend): do-not-contact, prerequisites, not repeating a course, audience,
      language, location, timing. See `eligibility`.
   2. Fit score: five parts, each 0..1, weighted by config.FIT_WEIGHTS. See `score`.
-       stage_fit    how often people in this stage take up this kind of offer (config prior;
-                    the step-4 feedback loop will learn it)
+       stage_fit    how often people in this stage take up this kind of offer (the config
+                    prior, updated from recorded outcomes by learning.py)
        commitment   size of the ask vs their momentum
        interest     tags vs their skills / interests / what they attend
        progression  the natural next course on their path
@@ -135,7 +135,7 @@ def eligibility(profile: dict, cat: pd.DataFrame, as_of: pd.Timestamp) -> pd.Ser
 def score(profile: dict, cat: pd.DataFrame, as_of: pd.Timestamp) -> pd.DataFrame:
     """One row per offer in `cat` with each part (0..1), the weighted total and the facts used."""
     stage = _stage(profile)
-    prior = config.ACCEPTANCE_PRIOR[stage]
+    prior = config.ACCEPTANCE_RATES[stage]
     top_prior = max(prior.values())
     engagement = float(profile.get("engagement_score") if pd.notna(profile.get("engagement_score")) else 50)
     ideal = 1 + 4 * engagement / 100                        # momentum -> comfortable size of ask, 1..5

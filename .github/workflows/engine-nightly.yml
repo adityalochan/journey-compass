@@ -1,0 +1,55 @@
+name: Engine nightly run
+
+# Runs the engine on the data in Supabase and writes journeys, recommendations, engine_runs and
+# the learned acceptance rates. Nightly, plus a "Run workflow" button on the Actions tab.
+#
+# Repository secrets:   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, GROQ_API_KEY (only with the AI on)
+# Repository variable:  JC_LLM_PROVIDER = groq to turn the AI chooser on; unset or none = engine only
+
+on:
+  schedule:
+    - cron: "0 7 * * *"          # 07:00 UTC = 02:00 Toronto (EST)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Compute everything but write nothing"
+        type: boolean
+        default: false
+
+concurrency:
+  group: engine-nightly
+  cancel-in-progress: false
+
+jobs:
+  run-engine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    env:
+      PYTHONPATH: src
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      JC_LLM_PROVIDER: ${{ vars.JC_LLM_PROVIDER || 'none' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      # The AI's answers are cached so a rerun only calls the LLM for people whose inputs changed.
+      - uses: actions/cache@v4
+        with:
+          path: outputs/llm_cache.json
+          key: llm-cache-${{ github.run_id }}
+          restore-keys: llm-cache-
+
+      - name: Run the engine
+        run: |
+          mkdir -p outputs
+          python -m journey_compass.supabase_sync ${{ inputs.dry_run && '--dry-run' || '' }}

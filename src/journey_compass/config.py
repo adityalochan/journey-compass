@@ -109,6 +109,11 @@ ACCEPTANCE_PRIOR = {
     "Drifting": {"course": 0.05, "retreat": 0.05, "seva": 0.06, "event": 0.14, "reconnect": 0.22},
     "Dormant":  {"course": 0.02, "retreat": 0.02, "seva": 0.03, "event": 0.08, "reconnect": 0.20},
 }
+# Learning loop: the prior above counts as PRIOR_STRENGTH imagined outcomes per cell; recorded
+# outcomes (learning.py) move each rate from there. ACCEPTANCE_RATES is what scoring reads.
+PRIOR_STRENGTH = 20
+SUCCESS_RESULTS = {"attended", "accepted"}
+ACCEPTANCE_RATES = {stage: dict(rates) for stage, rates in ACCEPTANCE_PRIOR.items()}
 # Each part of the fit score is 0..1; the score is their weighted sum.
 FIT_WEIGHTS = {
     "stage_fit": 2.5,     # how often people in this stage take up this kind of offer
@@ -136,7 +141,10 @@ LLM_PROVIDERS = {
                "key_env": None, "requests_per_minute": 0, "local": True},
 }
 LLM_CACHE_FILE = OUTPUT_DIR / "llm_cache.json"
-LLM_TIMEOUT_SECONDS = 300
+LLM_TIMEOUT_SECONDS = 90
+# Caps each answer (reasoning included). Without it gpt-oss can write for minutes on one request
+# and use up Groq's free-tier tokens-per-minute allowance.
+LLM_MAX_OUTPUT_TOKENS = 2000
 LLM_RETRIES = 3
 # Volunteer notes go to a hosted provider only for synthetic data. For anyone real they go to a
 # local provider only, unless the organisation approves (JC_LLM_NOTES=1).

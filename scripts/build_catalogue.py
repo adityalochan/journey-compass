@@ -32,7 +32,7 @@ AS_OF = "2026-11-14"
 
 COLUMNS = ["offer_id", "offer_type", "name", "program_key", "commitment", "start_date", "end_date",
            "start_time", "duration_min", "city", "venue", "languages", "tags", "prerequisites", "audience",
-           "description", "source"]
+           "description", "source", "registration_url"]
 
 # Harmony `type` -> (program_key, commitment, tags, prerequisites, audience)
 HARMONY_TYPES = {
@@ -99,7 +99,8 @@ def harmony() -> list[dict]:
                      "start_time": day1.get("start", ""), "duration_min": _minutes(day1.get("start"), day1.get("end")),
                      "city": city, "venue": venue["name"],
                      "tags": tags, "prerequisites": prereq, "audience": audience,
-                     "description": f"{r.category} · visibility {r.visibility}", "source": "harmony"})
+                     "description": f"{r.category} · visibility {r.visibility}", "source": "harmony",
+                     "registration_url": r.registration_url})
     return rows
 
 
@@ -119,7 +120,8 @@ def eventbrite() -> list[dict]:
                      "start_time": r.starts_at_local[11:16],
                      "duration_min": _minutes(r.starts_at_local[11:16], r.ends_at_local[11:16]),
                      "city": r.venue_city, "venue": r.venue_name, "tags": tags_from_name(name),
-                     "prerequisites": "", "audience": audience, "description": "", "source": "eventbrite"})
+                     "prerequisites": "", "audience": audience, "description": "", "source": "eventbrite",
+                     "registration_url": r.url})
     return rows
 
 
@@ -139,7 +141,8 @@ def retreat_guru() -> list[dict]:
                      "commitment": 5 if training else (4 if nights >= 3 else 3),
                      "start_date": r.start_date, "end_date": r.end_date, "city": city, "venue": venue,
                      "tags": tags_from_name(r.name) or "retreats", "prerequisites": "", "audience": "",
-                     "description": f"{nights} nights, residential", "source": "retreat_guru"})
+                     "description": f"{nights} nights, residential", "source": "retreat_guru",
+                     "registration_url": ""})
     return rows
 
 

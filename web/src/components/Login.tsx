@@ -1,25 +1,41 @@
 import { useState, type FormEvent } from "react";
-import { participants } from "../lib/data";
-import { DEMO_PASSWORD, login } from "../lib/auth";
+import { DEMO_PASSWORD, sendMagicLink, signInWithPassword } from "../lib/auth";
 import RotatingQuote from "./RotatingQuote";
 import TopControls from "./TopControls";
 
-// Hand-authored demo people, one per situation, for quick sign-in during the demo.
-const DEMO_IDS = ["p_001", "p_002", "p_004"];
+const DEMO_ACCOUNTS = [
+  { label: "Priya Raman", email: "priya.demo@example.org" },
+  { label: "Marc Lefèvre", email: "marc.demo@example.org" },
+  { label: "Daniel Osei", email: "daniel.demo@example.org" },
+];
 
-export default function Login({ onLogin }: { onLogin: (id: string) => void }) {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const demo = participants.filter((p) => DEMO_IDS.includes(p.id));
+  const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
 
-  function submit(e: FormEvent) {
-    e.preventDefault();
+  async function run(action: () => Promise<void>) {
+    setBusy(true);
+    setError("");
     try {
-      onLogin(login(email, password));
+      await action();
     } catch (err) {
-      setError((err as Error).message);
+      setError((err as Error).message || "Something went wrong. Please try again.");
+    } finally {
+      setBusy(false);
     }
+  }
+
+  function submitPassword(e: FormEvent) {
+    e.preventDefault();
+    run(() => signInWithPassword(email, password));
+  }
+
+  function emailLink() {
+    if (!email.trim()) return setError("Enter your email first.");
+    run(async () => { await sendMagicLink(email); setSent(true); });
   }
 
   return (
@@ -32,33 +48,52 @@ export default function Login({ onLogin }: { onLogin: (id: string) => void }) {
 
       <main className="login-main">
         <div className="login-controls"><TopControls /></div>
-        <form className="login-form" onSubmit={submit} noValidate>
+        <form className="login-form" onSubmit={submitPassword} noValidate>
           <p className="eyebrow">Welcome back</p>
           <h1>Sign in to your journey</h1>
           <p className="muted">See where you've been and what could come next.</p>
 
-          <label>
-            Email
-            <input type="email" autoComplete="email" value={email} required
-              onChange={(e) => { setEmail(e.target.value); setError(""); }} />
-          </label>
-          <label>
-            Password
-            <input type="password" autoComplete="current-password" value={password} required
-              onChange={(e) => { setPassword(e.target.value); setError(""); }} />
-          </label>
-          {error && <p className="form-error" role="alert">{error}</p>}
-          <button className="btn btn-primary btn-block" type="submit">Sign in</button>
-
-          <div className="demo-accounts">
-            <p>Demo accounts · password <code>{DEMO_PASSWORD}</code></p>
-            {demo.map((p) => (
-              <button type="button" key={p.id} className="demo-chip"
-                onClick={() => { setEmail(p.email); setPassword(DEMO_PASSWORD); setError(""); }}>
-                {p.firstName} {p.lastName}
+          {sent ? (
+            <>
+              <div className="success-message">
+                <p>Check your email for the sign-in link</p>
+                <p className="small-text">Open it on this device to continue.</p>
+              </div>
+              <button type="button" className="btn btn-secondary btn-block" onClick={() => setSent(false)}>
+                Back
               </button>
-            ))}
-          </div>
+            </>
+          ) : (
+            <>
+              <label>
+                Email
+                <input type="email" autoComplete="email" value={email} required
+                  onChange={(e) => { setEmail(e.target.value); setError(""); }} />
+              </label>
+              <label>
+                Password
+                <input type="password" autoComplete="current-password" value={password}
+                  onChange={(e) => { setPassword(e.target.value); setError(""); }} />
+              </label>
+              {error && <p className="form-error" role="alert">{error}</p>}
+              <button className="btn btn-primary btn-block" type="submit" disabled={busy}>
+                {busy ? "Signing in..." : "Sign in"}
+              </button>
+              <button type="button" className="btn btn-secondary btn-block" onClick={emailLink} disabled={busy}>
+                Email me a sign-in link instead
+              </button>
+
+              <div className="demo-accounts">
+                <p>Demo accounts · password <code>{DEMO_PASSWORD}</code></p>
+                {DEMO_ACCOUNTS.map((a) => (
+                  <button type="button" key={a.email} className="demo-chip"
+                    onClick={() => { setEmail(a.email); setPassword(DEMO_PASSWORD); setError(""); }}>
+                    {a.label}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </form>
       </main>
     </div>

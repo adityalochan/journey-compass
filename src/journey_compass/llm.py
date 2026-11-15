@@ -112,10 +112,15 @@ def _post(p: Provider, body: dict) -> dict:
             with urllib.request.urlopen(req, timeout=config.LLM_TIMEOUT_SECONDS) as r:
                 return json.loads(r.read())
         except urllib.error.HTTPError as e:
-            if e.code in (429, 500, 502, 503) and attempt < config.LLM_RETRIES - 1:
-                time.sleep(float(e.headers.get("retry-after") or 5 * (attempt + 1)))
+            detail = e.read().decode(errors="replace")[:300]
+            wait = float(e.headers.get("retry-after") or 5 * (attempt + 1))
+            # A daily allowance won't come back within a run: fall back to the engine now, not after
+            # minutes of retrying.
+            daily = "per day" in detail or wait > 60
+            if e.code in (429, 500, 502, 503) and not daily and attempt < config.LLM_RETRIES - 1:
+                time.sleep(wait)
                 continue
-            raise LLMUnavailable(f"{p.name} HTTP {e.code}: {e.read().decode(errors='replace')[:300]}") from None
+            raise LLMUnavailable(f"{p.name} HTTP {e.code}: {detail}") from None
         except (urllib.error.URLError, TimeoutError) as e:
             raise LLMUnavailable(f"{p.name} unreachable: {e}") from None
     raise LLMUnavailable(f"{p.name}: gave up after {config.LLM_RETRIES} attempts")
@@ -140,6 +145,8 @@ def chat(system: str, user: str, as_json: bool = False, temperature: float = 0.2
     cache, key = _load_cache(), _key(p, body)
     if key in cache:
         return cache[key], {"provider": p.name, "model": p.model, "cached": True}
+    # Added after the cache key, so the cap does not invalidate earlier answers.
+    body["max_completion_tokens"] = config.LLM_MAX_OUTPUT_TOKENS
     out = _post(p, body)
     text = (out["choices"][0]["message"].get("content") or "").strip()
     cache[key] = text
