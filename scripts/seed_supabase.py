@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Seed Supabase with participants, staff, and login accounts.
 
-Demo accounts (the first five participants, and Anita Rao as demo coordinator) sign in with
+Demo accounts (the first five participants, and a demo coordinator covering Anita Rao) sign in with
 private passwords from .env (DEMO_PARTICIPANT_PASSWORD, DEMO_COORDINATOR_PASSWORD). Coordinators
 listed in JC_STAFF sign in by magic link. Everyone else signs in with a magic link only.
 Safe to re-run: rows are upserted and existing login accounts are reused.
@@ -36,7 +36,7 @@ CONSENT_FILE = ROOT / "data" / "synthetic" / "participants.csv"
 CONSENT_COLUMNS = ["preferred_channel", "preferred_channel_source", "email_opt_in", "whatsapp_opt_in", "do_not_contact"]
 
 DEMO_PARTICIPANT_IDS = {"p_001", "p_002", "p_003", "p_004", "p_005"}
-DEMO_COORDINATOR = {"email": "anita.demo@example.org", "name": "Anita Rao", "covers": "Anita Rao"}
+DEMO_COORDINATOR = {"email": "coordinator.demo@example.org", "name": "Coordinator", "covers": "Anita Rao"}
 
 
 def staff_from_env() -> list[dict]:
