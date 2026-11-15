@@ -142,15 +142,44 @@ npm run build
 ```
 
 ## Tests
-```bash
-cd web && npm test                                   # website: 71 tests (Vitest + Testing Library), Supabase mocked
-cd supabase/tests && npm ci && node run.mjs          # database access rules: ends with ALL RLS CHECKS PASSED
-PYTHONPATH=src pytest                                # engine (2 chooser tests need the local data/catalogue/programmes.csv)
-```
-Website tests cover bookings (requested → confirmed, cancel, undo on error, 10-second sync), the journey
-board order, next steps and the enroll dialog, sign-in, coordinator filters and summary tiles, the
-model-insights maths, phone formatting, map distances, and that every music file and quote source
-is in place. `.github/workflows/tests.yml` runs the website and RLS tests on every pull request.
+Three test suites, one per layer. None of them touch the real Supabase project.
+
+| Suite | Tool | Run it | What it proves |
+|---|---|---|---|
+| Website (`web/`) | Vitest + Testing Library (jsdom) | `cd web && npm test` | Participant and coordinator screens and their logic behave correctly (71 tests, ~1 s) |
+| Database access rules | PGlite (in-memory Postgres) | `cd supabase/tests && npm ci && node run.mjs` | Row-level security: participants see only their own rows; staff-only tables stay staff-only |
+| Engine (`src/journey_compass/`) | pytest | `PYTHONPATH=src pytest` | Stage model, recommender rules, chooser, message checks, learning loop, Supabase sync |
+
+`npm run test:watch` re-runs the website tests as you edit.
+
+### What the website tests cover
+| File | Covers |
+|---|---|
+| `lib/enrollment.test.tsx` | Enroll saves `requested`; cancel saves `cancelled` for that person and offer only; the screen undoes the change if saving fails; a coordinator's confirmation shows up on tab focus and on the 10-second refresh; calendar (.ics) contents |
+| `components/JourneySection.test.tsx` | Board order (past → you are here → booked → suggestions), *Requested* vs *✓ Confirmed*, a booking crossed off only after its date, oldest steps hidden |
+| `components/NextStepsSection.test.tsx` | Enroll / Request a call buttons, waiting vs confirmed message, do-not-contact shows no steps |
+| `components/EnrollDialog.test.tsx` | Confirm, no cancel right after booking, cancel only when reopening, call requests, registration links, Esc / Not now |
+| `components/coordinator.test.tsx` | Every coordinator filter and combinations, Clear, summary tile counts (do-not-contact excluded), tile tabs |
+| `lib/auth.test.ts` | Sign-in link never creates accounts and returns to the right page; friendly wrong-password message; session check |
+| `lib/insights.test.ts` | Visualize page maths: medians, days to drift, days since contact, course / gathering / seva counts, nulls for missing data |
+| `lib/steps.test.ts` | "Starts in N days" counts calendar days (a session later today is 0) |
+| `lib/geo.test.ts` | Map distances, offline city lookup, OpenStreetMap fallback, centre data sanity |
+| `components/StayConnected.test.ts` | Phone formatting as you type, valid-number check |
+| `lib/content.test.ts` | Every music file exists with a credit and no leftovers; every quote links to an official Art of Living / Gurudev source |
+
+### Automatic checks
+`.github/workflows/tests.yml` runs on every pull request and every push to `main`:
+**Website tests + build** (`npm ci`, `npm test`, `npm run build`) and **Database access rules (RLS)**.
+Merge only when both are green, together with the Vercel preview. The engine tests are not in CI
+yet: two chooser tests need the organisers' `data/catalogue/programmes.csv`, which is git-ignored.
+
+### Adding a test
+- Put it next to the code: `Thing.tsx` → `Thing.test.tsx`. Shared made-up people and steps are in
+  `web/src/test/fixtures.ts` (never use real participant data in tests).
+- Mock Supabase with `vi.mock("./supabase", …)` as in `lib/enrollment.test.tsx`; no test may read
+  or write the real database.
+- Test files are left out of the site's `tsc` build check (`web/tsconfig.json`), so test-only
+  imports such as `node:fs` never break a deploy.
 
 ## Project structure
 ```
