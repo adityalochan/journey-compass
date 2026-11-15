@@ -12,5 +12,7 @@
     "skipLibCheck": true,
     "allowImportingTsExtensions": true
   },
-  "include": ["src", "../src/types.ts"]
+  "include": ["src", "../src/types.ts"],
+  // Tests run under Vitest (npm test); the site build does not type-check them.
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/test"]
 }
