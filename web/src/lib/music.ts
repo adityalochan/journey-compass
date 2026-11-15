@@ -55,11 +55,29 @@ function rampTo(target: number, then?: () => void) {
   }, 50);
 }
 
-function play(index: number) {
-  if (!audio) { audio = new Audio(); audio.onended = next; }
-  if (!audio.src.endsWith(TRACKS[index].src)) audio.src = TRACKS[index].src;
-  audio.volume = START_VOLUME;
-  audio.play().then(() => { emit({ playing: true }); rampTo(VOLUME); }).catch(() => emit({ playing: false }));
+// The next track is loaded in the background, so pressing "next" switches instantly.
+let warm: HTMLAudioElement | null = null;
+function warmNext(index: number) {
+  const src = TRACKS[(index + 1) % TRACKS.length].src;
+  if (warm?.src.endsWith(src)) return;
+  warm = new Audio();
+  warm.preload = "auto";
+  warm.src = src;
+  warm.load();
+}
+
+/** Start a track. fadeIn: soft fade for the first start; switching tracks starts straight away at normal volume. */
+function play(index: number, fadeIn = true): Promise<boolean> {
+  const src = TRACKS[index].src;
+  if (warm?.src.endsWith(src)) { audio?.pause(); audio = warm; warm = null; }
+  if (!audio) audio = new Audio();
+  audio.onended = next;
+  if (!audio.src.endsWith(src)) audio.src = src;
+  window.clearInterval(fade); // a pause fade in progress must not stop the new track
+  audio.volume = fadeIn ? START_VOLUME : VOLUME;
+  return audio.play()
+    .then(() => { emit({ playing: true }); if (fadeIn) rampTo(VOLUME); warmNext(index); return true; })
+    .catch(() => { emit({ playing: false }); return false; });
 }
 
 export function toggleMusic() {
@@ -68,7 +86,7 @@ export function toggleMusic() {
     emit({ playing: false });
     set("jc-music", "off");
   } else {
-    play(state.track);
+    void play(state.track);
     set("jc-music", "on");
   }
 }
@@ -77,30 +95,27 @@ export function next() {
   const n = (state.track + 1) % TRACKS.length;
   emit({ track: n });
   set("jc-track", String(n));
-  play(n);
+  void play(n, false);
 }
 
-// Auto-start 4s after landing, unless the visitor turned music off before.
-// Browsers block sound until the first click/tap/key press, so if the attempt is blocked we start on that interaction.
+// Auto-start 4s after landing on either site (participant or coordinator), unless the visitor turned music off before.
+// Browsers block sound until a real click, tap or key press, so if the attempt is blocked we keep trying on each
+// of those until it plays. (touchstart and scrolling don't count as permission, so they aren't used.)
 const AUTOSTART_MS = 4000;
 const START_VOLUME = 0.05; // fade starts here, not 0, so browsers treat it as real (audible) playback
+const UNLOCK = ["pointerup", "touchend", "click", "keydown"] as const;
+const disarm = () => UNLOCK.forEach((ev) => window.removeEventListener(ev, onInteract));
+function onInteract(e: Event) {
+  // A click on the music controls is handled by those buttons, so the two don't cancel each other out.
+  if ((e.target as Element | null)?.closest?.(".music-pill")) { disarm(); return; }
+  if (get("jc-music") === "off" || (state.playing && audio && !audio.paused)) { disarm(); return; }
+  void play(state.track).then((ok) => { if (ok) disarm(); });
+}
 if (get("jc-music") !== "off") {
-  const events = ["pointerdown", "keydown", "touchstart"] as const;
-  const onInteract = (e: Event) => {
-    events.forEach((ev) => window.removeEventListener(ev, onInteract));
-    // A click on the music button itself is handled by the button, so the two don't cancel each other out.
-    if ((e.target as Element | null)?.closest?.(".music-pill")) return;
-    if (get("jc-music") !== "off" && (!state.playing || !audio || audio.paused || audio.muted)) play(state.track);
-  };
   window.setTimeout(() => {
     if (state.playing || get("jc-music") === "off") return;
-    if (!audio) { audio = new Audio(); audio.onended = next; }
-    audio.src = TRACKS[state.track].src;
-    audio.volume = START_VOLUME;
-    events.forEach((e) => window.addEventListener(e, onInteract, { once: true }));
-    audio.play()
-      .then(() => { emit({ playing: true }); rampTo(VOLUME); })
-      .catch(() => emit({ playing: false }));
+    UNLOCK.forEach((ev) => window.addEventListener(ev, onInteract));
+    void play(state.track).then((ok) => { if (ok) disarm(); });
   }, AUTOSTART_MS);
 }
 

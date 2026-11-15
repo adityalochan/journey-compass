@@ -127,6 +127,7 @@ function Queue({ session }: { session: Session }) {
   const [filter, setFilter] = useState<Filter>("outreach");
   const [error, setError] = useState("");
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
+  const [refresh, setRefresh] = useState<"idle" | "busy" | "done">("idle");
   // In-page routing: /coordinator/person/<id> opens the model-insights page for that person.
   const [path, setPath] = useState(window.location.pathname);
   useEffect(() => {
@@ -161,6 +162,19 @@ function Queue({ session }: { session: Session }) {
       : filter === "requests" ? p.request_status === "requested"
       : !p.do_not_contact && OUTREACH_STAGES.has(p.stage ?? "")), [people, filter]);
   const visible = useMemo(() => applyFilters(shown, filters), [shown, filters]);
+  // Shortcut tiles: "Drifting soon" = outreach list, drifting within 14 days; "AI-picked" = everyone the AI chose for.
+  const focus = filter === "outreach" && filters.drift === "14" ? "soon" : filter === "all" && filters.pickedBy === "ai" ? "ai" : null;
+  const pick = (f: "soon" | "ai") => {
+    setFilter(f === "soon" ? "outreach" : "all");
+    setFilters({ ...EMPTY_FILTERS, stages: new Set(), ...(f === "soon" ? { drift: "14" as const } : { pickedBy: "ai" as const }) });
+  };
+  const tab = (t: Filter) => { setFilter(t); if (focus) setFilters({ ...EMPTY_FILTERS, stages: new Set() }); };
+  async function refreshNow() {
+    setRefresh("busy");
+    await load();
+    setRefresh("done");
+    window.setTimeout(() => setRefresh("idle"), 1800);
+  }
   const requests = people.filter((p) => p.request_status === "requested").length;
   const outreach = people.filter((p) => !p.do_not_contact && OUTREACH_STAGES.has(p.stage ?? "")).length;
 
@@ -213,15 +227,17 @@ function Queue({ session }: { session: Session }) {
           onBack={() => go("/coordinator")} onOpen={(id) => go(`/coordinator/person/${encodeURIComponent(id)}`)} />
       ) : (
       <>
-      <CoordinatorHero name={staff.name} covers={staff.covers} people={people} tab={filter} onTab={setFilter} />
+      <CoordinatorHero name={staff.name} covers={staff.covers} people={people} tab={filter} onTab={tab} focus={focus} onFocus={pick} />
       <main className="container co-main co-wide">
         <div className="co-tabs" role="tablist">
-          <Tab on={filter === "outreach"} onClick={() => setFilter("outreach")}>Needs outreach ({outreach})</Tab>
-          <Tab on={filter === "requests"} onClick={() => setFilter("requests")}>Requests ({requests})</Tab>
-          <Tab on={filter === "all"} onClick={() => setFilter("all")}>Everyone ({people.length})</Tab>
-          <button className="co-refresh" onClick={load}>Refresh</button>
+          <Tab on={filter === "outreach"} onClick={() => tab("outreach")}>Needs outreach ({outreach})</Tab>
+          <Tab on={filter === "requests"} onClick={() => tab("requests")}>Requests ({requests})</Tab>
+          <Tab on={filter === "all"} onClick={() => tab("all")}>Everyone ({people.length})</Tab>
         </div>
-        <CoordinatorFilters people={shown} value={filters} onChange={setFilters} shown={visible.length} />
+        <CoordinatorFilters people={shown} value={filters} onChange={setFilters} shown={visible.length}>
+          <button className="co-refresh" onClick={refreshNow} disabled={refresh === "busy"} aria-live="polite">
+            {refresh === "busy" ? "Refreshing…" : refresh === "done" ? "Updated ✓" : "Refresh"}</button>
+        </CoordinatorFilters>
         {error && <p className="form-error" role="alert">{error}</p>}
         {visible.length === 0 && <p className="muted">Nobody here right now.</p>}
         <ul className="co-list">

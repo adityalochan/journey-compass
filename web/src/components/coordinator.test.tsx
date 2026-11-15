@@ -33,6 +33,7 @@ describe("applyFilters", () => {
   });
   it("filters by predicted drift window, or already drifted", () => {
     expect(names(applyFilters(people, f({ drift: "7" })))).toEqual(["Asha"]);
+    expect(names(applyFilters(people, f({ drift: "14" })))).toEqual(["Asha"]);
     expect(names(applyFilters(people, f({ drift: "30" })))).toEqual(["Asha"]);
     expect(names(applyFilters(people, f({ drift: "past" })))).toEqual(["Wei"]);
   });
@@ -75,6 +76,17 @@ describe("CoordinatorHero", () => {
     expect(screen.getByText(/Anita\./)).toBeInTheDocument();
     expect(screen.getByText("1 new request")).toBeInTheDocument();
   });
+  it("Drifting soon and AI-picked tiles are clickable shortcuts", async () => {
+    const onFocus = vi.fn();
+    const { rerender } = render(<CoordinatorHero name="Anita Rao" covers={null} people={people} tab="outreach" onTab={() => {}} onFocus={onFocus} />);
+    await userEvent.click(screen.getByRole("button", { name: /Drifting soon/ }));
+    await userEvent.click(screen.getByRole("button", { name: /AI-picked steps/ }));
+    expect(onFocus.mock.calls).toEqual([["soon"], ["ai"]]);
+    rerender(<CoordinatorHero name="Anita Rao" covers={null} people={people} tab="outreach" onTab={() => {}} focus="soon" onFocus={onFocus} />);
+    expect(screen.getByRole("button", { name: /Drifting soon/ })).toHaveClass("is-on");
+    expect(screen.getByRole("button", { name: /Needs outreach/ })).not.toHaveClass("is-on"); // only the shortcut lights up
+  });
+
   it("switches tabs from the tiles", async () => {
     const onTab = vi.fn();
     render(<CoordinatorHero name="Anita Rao" covers={null} people={people} tab="all" onTab={onTab} />);
