@@ -104,6 +104,12 @@ export default function JourneySection({ person, steps, enrolled, confirmed, moo
                         {sq.state === "booked" ? <IconCheck /> : <Icon />}
                       </button>
                     )}
+                    {/* The turn down to the next row, drawn as SVG so its dashes can flow along the curve. */}
+                    {seg === "seg-v" && (ahead === "seg-future" || ahead === "seg-booked") && (
+                      <svg className="seg-turn" aria-hidden="true" focusable="false">
+                        <rect x={r % 2 ? 2 : "-100%"} y="0" width="200%" height="100%" rx="58" />
+                      </svg>
+                    )}
                     <p className="sq-title">{sq.title}</p>
                     {sq.confirmed ? <span className="sq-confirmed-badge">✓ Confirmed</span> : <p className="sq-sub">{sq.sub}</p>}
                     {sq.state === "next" && sq.step && (

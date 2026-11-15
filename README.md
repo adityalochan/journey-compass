@@ -118,7 +118,7 @@ each person can see (see `supabase/README.md`).
 - **Community map:** MapLibre globe (NASA Blue Marble imagery, OpenStreetMap streets, world-city
   lights) with where the community is.
 - **Wisdom:** verbatim Gurudev quotes from his official site; background music player
-  (public-domain classical + Rishab Rikhiram Sharma sitar pieces used with the artist's permission).
+  (Rishab Rikhiram Sharma's sitar, used with the artist's permission).
 - **Stay connected:** official Art of Living channels, WhatsApp group request, daily-message
   opt-in (demo only: nothing is sent yet).
 

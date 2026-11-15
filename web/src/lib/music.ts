@@ -8,18 +8,17 @@ export interface Track {
   credit: string;
 }
 
-// Public-domain / CC0 recordings from Wikimedia Commons, plus Rishab Rikhiram Sharma sitar pieces used
-// with the artist's permission (audio from his official YouTube channel). Calm, mostly instrumental.
+// Sitar by Rishab Rikhiram Sharma, used with the artist's permission. Audio from his official YouTube channel
+// (only his own compositions and ragas, no covers of other artists' songs), loudness-matched, 2 s fade in / 3 s out.
 export const TRACKS: Track[] = [
-  { title: "Gymnopédie No. 1", composer: "Erik Satie", src: "/music/gymnopedie-1.mp3", credit: "Teknopazzo, CC0" },
+  { title: "Sitar for Mental Health", composer: "Rishab Rikhiram Sharma", src: "/music/sitar-for-mental-health.mp3", credit: "Used with permission of the artist" },
   { title: "Shiv Kailash (Live in Mumbai)", composer: "Rishab Rikhiram Sharma", src: "/music/shiv-kailash.mp3", credit: "Used with permission of the artist" },
   { title: "Chanakya", composer: "Rishab Rikhiram Sharma", src: "/music/chanakya.mp3", credit: "Used with permission of the artist" },
   { title: "Rama Rama", composer: "Rishab Rikhiram Sharma", src: "/music/rama-rama.mp3", credit: "Used with permission of the artist" },
-  { title: "Clair de lune", composer: "Claude Debussy", src: "/music/clair-de-lune.mp3", credit: "Public domain" },
-  { title: "Nocturne Op. 9 No. 2", composer: "Frédéric Chopin", src: "/music/nocturne-op9-2.mp3", credit: "CC0" },
-  { title: "Rêverie", composer: "Claude Debussy", src: "/music/reverie.mp3", credit: "Public domain" },
-  { title: "Träumerei", composer: "Robert Schumann", src: "/music/traumerei.mp3", credit: "Public domain" },
-  { title: "Gymnopédie No. 3", composer: "Erik Satie", src: "/music/gymnopedie-3.mp3", credit: "CC0" },
+  { title: "The Burning Ghat", composer: "Rishab Rikhiram Sharma", src: "/music/burning-ghat.mp3", credit: "Used with permission of the artist" },
+  { title: "Shankara", composer: "Rishab Rikhiram Sharma", src: "/music/shankara.mp3", credit: "Used with permission of the artist" },
+  { title: "Raga Nat Bhairav", composer: "Rishab Rikhiram Sharma", src: "/music/raga-nat-bhairav.mp3", credit: "Used with permission of the artist" },
+  { title: "Mera Satguru Pyaara (Live in Chandigarh)", composer: "Rishab Rikhiram Sharma", src: "/music/mera-satguru-pyaara.mp3", credit: "Used with permission of the artist" },
 ];
 
 // ---- One shared player for the whole app, so music keeps playing across login → profile ----
@@ -27,6 +26,10 @@ const VOLUME = 0.35; // soft background level (tracks are loudness-normalized)
 const FADE_MS = 2500;
 const get = (k: string) => { try { return localStorage.getItem(k); } catch { return null; } };
 const set = (k: string, v: string) => { try { localStorage.setItem(k, v); } catch { /* storage blocked */ } };
+// "Music off" lasts for this visit only (until the tab/window closes), so every new visit auto-starts again.
+const isOff = () => { try { return sessionStorage.getItem("jc-music") === "off"; } catch { return false; } };
+const setOff = (off: boolean) => { try { if (off) sessionStorage.setItem("jc-music", "off"); else sessionStorage.removeItem("jc-music"); } catch { /* storage blocked */ } };
+try { localStorage.removeItem("jc-music"); } catch { /* older versions kept "off" forever; clear it */ }
 
 let state = { playing: false, track: Number(get("jc-track") ?? 0) % TRACKS.length };
 const subs = new Set<() => void>();
@@ -84,10 +87,10 @@ export function toggleMusic() {
   if (state.playing) {
     rampTo(0, () => audio?.pause());
     emit({ playing: false });
-    set("jc-music", "off");
+    setOff(true);
   } else {
     void play(state.track);
-    set("jc-music", "on");
+    setOff(false);
   }
 }
 
@@ -95,6 +98,7 @@ export function next() {
   const n = (state.track + 1) % TRACKS.length;
   emit({ track: n });
   set("jc-track", String(n));
+  setOff(false); // pressing next means "play music"
   void play(n, false);
 }
 
@@ -108,12 +112,12 @@ const disarm = () => UNLOCK.forEach((ev) => window.removeEventListener(ev, onInt
 function onInteract(e: Event) {
   // A click on the music controls is handled by those buttons, so the two don't cancel each other out.
   if ((e.target as Element | null)?.closest?.(".music-pill")) { disarm(); return; }
-  if (get("jc-music") === "off" || (state.playing && audio && !audio.paused)) { disarm(); return; }
+  if (isOff() || (state.playing && audio && !audio.paused)) { disarm(); return; }
   void play(state.track).then((ok) => { if (ok) disarm(); });
 }
-if (get("jc-music") !== "off") {
+if (!isOff()) {
   window.setTimeout(() => {
-    if (state.playing || get("jc-music") === "off") return;
+    if (state.playing || isOff()) return;
     UNLOCK.forEach((ev) => window.addEventListener(ev, onInteract));
     void play(state.track).then((ok) => { if (ok) disarm(); });
   }, AUTOSTART_MS);
