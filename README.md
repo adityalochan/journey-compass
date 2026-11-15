@@ -163,7 +163,7 @@ each person can see (see `supabase/README.md`).
   coordinator accepts it, then *Confirmed* (solid green line); it is only crossed off once attended.
 - **Next steps:** the engine's top 3, each with a reason. Enroll writes an `interests` row
   (`requested`); cancelling sets it to `cancelled`. Calendar (.ics) download.
-- **Community map:** MapLibre globe (NASA Blue Marble imagery, OpenStreetMap streets, world-city
+- **Community map:** MapLibre globe (Sentinel-2 cloudless satellite imagery by EOX, OpenStreetMap streets, world-city
   lights) with where the community is.
 - **Wisdom:** verbatim Gurudev quotes from his official site; background music player
   (Rishab Rikhiram Sharma's sitar, used with the artist's permission).

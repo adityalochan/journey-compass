@@ -18,7 +18,11 @@ interface Props {
 // Free, keyless sources: OpenFreeMap Liberty day style (crisp to street level), NASA GIBS Blue Marble
 // imagery at globe zoom, and city/street lights drawn from the map's own place and road data.
 const STYLE = "https://tiles.openfreemap.org/styles/liberty";
-const DAY_EARTH = "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/2004-08-01/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg";
+// Daytime Earth imagery: Sentinel-2 cloudless 2016 by EOX (CC BY 4.0), sharper than NASA Blue Marble at globe zoom.
+// To switch back to NASA, use NASA_EARTH (and its attribution) in the "day" source below.
+const DAY_EARTH = "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless_3857/default/g/{z}/{y}/{x}.jpg";
+const DAY_ATTRIBUTION = '<a href="https://s2maps.eu" target="_blank" rel="noopener">Sentinel-2 cloudless - s2maps.eu</a> by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016)';
+export const NASA_EARTH = "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/2004-08-01/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg";
 
 type Pin = { id: string; lng: number; lat: number; label: string; kind: "centre" | "me"; seva: boolean; near: boolean; active: boolean };
 
@@ -83,12 +87,12 @@ export default function Globe({ centres, me, nearestIds, selectedId, onSelect }:
       const firstLabel = layers.find((l) => l.type === "symbol")?.id;
       const firstRoad = layers.find((l) => l["source-layer"] === "transportation")?.id ?? firstLabel;
 
-      // Daytime Earth from orbit: NASA Blue Marble imagery at every zoom, blending into the street map up close.
+      // Daytime Earth from orbit: satellite imagery at every zoom, blending into the street map up close.
       // One layer whose tiles are drawn at about one image pixel per screen pixel (128px tiles on Retina, 256px
       // otherwise). Smaller tiles squeezed each 256px image into fewer pixels, which made the land look grainy and
       // distorted at whole-Earth zoom (the globe shrinks tiles without smoothing).
       const tileSize = window.devicePixelRatio >= 1.5 ? 128 : 256;
-      m.addSource("day", { type: "raster", tiles: [DAY_EARTH], tileSize, maxzoom: 8, attribution: "Earth imagery: NASA Blue Marble" });
+      m.addSource("day", { type: "raster", tiles: [DAY_EARTH], tileSize, maxzoom: 13, attribution: DAY_ATTRIBUTION });
       m.addLayer({
         id: "day", type: "raster", source: "day",
         paint: {
