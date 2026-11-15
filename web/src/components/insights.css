@@ -231,3 +231,4 @@
 .co-wide .co-card h3 { font-size: 1.25rem; }
 @media (max-width: 1100px) { .coh-tiles { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 640px) { .coh-tiles { grid-template-columns: repeat(2, 1fr); margin-top: -60px; } .co-wide .co-list { grid-template-columns: 1fr; } }
+

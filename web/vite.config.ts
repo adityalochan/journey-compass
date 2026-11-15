@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+  worker: { format: "es" }, // MapLibre 6 runs its worker as an ES module
   server: {
     // Loopback only: nobody on the local network (e.g. eduroam) can reach the dev server directly.
     // The VS Code port-forwarding tunnel is the only way in.

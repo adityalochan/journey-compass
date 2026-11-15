@@ -81,7 +81,7 @@ export default function CommunitySection({ person }: { person: Participant }) {
               <Globe centres={CENTRES} me={me} nearestIds={nearestIds} selectedId={open} onSelect={(id) => setOpen(id)} />
             </Suspense>
             </ErrorBoundary>
-            <p className="globe-hint">Drag to rotate · scroll or pinch to zoom · tap a glowing city</p>
+            <p className="globe-hint">Drag to move · scroll or pinch to zoom down to street level · tap a glowing city</p>
           </div>
 
           <aside className="community-panel" aria-live="polite">
