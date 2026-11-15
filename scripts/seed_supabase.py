@@ -36,7 +36,7 @@ CONSENT_COLUMNS = ["preferred_channel", "preferred_channel_source", "email_opt_i
 
 DEMO_PASSWORD = "journey-demo-2026"
 DEMO_PARTICIPANT_IDS = {"p_001", "p_002", "p_003", "p_004", "p_005"}
-DEMO_COORDINATOR = {"email": "coordinator.demo@example.org", "name": "Demo Coordinator", "covers": "Anita Rao"}
+DEMO_COORDINATOR = {"email": "anita.demo@example.org", "name": "Anita Rao", "covers": "Anita Rao"}
 COORDINATOR = {"email": "tarunbjoseph@gmail.com", "name": "Tarun", "covers": "Anita Rao"}
 
 

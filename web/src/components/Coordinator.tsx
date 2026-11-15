@@ -88,6 +88,17 @@ const OUTCOME_LABEL: Record<Result, string> = {
 const day = (iso: string) =>
   new Date(`${iso}T12:00:00`).toLocaleDateString("en-CA", { month: "short", day: "numeric" });
 
+/** Drift relative to today, so the label stays right whichever day the page is opened. */
+function driftLabel(iso: string): string {
+  const today = new Date();
+  today.setHours(12, 0, 0, 0);
+  const days = Math.round((new Date(`${iso}T12:00:00`).getTime() - today.getTime()) / 86_400_000);
+  if (days > 1) return `drifts in ${days} days`;
+  if (days === 1) return "drifts tomorrow";
+  if (days === 0) return "drifts today";
+  return days === -1 ? "drifted yesterday" : `drifted ${-days} days ago`;
+}
+
 export default function Coordinator() {
   const [session, setSession] = useState<Session | null>(null);
   const [ready, setReady] = useState(false);
@@ -153,7 +164,10 @@ function Queue({ session }: { session: Session }) {
       <header className="co-header">
         <div className="container co-header-row">
           <span className="wordmark">Journey Compass · Coordinator</span>
-          <span className="co-who">{staff.name}{staff.covers ? ` · ${staff.covers}'s people` : " · everyone"}</span>
+          <span className="co-who">
+            {staff.covers ? (staff.name === staff.covers ? `${staff.name}'s people` : `${staff.name} · ${staff.covers}'s people`)
+              : `${staff.name} · everyone`}
+          </span>
           <button className="btn btn-sm btn-ghost" onClick={() => supabase.auth.signOut()}>Sign out</button>
         </div>
       </header>
@@ -199,7 +213,8 @@ function Card({ p, onRecord }: { p: Person; onRecord: (p: Person, r: Result) => 
         </div>
         <div className="co-badges">
           {p.stage && <span className={`co-stage co-stage-${p.stage}`}>{p.stage}</span>}
-          {p.drift_date && OUTREACH_STAGES.has(p.stage ?? "") && <span className="co-drift">drifts by {day(p.drift_date)}</span>}
+          {p.drift_date && OUTREACH_STAGES.has(p.stage ?? "") &&
+            <span className="co-drift" title={day(p.drift_date)}>{driftLabel(p.drift_date)}</span>}
           {p.request_status === "requested" && <span className="co-request">asked for this</span>}
           {p.do_not_contact && <span className="co-dnc">do not contact</span>}
         </div>

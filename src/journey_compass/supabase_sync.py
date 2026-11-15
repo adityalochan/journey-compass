@@ -113,8 +113,9 @@ def load(c) -> tuple[Dataset, pd.DataFrame]:
         fetch_all(c, "activities", "participant_id,date,activity_type,name,subtype,city", order="id")))
     contacts = prepare_contacts(pd.DataFrame(
         fetch_all(c, "contacts", "participant_id,at,channel,direction,summary", order="id")))
-    as_of = pd.Timestamp(os.getenv("JC_AS_OF") or config.PINNED_AS_OF.get(config.DATASET)
-                         or pd.Timestamp.today().normalize())
+    # The live database is scored as of the run date (JC_AS_OF overrides), so stages and drift dates
+    # stay current night after night. The CSV pipeline and tests keep the pinned date.
+    as_of = pd.Timestamp(os.getenv("JC_AS_OF") or pd.Timestamp.today().normalize())
     sources = {"contacts"} if len(contacts) else set()
     if all(col in participants for col in SIGNAL_COLUMNS):
         sources.add("signals")
