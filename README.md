@@ -9,8 +9,33 @@ Personalized follow-up for every participant: journey mapping, next-step recomme
 | **Coordinator site** | Who needs outreach, new requests, drafted messages with the suggested channel, one-tap outcomes, and a model-insights page per person |
 | **Engine** | Learned journey stage + drift date, recommender with hard rules and a fit score, LLM chooser and message writer, nightly run that learns from outcomes |
 
+## What's real and what's simulated
+| | Real (working end to end) | Simulated or not connected |
+|---|---|---|
+| **People** | Sign-in accounts, row-level security, every screen reads and writes the live Supabase database | All 180 participants are **synthetic** (made-up people). No real participant data is used |
+| **Bookings** | Enroll saves a request; a coordinator accepts or declines it; the participant sees *Requested* → *Confirmed* within 10 seconds | It is a request to the coordinator, not a real course registration or payment. Where a programme has a sign-up page, that real page opens |
+| **Engine** | Stage model, recommender, AI chooser and message writer run on the database every night (GitHub Action) and learn from recorded outcomes | Accuracy figures are measured on the synthetic cohort, so they are optimistic for real people |
+| **Programmes and centres** | Next steps and dates come from the offers catalogue in the database; the community map shows centres, contacts and upcoming events | Both are built from the organisers' **mock** exports (the map from a fixed file, `web/src/data/community.json`), not live Art of Living listings |
+| **Outreach** | Drafted messages, suggested channel, one-tap email / WhatsApp / call buttons that open the coordinator's own app | Nothing is sent automatically; a coordinator always sends |
+| **Stay connected** | Official Art of Living and Gurudev social links, the official Art of Living app links | "Daily wisdom on your phone" (saved only in the visitor's own browser; the screen says "Demo: no messages are actually sent") and the WhatsApp group request (shows "Request sent", but nothing is sent to anyone) are **demo only** |
+| **Sign-in by email link** | Built and working with Supabase Auth | Needs the organisation's email sender (SMTP) to reach real inboxes; the demo uses password logins |
+
 ## The problem
 After SKY, follow-up treats everyone as one group, so people quietly drift away. Journey Compass looks at each participant's history and suggests **one fitting next step**: a follow-on course, a retreat, a seva role, or re-engagement. It drafts a personal message and suggests the channel to send it on.
+
+## Who it's for and the benefit
+| User | Today | With Journey Compass |
+|---|---|---|
+| **SKY / Happiness Program graduate** | Generic follow-up for everyone, so many quietly drift away after the course | Sees their own journey and **one fitting next step** (a course, a gathering, seva or a call) with the reason, and can say yes in one click |
+| **Volunteer coordinator** | Tracks dozens of people by hand, with no early warning of who is slipping | A list ordered by urgency with a **predicted drift date**, the suggested step and why, a drafted message, the best channel, and requests to accept |
+
+What we can show today (synthetic cohort of 180 people, so optimistic for real data):
+- Stage model: **91%** accurate, 5-fold cross-validated (rule cut-offs: 86%).
+- Suggestions fit the person: the most common first suggestion goes to **24%** of people, against about **70%** under the old one-size rules.
+- AI chooser answer key: **9 of 10** picks and **10 of 10** messages correct on the people we know (`llm_eval`).
+
+Real impact (fewer people drifting, more returning) has to be measured on real participants: the
+`outcomes` table and the learning loop are built for exactly that.
 
 ## How it works
 ```
@@ -103,6 +128,29 @@ PYTHONPATH=src python -m journey_compass.pipeline --messages   # all 180 people,
 PYTHONPATH=src python -m journey_compass.web_export            # website uses the AI pick + angle
 ```
 
+## Responsible use
+**Data and privacy**
+- Row-level security on every table, tested in CI (`supabase/tests`): a participant reads only their own rows; volunteer notes, contact history, signals and engine reasoning are staff-only and never reach a participant's browser.
+- The admin (service-role) key lives only in GitHub Actions secrets; the website holds only the publishable key.
+- Volunteer notes go to a hosted AI model **only for synthetic data**; for real people the AI runs locally unless the organisation approves (`JC_LLM_NOTES=1`).
+- Do-not-contact is a hard stop: no next steps, drafts or reminders for that person.
+- Organisers' data stays out of the public repo (`data/raw`, `Mock data/` are git-ignored).
+
+**AI checks and limits**
+- The AI chooser can only pick from a shortlist the hard rules already approved (prerequisites, audience, language, location, timing). An invalid or failed answer falls back to the engine's pick, which is always kept for comparison.
+- The message writer never sees notes. Every draft is checked (no echoed notes, no "you mentioned", length, placeholders, language, no invented dates, greeting by name), retried once, then replaced by a template.
+- The AI is optional: with `JC_LLM_PROVIDER=none` everything runs on the engine and templates.
+
+**Human review**
+- Nothing is sent automatically. A coordinator reads the suggestion and the reason, copies the draft or opens it in their own email or WhatsApp, can change it there, and sends it themselves.
+- Bookings are requests until a coordinator accepts them; outcomes are recorded by a person and feed the learning loop.
+
+**Errors**
+- Error boundaries show a friendly message instead of a blank page; a failed save undoes itself on screen; sign-in errors show the real reason; the site still loads if a key is missing.
+
+**Content**
+- Gurudev quotes are verbatim from his official sites, each with its source link. Background music is Rishab Rikhiram Sharma's, used with the artist's permission; it can be paused, and people who prefer reduced motion get still animations.
+
 ## Website (web/)
 React 18 + TypeScript + Vite, deployed on Vercel (root directory `web`, auto-deploys `main`).
 It reads and writes Supabase directly with the publishable key; row-level security decides what
@@ -157,6 +205,34 @@ rows, staff read everything, and staff-only tables (`notes`, `contacts`, `signal
 Views: `next_steps` (participant site), `coordinator_people` and `coordinator_queue` (coordinator site).
 **Full schema** (relationship diagram, every column, every access rule): [`docs/schema.md`](docs/schema.md).
 Migrations: [`supabase/migrations/`](supabase/migrations/); details on applying them: [`supabase/README.md`](supabase/README.md).
+
+## Deploy your own (for Art of Living)
+About an hour, no code changes. You need a Supabase account, a Vercel account and this repo on GitHub.
+
+1. **Database.** Create a Supabase project. In SQL Editor run the files in `supabase/migrations/`
+   in order (`0001` … `0006`), or `supabase db push` with the CLI. Optional check:
+   `cd supabase/tests && npm ci && node run.mjs` → `ALL RLS CHECKS PASSED`.
+2. **Load people and logins.** In a `.env` at the repo root (never committed) set `SUPABASE_URL`,
+   `SUPABASE_SERVICE_ROLE_KEY` and the coordinators in `JC_STAFF` (`email|name|covers;…`, empty
+   covers = sees everyone). Then:
+   ```bash
+   pip install -r requirements.txt
+   python scripts/seed_supabase.py --dry-run     # shows what would be written
+   python scripts/seed_supabase.py               # add --with-programmes for programme listings
+   ```
+   For real participants, adapt `src/journey_compass/data_loader.py` to your export first.
+3. **Run the engine once:** `PYTHONPATH=src python -m journey_compass.supabase_sync` (add `--dry-run` to preview).
+4. **Nightly runs.** In GitHub → Settings → Secrets and variables → Actions, add secrets
+   `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` (plus `GROQ_API_KEY` and variable
+   `JC_LLM_PROVIDER=groq` to switch the AI on). `.github/workflows/engine-nightly.yml` then runs
+   every night at 02:00 Toronto time, or on demand from the Actions tab.
+5. **Website.** In Vercel, import the repo with **Root Directory `web`**. Add environment variables
+   `VITE_SUPABASE_URL` (your project URL) and `VITE_SUPABASE_ANON_KEY` (the publishable / anon key,
+   **never** the service-role key). Deploy; `web/vercel.json` already handles page routing.
+6. **Email sign-in links (optional).** In Supabase → Authentication → URL Configuration set the Site
+   URL and redirect URL to your Vercel address, and add an email sender under SMTP Settings.
+7. **Check.** Sign in as a coordinator at `/coordinator`, and as a participant at `/`. Pull requests
+   run the website tests and the RLS checks automatically.
 
 ## Tests
 Three test suites, one per layer. None of them touch the real Supabase project.
