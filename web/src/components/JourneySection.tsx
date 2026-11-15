@@ -25,7 +25,7 @@ function useCols() {
 }
 
 // Courses and events only. Contact logs and volunteer notes are internal and never shown here.
-function buildSquares(p: Participant, steps: NextStep[], enrolled: Set<string>, confirmed: Set<string>): { squares: Square[]; hidden: number } {
+export function buildSquares(p: Participant, steps: NextStep[], enrolled: Set<string>, confirmed: Set<string>): { squares: Square[]; hidden: number } {
   const past: Square[] = [
     ...p.courses.map((c) => ({ key: `c-${c.programId}`, kind: "course" as Kind, date: c.completedAt, title: c.name, place: c.teacher ? `${c.city} · with ${c.teacher}` : c.city })),
     ...p.events.map((e, n) => ({ key: `e-${n}`, kind: (e.type === "seva" ? "seva" : "event") as Kind, date: e.date, title: e.name, place: e.city })),
