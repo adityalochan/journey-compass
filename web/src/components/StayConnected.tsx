@@ -18,6 +18,11 @@ const SOCIAL = {
     { net: "x", label: "X", url: "https://twitter.com/srisri" },
     { net: "youtube", label: "YouTube", url: "https://www.youtube.com/srisri" },
   ],
+  // The Art of Living Official App, published by the Art of Living Foundation on both stores (checked 2026-11-15).
+  app: [
+    { net: "apple", label: "App Store", url: "https://apps.apple.com/us/app/-/id1469587414" },
+    { net: "googleplay", label: "Google Play", url: "https://play.google.com/store/apps/details?id=com.aol.app" },
+  ],
 };
 
 const ICON: Record<string, JSX.Element> = {
@@ -25,6 +30,9 @@ const ICON: Record<string, JSX.Element> = {
   instagram: <><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" strokeWidth="2" /><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="2" /><circle cx="17.3" cy="6.7" r="1.2" /></>,
   x: <path d="M4 4h4.5l4 5.6L17 4h3l-6.1 7.3L20.5 20H16l-4.3-6-5 6H3.6l6.6-7.8z" />,
   youtube: <path d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.6 2.6 0 0 0 2.4 7.2 27 27 0 0 0 2 12a27 27 0 0 0 .4 4.8 2.6 2.6 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.6 2.6 0 0 0 1.8-1.8A27 27 0 0 0 22 12a27 27 0 0 0-.4-4.8zM10 15V9l5.2 3z" />,
+  apple: <path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.1 2.5-1.8 3.1-.5 7.6 1.3 10.1.8 1.2 1.8 2.6 3.1 2.5 1.2 0 1.7-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.4-1-2.4-4.2zM14 5.3c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.1-.6 2.8-1.4z" />,
+  googleplay: <path d="M4 2.8c-.3.3-.4.7-.4 1.2v16c0 .5.1.9.4 1.2l9-9.2zm10.4 7.8L5.6 2.1l10.9 6.3zm0 2.8-8.8 8.5 10.9-6.3zm3.6-3.9 2.9 1.7c.8.5.8 1.3 0 1.8l-2.9 1.7-2.7-2.6z" />,
+  lotus: <><path d="M12 4c2 2.2 3 4.6 3 7.2 0 2.6-1 4.6-3 6.3-2-1.7-3-3.7-3-6.3 0-2.6 1-5 3-7.2z" /><path d="M3 10.5c2.8-.3 5.2.5 7 2.4 1 1.1 1.6 2.4 1.9 4.1-2.6.3-4.8-.3-6.6-2-1.2-1.2-1.9-2.7-2.3-4.5zm18 0c-2.8-.3-5.2.5-7 2.4-1 1.1-1.6 2.4-1.9 4.1 2.6.3 4.8-.3 6.6-2 1.2-1.2 1.9-2.7 2.3-4.5z" opacity=".85" /></>,
   whatsapp: <path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.8-1.3A9.5 9.5 0 1 0 12 2.5zm5.3 13.3c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7a11.8 11.8 0 0 1-4.6-4.1c-.4-.5-1-1.6-1-2.7s.6-1.6.8-1.9c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2 1.1 1 2 1.3 2.3 1.4.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.8.9c.3.1.4.2.5.3.1.2.1.7-.1 1.2z" />,
 };
 
@@ -111,6 +119,20 @@ export default function StayConnected({ person, stage, steps }: Props) {
                     <Icon net={s.net} /><span>{s.label}</span>
                   </a>
                 ))}
+              </div>
+            </div>
+            <div className="social-card social-card-wa">
+              <span className="social social-app social-big"><Icon net="lotus" /></span>
+              <div>
+                <h3>Get the Art of Living app</h3>
+                <p className="muted">Guided meditations, breathwork and Gurudev's wisdom, with free sessions to start.</p>
+                <div className="social-row">
+                  {SOCIAL.app.map((s) => (
+                    <a key={s.url} className={`social social-store social-${s.net}`} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={`Art of Living app on ${s.label}`}>
+                      <Icon net={s.net} /><span>{s.label}</span>
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
             <div className="social-card social-card-wa">

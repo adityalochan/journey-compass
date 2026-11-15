@@ -23,6 +23,9 @@ describe("music tracks", () => {
     const titles = TRACKS.map((t) => t.title);
     for (const gone of ["Air on the G String", "Gnossienne No. 1", "Morning Mood"]) expect(titles).not.toContain(gone);
   });
+  it("every track is Rishab Rikhiram Sharma's, used with his permission", () => {
+    for (const t of TRACKS) { expect(t.composer).toBe("Rishab Rikhiram Sharma"); expect(t.credit).toBe("Used with permission of the artist"); }
+  });
 });
 
 describe("quotes", () => {

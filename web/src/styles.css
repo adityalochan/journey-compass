@@ -545,7 +545,7 @@ a { color: inherit; }
 @media (max-width: 480px) { .centre-contacts { grid-template-columns: 1fr; } .upcoming li { grid-template-columns: 76px 1fr auto; } }
 
 /* ---------- Stay connected ---------- */
-.connect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+.connect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: stretch; } /* both columns end at the same line */
 .connect-social { display: flex; flex-direction: column; gap: 16px; }
 .social-card { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
 .social-card h3 { font-size: 1.15rem; margin: 0 0 2px; }
@@ -558,10 +558,14 @@ a { color: inherit; }
 .social-x { background: #111; }
 .social-youtube { background: #e62117; }
 .social-whatsapp { background: #25d366; }
+.social-app { background: linear-gradient(135deg, #ff9004, #7677f4); }
+.social-app svg { width: 30px; height: 30px; }
+.social-store { background: #111; }
+:root[data-theme="dark"] .social-store { background: #000; box-shadow: 0 0 0 1px rgba(255,255,255,.18); }
 .social-big { width: 52px; height: 52px; padding: 0; justify-content: center; border-radius: 16px; flex: none; }
 .social-card-wa { display: flex; gap: 16px; align-items: flex-start; }
 
-.connect-messages { display: grid; grid-template-columns: 1fr 220px; gap: 20px; align-items: start; background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
+.connect-messages { display: grid; grid-template-columns: 1fr 220px; gap: 20px; align-items: start; align-content: center; background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
 .msg-form { display: flex; flex-direction: column; gap: 12px; }
 .msg-form h3, .msg-done h3 { font-size: 1.15rem; margin: 0; }
 .msg-form .muted { margin: -4px 0 4px; font-size: .92rem; }
@@ -786,13 +790,14 @@ a { color: inherit; }
 .seg-v.seg-future::after { border-color: #7b61ff; animation: path-pulse-electric 1.6s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .seg-h.seg-future::after, .seg-v.seg-future::after { animation: none; opacity: 1; } }
 /* Neon sign: bright core, layered glow, quick flicker (overrides the soft pulse) */
+/* Slow, smooth pulse (breathing glow), not a flicker. */
 @keyframes neon-violet {
-  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px #8f7bff) drop-shadow(0 0 14px #36b6ff); }
-  20%, 24%, 55% { opacity: .35; filter: drop-shadow(0 0 1px #8f7bff); }
+  0%, 100% { opacity: .6; filter: drop-shadow(0 0 1px #8f7bff) drop-shadow(0 0 3px #8f7bff); animation-timing-function: ease-in-out; }
+  50% { opacity: 1; filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 7px #8f7bff) drop-shadow(0 0 16px #36b6ff); animation-timing-function: ease-in-out; }
 }
 @keyframes neon-emerald {
-  0%, 30%, 34%, 70%, 74%, 100% { opacity: 1; filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px #00e0a8) drop-shadow(0 0 14px #00c896); }
-  32%, 72% { opacity: .35; filter: drop-shadow(0 0 1px #00c896); }
+  0%, 100% { opacity: .6; filter: drop-shadow(0 0 1px #00c896) drop-shadow(0 0 3px #00c896); animation-timing-function: ease-in-out; }
+  50% { opacity: 1; filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 7px #00e0a8) drop-shadow(0 0 16px #00c896); animation-timing-function: ease-in-out; }
 }
 .seg-h.seg-future::after, :root[data-theme="dark"] .seg-h.seg-future::after {
   background: repeating-linear-gradient(90deg, #a796ff 0 10px, transparent 10px 18px, #6fd0ff 18px 28px, transparent 28px 36px);
@@ -831,6 +836,17 @@ a { color: inherit; }
   .seg-h.seg-future::after, .seg-v.seg-future::after, .seg-h.seg-booked::after, .seg-v.seg-booked::after { animation: none; opacity: 1; }
 }
 
+/* Moving: the dashes flow forward along the journey (left→right, then right→left on the next row) while the glow pulses.
+   Curved turns are CSS borders, which can't move, so they only pulse. Off for people who prefer reduced motion. */
+@keyframes path-flow-13 { to { background-position: 13px 0; } }
+@keyframes path-flow-13-rev { to { background-position: -13px 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  .board .board-row .seg-h.seg-future::after { animation: path-flow 1.2s linear infinite, neon-violet 2.6s linear infinite; }
+  .board .board-row-rev .seg-h.seg-future::after { animation-name: path-flow-rev, neon-violet; }
+  .board .board-row .seg-h.seg-booked::after { animation: path-flow-13 1.2s linear infinite, neon-emerald 3.2s linear infinite; }
+  .board .board-row-rev .seg-h.seg-booked::after { animation-name: path-flow-13-rev, neon-emerald; }
+}
+
 /* Confirmed by the coordinator: solid green path, no flicker, a badge */
 .seg-h.seg-confirmed::after { content: ""; height: 4px; top: calc(var(--node) / 2 - 2px); background: var(--sage); animation: none; opacity: 1; }
 .seg-v.seg-confirmed::after { border-color: var(--sage); border-style: solid; animation: none; }
@@ -866,3 +882,28 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .wa-form select::picker(select), .cof select::picker(select), .ins-controls select::picker(select) { transition: none; }
 }
+
+/* ---- Path turns (row to row) as SVG: dashes flow along the curve, same pulse as the straight parts ---- */
+.seg-v.seg-future::after, .seg-v.seg-booked::after { content: none; }
+.seg-turn { position: absolute; z-index: 0; pointer-events: none; overflow: hidden;
+  top: calc(var(--node) / 2 - 2px); left: 50%; width: calc(50% - 4px); height: calc(var(--sq-h) + 4px); }
+.board-row-rev .seg-turn { left: auto; right: 50%; }
+/* Geometry in CSS so the 4px line sits exactly where the old border was; the attributes are the fallback. */
+.seg-turn rect { fill: none; stroke-width: 4; x: -100%; y: 2px; width: calc(200% - 2px); height: calc(100% - 4px); rx: 58px; }
+.board-row-rev .seg-turn rect { x: 2px; }
+.seg-future .seg-turn rect { stroke: var(--indigo-soft); stroke-dasharray: 10 8; }
+.seg-booked .seg-turn rect { stroke: var(--sage); stroke-dasharray: 6 7; }
+.seg-future .seg-turn { animation: neon-violet 2.6s linear infinite; }
+.seg-booked .seg-turn { animation: neon-emerald 3.2s linear infinite; }
+/* An SVG rect is drawn clockwise: that's forward on left→right rows; right→left rows run the other way. */
+@keyframes turn-flow-18 { to { stroke-dashoffset: -18; } }
+@keyframes turn-flow-18-rev { to { stroke-dashoffset: 18; } }
+@keyframes turn-flow-13 { to { stroke-dashoffset: -13; } }
+@keyframes turn-flow-13-rev { to { stroke-dashoffset: 13; } }
+@media (prefers-reduced-motion: no-preference) {
+  .seg-future .seg-turn rect { animation: turn-flow-18 1.2s linear infinite; }
+  .board-row-rev .seg-future .seg-turn rect { animation-name: turn-flow-18-rev; }
+  .seg-booked .seg-turn rect { animation: turn-flow-13 1.2s linear infinite; }
+  .board-row-rev .seg-booked .seg-turn rect { animation-name: turn-flow-13-rev; }
+}
+@media (prefers-reduced-motion: reduce) { .seg-turn { animation: none; } }
