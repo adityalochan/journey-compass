@@ -216,6 +216,16 @@ function Explorer({ rows, meId, onOpen }: { rows: Row[]; meId: string; onOpen: (
   const [hover, setHover] = useState<Row | null>(null);
   // "Spread out" uses a square-root scale: most people sit at low values, which crams them into a corner.
   const [sqrt, setSqrt] = useState(true);
+  // Expanded: the explorer fills the window; Esc or "Collapse" brings it back.
+  const [big, setBig] = useState(false);
+  useEffect(() => {
+    if (!big) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setBig(false); };
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = prev; };
+  }, [big]);
 
   const pts = rows.filter((r) => r[xk] != null && r[yk] != null && !hidden.has(r.stage));
   const xs = pts.map((r) => r[xk] as number), ys = pts.map((r) => r[yk] as number);
@@ -261,7 +271,7 @@ function Explorer({ rows, meId, onOpen }: { rows: Row[]; meId: string; onOpen: (
   const ordered = [...pts.filter((r) => r.id !== meId), ...(me ? [me] : [])]; // the person is drawn last, on top
 
   return (
-    <>
+    <div className={`ins-explorer${big ? " is-big" : ""}`} role={big ? "dialog" : undefined} aria-modal={big || undefined} aria-label={big ? "Expanded chart" : undefined}>
       <div className="ins-controls">
         <label>Y axis <select value={yk} onChange={(e) => setY(e.target.value as MetricKey)}>{opts}</select></label>
         <label>X axis <select value={xk} onChange={(e) => setX(e.target.value as MetricKey)}>{opts}</select></label>
@@ -274,6 +284,8 @@ function Explorer({ rows, meId, onOpen }: { rows: Row[]; meId: string; onOpen: (
         </div>
         <label className="ins-check"><input type="checkbox" checked={spread} onChange={(e) => setSpread(e.target.checked)} /> Separate overlaps</label>
         <button className="co-link" onClick={() => setTable((t) => !t)}>{table ? "Show chart" : "Show as table"}</button>
+        <button className="co-link ins-expand" onClick={() => setBig((b) => !b)} aria-pressed={big} title={big ? "Collapse (Esc)" : "Expand chart"}>
+          {big ? "⤡ Collapse" : "⤢ Expand"}</button>
       </div>
       <div className="ins-legend" role="group" aria-label="Stages (click to hide/show)">
         {STAGES.map((s) => (
@@ -301,7 +313,8 @@ function Explorer({ rows, meId, onOpen }: { rows: Row[]; meId: string; onOpen: (
           </table>
         </div>
       ) : (
-        <div className={`ins-chart ins-plot${hover ? " has-hover" : ""}`} onMouseLeave={() => setHover(null)}>
+        <div className={`ins-chart ins-plot${hover ? " has-hover" : ""}`} onMouseLeave={() => setHover(null)}
+          style={{ maxWidth: `calc((100vh - ${big ? 230 : 280}px) * ${W / H})`, margin: "0 auto" }}>
           <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${Y.label} against ${X.label}`}>
             <defs>
               <linearGradient id="ins-bg" x1="0" y1="0" x2="1" y2="1">
@@ -417,7 +430,7 @@ function Explorer({ rows, meId, onOpen }: { rows: Row[]; meId: string; onOpen: (
         </div>
       )}
       <p className="muted ins-foot">{pts.length} people plotted{sqrt ? " on a square-root scale, which spreads out the many low values" : ""}. Lines mark the group medians. Click a stage to hide it, or a dot to open that person.</p>
-    </>
+    </div>
   );
 }
 

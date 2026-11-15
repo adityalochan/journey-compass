@@ -71,9 +71,21 @@
   background: var(--paper); color: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: .82rem;
   box-shadow: 0 8px 24px rgba(20,16,40,.18); line-height: 1.45; }
 
-.ins-controls { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin: 10px 0 8px; }
+.ins-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0 10px; }
 .ins-controls label { display: flex; align-items: center; gap: 8px; font-size: .88rem; color: var(--muted); }
-.ins-controls select { font: inherit; color: var(--ink); background: var(--ivory); border: 1px solid var(--line); border-radius: 10px; padding: 7px 10px; max-width: 280px; }
+.ins-controls label:not(.ins-check) { position: relative; padding: 4px 4px 4px 12px; white-space: nowrap; border-radius: 999px; background: var(--paper);
+  box-shadow: 0 0 0 1px rgba(118,119,244,.22), 0 6px 16px rgba(60,40,95,.07); transition: box-shadow .15s, transform .15s;
+  font: 700 .7rem var(--sans); letter-spacing: .08em; text-transform: uppercase; color: #7677f4; }
+.ins-controls label:not(.ins-check):hover { box-shadow: 0 0 0 1px rgba(118,119,244,.45), 0 8px 20px rgba(118,119,244,.16); transform: translateY(-1px); }
+.ins-controls label:not(.ins-check):focus-within { box-shadow: 0 0 0 2px #7677f4, 0 8px 20px rgba(118,119,244,.2); }
+.ins-controls select { appearance: none; -webkit-appearance: none; cursor: pointer; max-width: 230px; text-overflow: ellipsis;
+  font: 600 .88rem var(--sans); letter-spacing: 0; text-transform: none; color: var(--ink);
+  border: 0; border-radius: 999px; padding: 7px 34px 7px 14px; outline: none;
+  background: linear-gradient(90deg, rgba(255,144,4,.10), rgba(118,119,244,.12)) padding-box,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%237677f4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 13px center; }
+.ins-controls > .co-link { padding: 8px 12px; white-space: nowrap; border-radius: 999px; background: var(--paper); color: #7677f4;
+  box-shadow: 0 0 0 1px rgba(118,119,244,.22), 0 6px 16px rgba(60,40,95,.07); transition: box-shadow .15s, transform .15s; }
+.ins-controls > .co-link:hover { box-shadow: 0 0 0 1px rgba(118,119,244,.45), 0 8px 20px rgba(118,119,244,.16); transform: translateY(-1px); }
 .ins-check { cursor: pointer; }
 .ins-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
 .ins-legend-item { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--paper); color: var(--ink);
@@ -174,6 +186,7 @@
 .ins-eyebrow { margin: 0 0 2px; color: #e65100; text-transform: uppercase; letter-spacing: .12em; font-size: .72rem; font-weight: 700; }
 :root[data-theme="dark"] .ins-eyebrow { color: #ffb45c; }
 .ins-card h2 { font-size: 1.25rem; }
+.ins-controls .ins-check, .ins-controls .ins-seg { white-space: nowrap; }
 .ins-drivers { font-size: 1.02rem; padding: 12px 16px; border-radius: 12px; background: linear-gradient(90deg, var(--marigold-soft), transparent); border-left: 4px solid #ff9004; }
 .ins-steps li { padding: 6px 10px; border-radius: 10px; }
 .ins-steps li.is-pick { background: linear-gradient(90deg, var(--tint-indigo), transparent); }
@@ -182,7 +195,7 @@
 .ins-pulse { transform-box: fill-box; transform-origin: center; }
 
 /* ---------- Richer axes + more room ---------- */
-.ins-page .container { max-width: min(1680px, 96vw); }
+.ins-page .container { max-width: min(1720px, 97vw); padding: 0 28px; }
 .ins-grid-v { opacity: .55; }
 .ins-tick { stroke: var(--indigo); stroke-width: 2; stroke-linecap: round; }
 .ins-tick-chip { fill: var(--paper); stroke: rgba(118,119,244,.35); stroke-width: 1; filter: drop-shadow(0 2px 4px rgba(60,40,95,.1)); }
@@ -226,9 +239,22 @@
 .co-wide .co-refresh { border: 0; border-radius: 999px; padding: 7px 16px; background: linear-gradient(90deg, #ff9004, #7677f4); color: #fff; font: 700 .85rem var(--sans); cursor: pointer; box-shadow: 0 6px 16px rgba(118,119,244,.3); }
 .co-wide .cof { border: 0; box-shadow: 0 10px 28px rgba(60,40,95,.08); border-radius: 18px; padding: 14px 16px; position: relative; overflow: hidden; }
 .co-wide .cof::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: linear-gradient(90deg, #ff9004, #ffc15e 35%, #7677f4); }
-.co-wide .co-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(560px, 1fr)); gap: 18px; align-items: start; }
+.co-wide .co-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(560px, 1fr)); gap: 18px; align-items: stretch; }
+.co-wide .co-card { display: flex; flex-direction: column; }
+.co-wide .co-card > .co-outcome { margin-top: auto; padding-top: 14px; }
 .co-wide .co-card { margin: 0; border: 0; border-left: 5px solid var(--c, var(--indigo)); box-shadow: 0 12px 32px rgba(60,40,95,.09); border-radius: 20px; position: relative; }
 .co-wide .co-card h3 { font-size: 1.25rem; }
 @media (max-width: 1100px) { .coh-tiles { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 640px) { .coh-tiles { grid-template-columns: repeat(2, 1fr); margin-top: -60px; } .co-wide .co-list { grid-template-columns: 1fr; } }
 
+
+/* Explorer: expand to fill the window */
+.ins-explorer.is-big { position: fixed; inset: 16px; z-index: 1000; overflow: auto; background: var(--paper); border-radius: 20px;
+  padding: 18px 22px; box-shadow: 0 0 0 100vmax rgba(20,16,40,.5), 0 24px 60px rgba(20,16,40,.35); animation: ins-pop .18s ease-out; }
+.ins-explorer.is-big::before { content: ""; position: sticky; display: block; top: -18px; height: 4px; margin: -18px -22px 14px;
+  background: linear-gradient(90deg, #ff9004, #ffc15e 35%, #7677f4); }
+.ins-controls > .ins-expand { margin-left: auto; }
+.ins-explorer.is-big .ins-expand { background: linear-gradient(90deg, #ff9004, #7677f4); color: #fff; }
+@keyframes ins-pop { from { opacity: 0; transform: scale(.98); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .ins-explorer.is-big { animation: none; } }
+@media (max-width: 640px) { .ins-explorer.is-big { inset: 0; border-radius: 0; padding: 14px; } }
