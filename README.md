@@ -1,5 +1,13 @@
 # journey-compass
-Personalized follow-up for every participant: journey mapping, next-step recommendation, and AI-written outreach with channel suggestions. Built for the Art of Living hackathon.
+Personalized follow-up for every participant: journey mapping, next-step recommendation, and AI-written outreach with channel suggestions. Built for the Art of Living Hack4Good hackathon (Topic 1: keep SKY participants connected).
+
+**Live demo:** https://aol-journey.vercel.app (participants) · https://aol-journey.vercel.app/coordinator (coordinators). Demo logins are shared privately with the judges.
+
+| | What it does |
+|---|---|
+| **Participant site** | Your journey as a game board, AI-picked next steps with one-click enroll, daily Gurudev wisdom, the global community map, ways to stay connected |
+| **Coordinator site** | Who needs outreach, new requests, drafted messages with the suggested channel, one-tap outcomes, and a model-insights page per person |
+| **Engine** | Learned journey stage + drift date, recommender with hard rules and a fit score, LLM chooser and message writer, nightly run that learns from outcomes |
 
 ## The problem
 After SKY, follow-up treats everyone as one group, so people quietly drift away. Journey Compass looks at each participant's history and suggests **one fitting next step**: a follow-on course, a retreat, a seva role, or re-engagement. It drafts a personal message and suggests the channel to send it on.
@@ -22,8 +30,15 @@ participants.csv + activities.csv
  messaging.py    → personalized draft written by Claude (template fallback)
         │
         ▼
- app/streamlit_app.py → coordinator dashboard
+ supabase_sync.py → writes journeys, recommendations, drafts to Supabase (nightly GitHub Action)
+        │
+        ▼
+ web/ → participant site + /coordinator (React, reads Supabase with row-level security)
+        │
+        ▼
+ outcomes recorded by coordinators → learning.py updates stage × offer acceptance rates
 ```
+`app/streamlit_app.py` is the earlier local dashboard, kept for exploring the engine offline.
 
 ## Journey stages (step 1)
 Every touchpoint adds points that fade with a half-life (a course: 10 pts, halving every 180 days;
@@ -88,22 +103,54 @@ PYTHONPATH=src python -m journey_compass.pipeline --messages   # all 180 people,
 PYTHONPATH=src python -m journey_compass.web_export            # website uses the AI pick + angle
 ```
 
-## Participant website (web/)
-The site shows each person their journey and next steps. Its only link to the engine is
-`web/src/lib/engine.ts`, which reads `src/data/engine_output.json`:
+## Website (web/)
+React 18 + TypeScript + Vite, deployed on Vercel (root directory `web`, auto-deploys `main`).
+It reads and writes Supabase directly with the publishable key; row-level security decides what
+each person can see (see `supabase/README.md`).
+
+**Participant view** (`/`)
+- Sign in with email + password, or an emailed sign-in link (needs Supabase redirect URLs + SMTP set up).
+- **Journey board:** past courses and gatherings as squares on a path, a walker at "you are here",
+  then booked and suggested steps. A booked step shows *Requested* (dotted neon line) until the
+  coordinator accepts it, then *Confirmed* (solid green line); it is only crossed off once attended.
+- **Next steps:** the engine's top 3, each with a reason. Enroll writes an `interests` row
+  (`requested`); cancelling sets it to `cancelled`. Calendar (.ics) download.
+- **Community map:** MapLibre globe (NASA Blue Marble imagery, OpenStreetMap streets, world-city
+  lights) with where the community is.
+- **Wisdom:** verbatim Gurudev quotes from his official site; background music player
+  (public-domain classical + Rishab Rikhiram Sharma sitar pieces used with the artist's permission).
+- **Stay connected:** official Art of Living channels, WhatsApp group request, daily-message
+  opt-in (demo only: nothing is sent yet).
+
+**Coordinator view** (`/coordinator`, staff only)
+- Greeting banner with tiles: needs outreach, new requests, drifting soon, AI-picked steps.
+- Search plus filters (stage, predicted drift, top next step, picked by AI or engine, suggested channel); one card per person with their next steps,
+  why, a drafted message, contact buttons and outcome chips. Accepting a request marks the
+  booking *booked*, which the participant sees as Confirmed.
+- **Visualize:** per-person model insights (stage drivers, signals vs the group, timeline) and an
+  explorer bubble chart comparing everyone they cover, with axis/size pickers, square-root
+  spread, table view and expand to full window.
+
+Both views refresh every 10 seconds and when the tab regains focus, so a booking or an accepted
+request shows up on the other side without reloading.
 
 ```bash
-PYTHONPATH=src python -m journey_compass.web_export   # writes src/data/engine_output.json (git-ignored)
-cd web && npm ci && npm run dev                       # http://127.0.0.1:5173
+cd web && npm ci
+echo "VITE_SUPABASE_ANON_KEY=<publishable key>" > .env.local   # never the service_role key
+npm run dev                                                     # http://127.0.0.1:5173
+npm run build
 ```
-
-Without that file (e.g. a fresh checkout) the site falls back to a small built-in stand-in.
-The export holds only what a participant may see: their stage (used for the greeting) and next
-steps written to them. It never includes notes, contact history, scores or coordinator reasons.
 
 ## Project structure
 ```
-app/streamlit_app.py        Streamlit dashboard
+web/                        participant + coordinator website (React/TS/Vite, Vercel)
+  src/components/           UI: journey board, next steps, globe, coordinator, insights
+  src/lib/                  Supabase client, auth, data loading, enrollments, music
+  public/                   music, world-cities.geojson, images
+supabase/migrations/        schema, row-level security, views (next_steps, coordinator_people)
+supabase/tests/             RLS checks (PGlite)
+.github/workflows/engine-nightly.yml   nightly engine run → Supabase (07:00 UTC)
+app/streamlit_app.py        earlier local Streamlit dashboard
 src/journey_compass/
   config.py                 paths, thresholds, course path, model
   data_loader.py            load CSVs (adapt here for the real data)
@@ -115,7 +162,12 @@ src/journey_compass/
   journey.py                one profile row per person, with both stage columns
   recommender.py            hard rules, fit score, top 3 with reasons
   channel.py                channel suggestion
-  messaging.py              LLM message drafting
+  messaging.py              LLM message drafting (with leak checks)
+  chooser.py                LLM pick from the approved shortlist, using volunteer notes
+  llm.py                    LLM provider wrapper (none / groq / ollama)
+  learning.py               outcomes → updated stage × offer acceptance rates
+  supabase_sync.py          reads Supabase, runs the engine, writes results back
+  web_export.py             JSON export for the site's offline fallback
   pipeline.py               runs everything end to end
 scripts/make_sample_data.py   generates the small SYNTHETIC sample set
 scripts/import_synthetic.py   converts src/data/participants.json into the CSV schema
@@ -136,7 +188,7 @@ outputs/                    generated results (git-ignored)
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env              # add ANTHROPIC_API_KEY (optional; templates are used without it)
+cp .env.example .env              # optional: JC_LLM_PROVIDER=groq + GROQ_API_KEY (templates are used without it)
 
 python scripts/import_synthetic.py   # only needed if src/data/participants.json changes
 PYTHONPATH=src python -m journey_compass.train   # only needed if features or the cohort change

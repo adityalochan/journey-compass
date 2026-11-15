@@ -8,16 +8,18 @@ export interface Track {
   credit: string;
 }
 
-// Public-domain / CC0 recordings from Wikimedia Commons. No lyrics, calm and slow.
+// Public-domain / CC0 recordings from Wikimedia Commons, plus Rishab Rikhiram Sharma sitar pieces used
+// with the artist's permission (audio from his official YouTube channel). Calm, mostly instrumental.
 export const TRACKS: Track[] = [
   { title: "Gymnopédie No. 1", composer: "Erik Satie", src: "/music/gymnopedie-1.mp3", credit: "Teknopazzo, CC0" },
+  { title: "Shiv Kailash (Live in Mumbai)", composer: "Rishab Rikhiram Sharma", src: "/music/shiv-kailash.mp3", credit: "Used with permission of the artist" },
+  { title: "Chanakya", composer: "Rishab Rikhiram Sharma", src: "/music/chanakya.mp3", credit: "Used with permission of the artist" },
+  { title: "Rama Rama", composer: "Rishab Rikhiram Sharma", src: "/music/rama-rama.mp3", credit: "Used with permission of the artist" },
   { title: "Clair de lune", composer: "Claude Debussy", src: "/music/clair-de-lune.mp3", credit: "Public domain" },
   { title: "Nocturne Op. 9 No. 2", composer: "Frédéric Chopin", src: "/music/nocturne-op9-2.mp3", credit: "CC0" },
   { title: "Rêverie", composer: "Claude Debussy", src: "/music/reverie.mp3", credit: "Public domain" },
   { title: "Träumerei", composer: "Robert Schumann", src: "/music/traumerei.mp3", credit: "Public domain" },
   { title: "Gymnopédie No. 3", composer: "Erik Satie", src: "/music/gymnopedie-3.mp3", credit: "CC0" },
-  { title: "Morning Mood", composer: "Edvard Grieg", src: "/music/morning-mood.mp3", credit: "Public domain" },
-  { title: "Gnossienne No. 1", composer: "Erik Satie", src: "/music/gnossienne-1.mp3", credit: "La Piani, public domain" },
 ];
 
 // ---- One shared player for the whole app, so music keeps playing across login → profile ----
