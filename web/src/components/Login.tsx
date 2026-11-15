@@ -4,6 +4,8 @@ import RotatingQuote from "./RotatingQuote";
 import TopControls from "./TopControls";
 
 export default function Login() {
+  // The same sign-in screen serves participants (/) and coordinators (/coordinator).
+  const isCoordinator = window.location.pathname.startsWith("/coordinator");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -43,9 +45,19 @@ export default function Login() {
       <main className="login-main">
         <div className="login-controls"><TopControls /></div>
         <form className="login-form" onSubmit={submitPassword} noValidate>
-          <p className="eyebrow">Welcome back</p>
-          <h1>Sign in to your journey</h1>
-          <p className="muted">See where you've been and what could come next.</p>
+          {isCoordinator ? (
+            <>
+              <p className="eyebrow">Staff only <span className="role-badge">Coordinator</span></p>
+              <h1>Coordinator sign in</h1>
+              <p className="muted">See your people, their requests, and the AI-drafted outreach.</p>
+            </>
+          ) : (
+            <>
+              <p className="eyebrow">Welcome back</p>
+              <h1>Sign in to your journey</h1>
+              <p className="muted">See where you've been and what could come next.</p>
+            </>
+          )}
 
           {sent ? (
             <>
@@ -62,11 +74,13 @@ export default function Login() {
               <label>
                 Email
                 <input type="email" autoComplete="email" value={email} required
+                  placeholder={isCoordinator ? "Coordinator email" : "Your email"}
                   onChange={(e) => { setEmail(e.target.value); setError(""); }} />
               </label>
               <label>
                 Password
                 <input type="password" autoComplete="current-password" value={password}
+                  placeholder={isCoordinator ? "Coordinator password" : "Your password"}
                   onChange={(e) => { setPassword(e.target.value); setError(""); }} />
               </label>
               {error && <p className="form-error" role="alert">{error}</p>}

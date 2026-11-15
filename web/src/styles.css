@@ -625,3 +625,13 @@ a { color: inherit; }
 /* Loading / not-found message for the signed-in page */
 .page-message { min-height: 70vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; padding: 40px 20px; }
 .page-message .muted { max-width: 52ch; }
+
+/* Coordinator sign-in: badge + faint placeholder labels */
+.role-badge { display: inline-block; margin-left: 8px; padding: 2px 10px; border-radius: 999px; background: var(--marigold-soft); color: #b86200;
+  font-size: .7rem; letter-spacing: .08em; vertical-align: 1px; border: 1px solid rgba(255,144,4,.35); }
+.login-form input::placeholder { color: var(--muted); opacity: .6; font-style: italic; }
+
+/* Coordinator header: music + theme at the far right, same spacing as the participant header */
+.co-header-row .top-controls { margin-left: 18px; padding-left: 18px; border-left: 1px solid var(--line); }
+:root[data-theme="dark"] .co-stage-slipping { color: #ffb45c; }
+:root[data-theme="dark"] .co-stage-practicing, :root[data-theme="dark"] .co-stage-new { color: #9fd36a; }
