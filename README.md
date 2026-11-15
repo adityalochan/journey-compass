@@ -3,6 +3,8 @@ Personalized follow-up for every participant: journey mapping, next-step recomme
 
 **Live demo:** https://aol-journey.vercel.app (participants) · https://aol-journey.vercel.app/coordinator (coordinators). Demo logins are shared privately with the judges.
 
+**Presentation:** https://aol-journey.vercel.app/presentation.pdf (15 slides, PDF; also in the repo at [`web/public/presentation.pdf`](web/public/presentation.pdf)).
+
 | | What it does |
 |---|---|
 | **Participant site** | Your journey as a game board, AI-picked next steps with one-click enroll, daily Gurudev wisdom, the global community map, ways to stay connected |
