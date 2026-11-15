@@ -36,8 +36,8 @@ CONSENT_COLUMNS = ["preferred_channel", "preferred_channel_source", "email_opt_i
 
 DEMO_PASSWORD = "journey-demo-2026"
 DEMO_PARTICIPANT_IDS = {"p_001", "p_002", "p_003", "p_004", "p_005"}
-DEMO_COORDINATOR = {"email": "coordinator.demo@example.org", "name": "Demo Coordinator"}
-COORDINATOR = {"email": "tarunbjoseph@gmail.com", "name": "Tarun"}
+DEMO_COORDINATOR = {"email": "coordinator.demo@example.org", "name": "Demo Coordinator", "covers": "Anita Rao"}
+COORDINATOR = {"email": "tarunbjoseph@gmail.com", "name": "Tarun", "covers": "Anita Rao"}
 
 
 def load_consent() -> dict:
@@ -58,6 +58,7 @@ def participant_row(p: dict, consent: dict) -> dict:
         **consent.get(p["id"], {}),
         "id": p["id"],
         "email": p["email"],
+        "phone": p.get("phone") or None,
         "first_name": p["firstName"],
         "last_name": p.get("lastName"),
         "city": p.get("city"),
@@ -227,6 +228,7 @@ def main(dry_run: bool, with_programmes: bool):
         "user_id": demo_coord_id,
         "name": DEMO_COORDINATOR["name"],
         "email": DEMO_COORDINATOR["email"],
+        "covers": DEMO_COORDINATOR["covers"],
     }, on_conflict="user_id").execute()
 
     coord_id = ensure_login(client, COORDINATOR["email"], COORDINATOR["name"], known)
@@ -234,6 +236,7 @@ def main(dry_run: bool, with_programmes: bool):
         "user_id": coord_id,
         "name": COORDINATOR["name"],
         "email": COORDINATOR["email"],
+        "covers": COORDINATOR["covers"],
     }, on_conflict="user_id").execute()
     print("Staff: demo coordinator and Tarun")
 

@@ -1,0 +1,58 @@
+/* Coordinator page (/coordinator). Uses the site's design tokens from styles.css. */
+.co { min-height: 100vh; background: var(--ivory); }
+.co-center { min-height: 100vh; display: grid; place-items: center; align-content: center; gap: 12px; padding: 24px; text-align: center; }
+.co-header { position: sticky; top: 0; z-index: 10; background: var(--paper); border-bottom: 1px solid var(--line); }
+.co-header-row { display: flex; align-items: center; gap: 16px; height: 64px; }
+.co-who { margin-left: auto; color: var(--muted); font-size: .9rem; }
+.co-main { padding: 28px 24px 64px; }
+
+.co-tabs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 20px; }
+.co-tab { font: 600 .9rem var(--sans); padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); cursor: pointer; }
+.co-tab.is-on { background: var(--indigo); border-color: var(--indigo); color: #fff; }
+.co-refresh { margin-left: auto; font: 500 .85rem var(--sans); background: none; border: 0; color: var(--indigo); cursor: pointer; }
+
+.co-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+.co-card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; }
+.co-card-top { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.co-card h3 { margin: 0; font-size: 1.15rem; }
+.co-card .muted { margin: 2px 0 0; font-size: .85rem; overflow-wrap: anywhere; }
+.co-badges { display: flex; flex-wrap: wrap; gap: 6px; align-items: flex-start; }
+.co-badges span { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; padding: 3px 10px; border-radius: 999px; }
+.co-stage { background: var(--tint-indigo); color: var(--indigo); }
+.co-stage-slipping { background: var(--marigold-soft); color: #8a5a00; }
+.co-stage-drifting, .co-stage-dormant { background: var(--tint-clay); color: var(--clay); }
+.co-stage-practicing, .co-stage-new { background: var(--tint-sage); color: #3d6448; }
+.co-drift { background: var(--tint-warm); color: var(--clay); border: 1px solid var(--tint-clay); }
+.co-request { background: var(--indigo); color: #fff; }
+.co-dnc { background: var(--line); color: var(--muted); }
+
+.co-step { margin: 14px 0 4px; }
+.co-reason { margin: 0 0 12px; color: var(--muted); font-size: .92rem; }
+.co-draft { border: 1px solid var(--line); border-radius: 10px; background: var(--ivory); padding: 10px 14px; }
+.co-draft-head { display: flex; justify-content: space-between; gap: 12px; font-size: .88rem; margin-bottom: 6px; }
+.co-draft pre { margin: 0; white-space: pre-wrap; font: .92rem/1.55 var(--sans); color: var(--ink); }
+.co-link { background: none; border: 0; padding: 0; font: 600 .85rem var(--sans); color: var(--indigo); cursor: pointer; }
+
+.co-outcome { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; font-size: .88rem; }
+.co-chip { font: 500 .85rem var(--sans); padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); cursor: pointer; }
+.co-chip:hover { border-color: var(--indigo); }
+.co-chip.is-on { background: var(--sage); border-color: var(--sage); color: #fff; }
+.co-saved { color: var(--sage); font-weight: 600; }
+.co-notes { margin-top: 12px; border-top: 1px dashed var(--line); padding-top: 10px; font-size: .9rem; }
+.co-notes p { margin: 6px 0 0; color: var(--muted); }
+
+.co-steps { margin: 12px 0 8px; padding-left: 20px; display: grid; gap: 4px; font-size: .93rem; }
+.co-steps li.is-pick { font-weight: 600; }
+.co-kind { display: inline-block; font-size: .68rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; padding: 1px 8px; border-radius: 999px; background: var(--tint-indigo); color: var(--indigo); margin-right: 4px; }
+.co-pick { margin-left: 6px; font-size: .72rem; font-weight: 600; color: var(--sage); text-transform: uppercase; letter-spacing: .06em; }
+.co-contact { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.co-contact-btn { font: 600 .85rem var(--sans); padding: 6px 14px; border-radius: 999px; border: 1px solid var(--indigo); color: var(--indigo); text-decoration: none; background: var(--paper); }
+.co-contact-btn:hover { background: var(--tint-indigo); }
+.co-contact-btn.is-suggested { background: var(--indigo); color: #fff; }
+
+@media (max-width: 640px) {
+  .co-header-row { height: auto; padding: 12px 16px; flex-wrap: wrap; gap: 8px; }
+  .co-who { margin-left: 0; width: 100%; order: 3; }
+  .co-main { padding: 20px 16px 48px; }
+  .co-card { padding: 16px; }
+}
