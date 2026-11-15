@@ -1,20 +1,37 @@
-// Demo-only auth: any participant email + the shared demo password. No real accounts or server.
-import { participants } from "./data";
+import { supabase } from "./supabase";
 
-export const DEMO_PASSWORD = "aol2026";
-const KEY = "jc-session";
+export const DEMO_PASSWORD = "journey-demo-2026";
 
-export function login(email: string, password: string): string {
-  const p = participants.find((x) => x.email.toLowerCase() === email.trim().toLowerCase());
-  if (!p || password !== DEMO_PASSWORD) throw new Error("That email and password don't match our records.");
-  try { localStorage.setItem(KEY, p.id); } catch { /* storage blocked: session lasts until reload */ }
-  return p.id;
+export async function sendMagicLink(email: string): Promise<void> {
+  const { error } = await supabase.auth.signInWithOtp({
+    email: email.trim(),
+    options: {
+      shouldCreateUser: false,
+      emailRedirectTo: window.location.pathname.startsWith("/coordinator")
+        ? `${window.location.origin}/coordinator`
+        : `${window.location.origin}/auth/callback`,
+    },
+  });
+  if (error) throw error;
 }
 
-export function currentSession(): string | null {
-  try { return localStorage.getItem(KEY); } catch { return null; }
+export async function signInWithPassword(email: string, password: string): Promise<void> {
+  const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+  if (error) throw new Error("That email and password don't match our records.");
 }
 
-export function logout() {
-  try { localStorage.removeItem(KEY); } catch { /* ignore */ }
+export async function currentSession(): Promise<string | null> {
+  try {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) {
+      return data.session.user.email || null;
+    }
+  } catch (err) {
+    console.error("Session check failed:", err);
+  }
+  return null;
+}
+
+export async function logout(): Promise<void> {
+  await supabase.auth.signOut();
 }

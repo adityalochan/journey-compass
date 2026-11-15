@@ -93,7 +93,7 @@
     "archetype": "slipping",
     "hero": "priya",
     "phone": "+1 (905) 555-1001",
-    "email": "priyaraman49@yahoo.ca"
+    "email": "priya.demo@example.org"
   },
   {
     "id": "p_002",
@@ -176,7 +176,7 @@
     "archetype": "drifting",
     "hero": "marc",
     "phone": "+1 (514) 555-1002",
-    "email": "mlefevre@videotron.ca"
+    "email": "marc.demo@example.org"
   },
   {
     "id": "p_003",
@@ -285,7 +285,7 @@
     "archetype": "slipping",
     "hero": "amrit",
     "phone": "+1 (905) 555-1003",
-    "email": "amrit_kaur@yahoo.ca"
+    "email": "amrit.demo@example.org"
   },
   {
     "id": "p_004",
@@ -355,7 +355,7 @@
     "archetype": "new",
     "hero": "daniel",
     "phone": "+1 (416) 555-1004",
-    "email": "daniel.osei@outlook.com"
+    "email": "daniel.demo@example.org"
   },
   {
     "id": "p_005",
@@ -470,7 +470,7 @@
     "archetype": "dormant",
     "hero": "wei",
     "phone": "+1 (604) 555-1005",
-    "email": "weichen31@gmail.com"
+    "email": "wei.demo@example.org"
   },
   {
     "id": "p_006",
