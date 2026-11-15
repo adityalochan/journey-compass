@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 
-const SUPABASE_URL = "https://oqnbyyjadykiravsbyml.supabase.co";
+// Set VITE_SUPABASE_URL to use another Supabase project; without it, the hackathon project is used.
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://oqnbyyjadykiravsbyml.supabase.co";
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
 if (!SUPABASE_ANON_KEY) {
