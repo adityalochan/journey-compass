@@ -16,6 +16,8 @@ import JourneySection from "./components/JourneySection";
 import NextStepsSection from "./components/NextStepsSection";
 import Footer from "./components/Footer";
 import ScrollHint from "./components/ScrollHint";
+import CommunitySection from "./components/CommunitySection";
+import StayConnected from "./components/StayConnected";
 
 export default function App() {
   const [email, setEmail] = useState<string | null>(null);
@@ -99,6 +101,8 @@ function Profile({ person, onLogout }: { person: Participant; onLogout: () => vo
         <QuoteSection />
         <JourneySection person={person} steps={steps} enrolled={enrolled} mood={mood} onOpen={setOpen} />
         <NextStepsSection person={person} stage={stage} steps={steps} enrolled={enrolled} onOpen={setOpen} />
+        <CommunitySection person={person} />
+        <StayConnected person={person} stage={stage} steps={steps} />
       </main>
       <Footer />
       <ScrollHint />

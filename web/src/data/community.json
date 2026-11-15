@@ -1,0 +1,412 @@
+{
+ "source": "Hackathon mock data (sample addresses and contacts)",
+ "centres": [
+  {
+   "id": "calgary",
+   "name": "Art of Living Calgary Centre",
+   "city": "Calgary",
+   "region": "AB",
+   "country": "CA",
+   "address": "822 Hillcrest Rd, Calgary, AB",
+   "lat": 51.0447,
+   "lng": -114.0719,
+   "contacts": [
+    {
+     "role": "Coordinator",
+     "name": "Ralph Sinclair",
+     "email": "ralph.sinclair@example.org",
+     "phone": "506-555-0114"
+    },
+    {
+     "role": "Teacher",
+     "name": "Damian Mikhailov",
+     "email": "damian.mikhailov@example.org",
+     "phone": "312-555-0196"
+    }
+   ],
+   "upcoming": [
+    {
+     "name": "Happiness Program Info Session",
+     "date": "2026-11-21",
+     "kind": "event",
+     "url": "https://www.eventbrite.com/e/eb-0700007807"
+    },
+    {
+     "name": "Sri Sri Yoga Deep Dive",
+     "date": "2026-12-20",
+     "kind": "course",
+     "url": "https://members.artofliving.org/reg/HM-30000990"
+    },
+    {
+     "name": "Introduction to Ayurveda",
+     "date": "2027-02-09",
+     "kind": "event",
+     "url": "https://www.eventbrite.com/e/eb-0700008954"
+    }
+   ],
+   "seva": [
+    {
+     "name": "Volunteer Training Program",
+     "date": "2024-03-14",
+     "kind": "seva",
+     "past": true,
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "montreal",
+   "name": "Art of Living Montreal Centre",
+   "city": "Montreal",
+   "region": "QC",
+   "country": "CA",
+   "address": "180 Summit Rd, Montreal, QC",
+   "lat": 45.5019,
+   "lng": -73.5674,
+   "contacts": [
+    {
+     "role": "Coordinator",
+     "name": "Ajay Maheshwari",
+     "email": "ajay.maheshwari@example.org",
+     "phone": "807-555-0172"
+    },
+    {
+     "role": "Teacher",
+     "name": "Nathan Burns",
+     "email": "nathan.burns@example.org",
+     "phone": "519-555-0122"
+    }
+   ],
+   "upcoming": [
+    {
+     "name": "Corporate Wellness Program",
+     "date": "2026-12-27",
+     "kind": "course",
+     "url": "https://members.artofliving.org/reg/HM-30001837"
+    },
+    {
+     "name": "Sahaj Samadhi Meditation",
+     "date": "2027-01-02",
+     "kind": "course",
+     "url": "https://members.artofliving.org/reg/HM-30001089"
+    },
+    {
+     "name": "Youth Empowerment Seminar",
+     "date": "2027-01-13",
+     "kind": "course",
+     "url": "https://members.artofliving.org/reg/HM-30003168"
+    },
+    {
+     "name": "Online Meditation & Breath Workshop",
+     "date": "2027-02-06",
+     "kind": "course",
+     "url": "https://members.artofliving.org/reg/HM-30001001"
+    },
+    {
+     "name": "International Day of Yoga",
+     "date": "2027-03-03",
+     "kind": "event",
+     "url": "https://www.eventbrite.com/e/eb-0700003367"
+    }
+   ],
+   "seva": [
+    {
+     "name": "Volunteer Training Program",
+     "date": "2022-09-24",
+     "kind": "seva",
+     "past": true,
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "ottawa",
+   "name": "Art of Living Ottawa Centre",
+   "city": "Ottawa",
+   "region": "ON",
+   "country": "CA",
+   "address": "951 Maple Cres, Ottawa, ON",
+   "lat": 45.4215,
+   "lng": -75.6972,
+   "contacts": [
+    {
+     "role": "Coordinator",
+     "name": "Thaleia Oikonomou",
+     "email": "thaleia.oikonomou@example.org",
+     "phone": "519-555-0127"
+    },
+    {
+     "role": "Teacher",
+     "name": "Damian Mikhailov",
+     "email": "damian.mikhailov@example.org",
+     "phone": "312-555-0196"
+    }
+   ],
+   "upcoming": [
+    {
+     "name": "SKY Breath Meditation",
+     "date": "2026-11-29",
+     "kind": "course",
+     "url": "https://members.artofliving.org/reg/HM-30000561"
+    },
+    {
+     "name": "Ayurveda Essentials Workshop",
+     "date": "2026-12-23",
+     "kind": "course",
+     "url": "https://members.artofliving.org/reg/HM-30002574"
+    },
+    {
+     "name": "Sri Sri Yoga Deep Dive",
+     "date": "2027-01-20",
+     "kind": "course",
+     "url": "https://members.artofliving.org/reg/HM-30002882"
+    }
+   ],
+   "seva": [
+    {
+     "name": "Volunteer Training Program",
+     "date": "2023-06-26",
+     "kind": "seva",
+     "past": true,
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "boone",
+   "name": "Art of Living Retreat Center",
+   "city": "Boone",
+   "region": "NC",
+   "country": "US",
+   "address": "270 Sunset Ave, Boone, NC",
+   "lat": 36.2168,
+   "lng": -81.6746,
+   "contacts": [
+    {
+     "role": "Coordinator",
+     "name": "Lucy Davis",
+     "email": "lucy.davis@example.org",
+     "phone": "604-555-0134"
+    },
+    {
+     "role": "Teacher",
+     "name": "Cinzia Amato",
+     "email": "cinzia.amato@example.org",
+     "phone": "778-555-0127"
+    }
+   ],
+   "upcoming": [
+    {
+     "name": "Youth Breath & Resilience Session",
+     "date": "2026-11-25",
+     "kind": "event",
+     "url": "https://www.eventbrite.com/e/eb-0700000296"
+    },
+    {
+     "name": "Free Intro to SKY Breath Meditation",
+     "date": "2026-12-29",
+     "kind": "event",
+     "url": "https://www.eventbrite.com/e/eb-0700007067"
+    },
+    {
+     "name": "World Meditation Day Celebration",
+     "date": "2027-02-22",
+     "kind": "event",
+     "url": "https://www.eventbrite.com/e/eb-0700006031"
+    },
+    {
+     "name": "Sri Sri Yoga Deep Dive",
+     "date": "2027-03-02",
+     "kind": "course",
+     "url": "https://members.artofliving.org/reg/HM-30001232"
+    }
+   ],
+   "seva": [
+    {
+     "name": "Volunteer Training Program",
+     "date": "2026-07-19",
+     "kind": "seva",
+     "past": true,
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "toronto",
+   "name": "Art of Living Toronto Centre",
+   "city": "Toronto",
+   "region": "ON",
+   "country": "CA",
+   "address": "942 Valley Ave, Toronto, ON",
+   "lat": 43.6532,
+   "lng": -79.3832,
+   "contacts": [
+    {
+     "role": "Coordinator",
+     "name": "Cinzia Amato",
+     "email": "cinzia.amato@example.org",
+     "phone": "778-555-0127"
+    },
+    {
+     "role": "Teacher",
+     "name": "Athina Spanos",
+     "email": "athina.spanos@example.org",
+     "phone": "250-555-0109"
+    }
+   ],
+   "upcoming": [
+    {
+     "name": "Sunday Satsang & Community Gathering",
+     "date": "2026-12-24",
+     "kind": "event",
+     "url": "https://www.eventbrite.com/e/eb-0700000592"
+    },
+    {
+     "name": "Beyond Breath",
+     "date": "2026-12-24",
+     "kind": "event",
+     "url": "https://www.eventbrite.com/e/eb-0700013061"
+    },
+    {
+     "name": "Beyond Breath",
+     "date": "2027-01-12",
+     "kind": "event",
+     "url": "https://www.eventbrite.com/e/eb-0700004070"
+    },
+    {
+     "name": "Intuition Process for Children",
+     "date": "2027-03-16",
+     "kind": "course",
+     "url": "https://members.artofliving.org/reg/HM-30000132"
+    }
+   ],
+   "seva": [
+    {
+     "name": "Volunteer Training Program",
+     "date": "2023-12-11",
+     "kind": "seva",
+     "past": true,
+     "url": null
+    }
+   ]
+  },
+  {
+   "id": "vancouver",
+   "name": "Art of Living Vancouver Centre",
+   "city": "Vancouver",
+   "region": "BC",
+   "country": "CA",
+   "address": "71 Prairie Ave, Vancouver, BC",
+   "lat": 49.2827,
+   "lng": -123.1207,
+   "contacts": [
+    {
+     "role": "Coordinator",
+     "name": "Craig Roberts",
+     "email": "craig.roberts@example.org",
+     "phone": "289-555-0147"
+    },
+    {
+     "role": "Teacher",
+     "name": "Athina Spanos",
+     "email": "athina.spanos@example.org",
+     "phone": "250-555-0109"
+    }
+   ],
+   "upcoming": [
+    {
+     "name": "Art of Living Part 1",
+     "date": "2026-12-04",
+     "kind": "course",
+     "url": "https://members.artofliving.org/reg/HM-30002541"
+    },
+    {
+     "name": "Community Yoga & Breathwork Morning",
+     "date": "2027-02-01",
+     "kind": "event",
+     "url": "https://www.eventbrite.com/e/eb-0700002294"
+    },
+    {
+     "name": "Sri Sri Yoga Deep Dive",
+     "date": "2027-02-10",
+     "kind": "course",
+     "url": "https://members.artofliving.org/reg/HM-30001496"
+    },
+    {
+     "name": "Volunteer Training Program",
+     "date": "2027-02-24",
+     "kind": "course",
+     "url": "https://members.artofliving.org/reg/HM-30000935"
+    },
+    {
+     "name": "Sri Sri Yoga Deep Dive",
+     "date": "2027-03-20",
+     "kind": "course",
+     "url": "https://members.artofliving.org/reg/HM-30001144"
+    }
+   ],
+   "seva": [
+    {
+     "name": "Volunteer Training Program",
+     "date": "2027-02-24",
+     "kind": "seva",
+     "past": false,
+     "url": "https://members.artofliving.org/reg/HM-30000935"
+    }
+   ]
+  },
+  {
+   "id": "mississauga",
+   "name": "Community Hall - Mississauga",
+   "city": "Mississauga",
+   "region": "ON",
+   "country": "CA",
+   "address": "922 Union Blvd, Mississauga, ON",
+   "lat": 43.589,
+   "lng": -79.6441,
+   "contacts": [
+    {
+     "role": "Coordinator",
+     "name": "Lucy Davis",
+     "email": "lucy.davis@example.org",
+     "phone": "604-555-0134"
+    },
+    {
+     "role": "Teacher",
+     "name": "Celine Guillemette",
+     "email": "celine.guillemette@example.org",
+     "phone": "705-555-0140"
+    }
+   ],
+   "upcoming": [
+    {
+     "name": "SKY Breath Meditation",
+     "date": "2026-12-29",
+     "kind": "course",
+     "url": "https://members.artofliving.org/reg/HM-30001914"
+    },
+    {
+     "name": "Navratri Celebration",
+     "date": "2027-01-12",
+     "kind": "event",
+     "url": "https://www.eventbrite.com/e/eb-0700008584"
+    },
+    {
+     "name": "Happiness Program Info Session",
+     "date": "2027-02-10",
+     "kind": "event",
+     "url": "https://www.eventbrite.com/e/eb-0700007955"
+    }
+   ],
+   "seva": [
+    {
+     "name": "Volunteer Training Program",
+     "date": "2026-05-12",
+     "kind": "seva",
+     "past": true,
+     "url": null
+    }
+   ]
+  }
+ ]
+}

@@ -19,6 +19,8 @@ export default function Header({ person, onLogout }: { person: Participant; onLo
           <a href="#wisdom">Wisdom</a>
           <a href="#journey">Your Journey</a>
           <a href="#next">Next Steps</a>
+          <a href="#community">Near You</a>
+          <a href="#connect">Connect</a>
         </nav>
         <div className="account">
           <span className="avatar" aria-hidden="true">{person.firstName[0]}{person.lastName[0]}</span>
