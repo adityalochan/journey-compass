@@ -9,6 +9,8 @@ grant execute on all functions in schema public to authenticated, anon;
 -- Two participants, one coordinator, some data for each (as the engine / service role would write it).
 insert into public.participants (id, email, first_name) values
   ('p_a', 'priya@example.org', 'Priya'), ('p_b', 'marc@example.org', 'Marc');
+update public.participants set assigned_to = 'Anita Rao', phone = '+1 (905) 555-1001' where id = 'p_a';
+update public.participants set assigned_to = 'Sophie Gagnon' where id = 'p_b';
 insert into public.offers (id, offer_type, name, commitment) values
   ('seva_kitchen', 'seva', 'Kitchen seva', 2), ('event_x', 'event', 'Satsang', 1);
 update public.offers set registration_url = 'https://example.org/reg/x' where id = 'event_x';
@@ -28,7 +30,9 @@ insert into auth.users (id, email) values
   ('00000000-0000-0000-0000-00000000000a', 'Priya@Example.org'),
   ('00000000-0000-0000-0000-00000000000b', 'marc@example.org'),
   ('00000000-0000-0000-0000-0000000000c0', 'coordinator@example.org');
+insert into auth.users (id, email) values ('00000000-0000-0000-0000-0000000000c1', 'anita.only@example.org');
 insert into public.staff (user_id, name, email) values ('00000000-0000-0000-0000-0000000000c0', 'Anita', 'coordinator@example.org');
+insert into public.staff (user_id, name, email, covers) values ('00000000-0000-0000-0000-0000000000c1', 'Anita only', 'anita.only@example.org', 'Anita Rao');
 
 do $$ begin
   if (select auth_user_id from public.participants where id = 'p_a') <> '00000000-0000-0000-0000-00000000000a'
@@ -78,6 +82,7 @@ select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000a
 do $$ begin
   if (select count(*) from public.coordinator_queue) <> 0 then raise exception 'Priya can read the coordinator queue'; end if;
   if (select count(*) from public.acceptance_rates) <> 0 then raise exception 'Priya can read the learning table'; end if;
+  if (select count(*) from public.coordinator_people) <> 0 then raise exception 'Priya can read the coordinator people list'; end if;
 end $$;
 reset role;
 
@@ -119,6 +124,7 @@ end $$;
 do $$ begin
   if (select count(*) from public.coordinator_queue) <> 2 then raise exception 'staff queue should list both requests'; end if;
   if (select count(*) from public.acceptance_rates) <> 1 then raise exception 'staff cannot read the learning table'; end if;
+  if (select count(*) from public.coordinator_people) <> 2 then raise exception 'admin coordinator should see everyone'; end if;
   if (select notes from public.coordinator_queue where participant_id = 'p_a') <> 'evenings only'
   then raise exception 'queue is missing the volunteer notes'; end if;
   if (select coordinator_reason from public.coordinator_queue where participant_id = 'p_a') <> 'note: evenings'
@@ -129,6 +135,23 @@ insert into public.outcomes (participant_id, offer_id, result, recorded_by)
 do $$ begin
   if (select latest_outcome from public.coordinator_queue where participant_id = 'p_a') <> 'attended'
   then raise exception 'queue does not show the latest outcome'; end if;
+end $$;
+reset role;
+
+-- ---------------- a coordinator who covers only Anita Rao's people ----------------
+set role authenticated;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-0000000000c1', false);
+do $$ begin
+  if (select string_agg(participant_id, ',') from public.coordinator_people) <> 'p_a'
+  then raise exception 'covering coordinator should see only Anita''s people'; end if;
+  if (select string_agg(participant_id, ',') from public.coordinator_queue) <> 'p_a'
+  then raise exception 'covering coordinator''s queue should list only Anita''s people'; end if;
+  if (select request_offer_id from public.coordinator_people) <> 'seva_kitchen'
+  then raise exception 'people list is missing the latest request'; end if;
+  if (select jsonb_array_length(next_steps) from public.coordinator_people) <> 1
+  then raise exception 'people list is missing the next steps'; end if;
+  if (select phone from public.coordinator_people) <> '+1 (905) 555-1001'
+  then raise exception 'people list is missing the phone number'; end if;
 end $$;
 reset role;
 

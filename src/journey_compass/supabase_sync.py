@@ -11,7 +11,12 @@ Offers come from Supabase, not the local catalogue: a recommendation must refere
 The dataset name (JC_DATASET, default "synthetic") decides whether notes may go to a hosted LLM,
 so set it to something else before this runs on real people's data.
 
-Run:  python -m journey_compass.supabase_sync [--dry-run]        (with PYTHONPATH=src)
+Run:  python -m journey_compass.supabase_sync [--dry-run] [--no-llm] [--messages] [--ai-for WHO]
+      (with PYTHONPATH=src)
+  --messages   also draft each person's outreach message (AI writer for the AI group, template
+               for everyone else)
+  --ai-for     limit the AI to some people: comma-separated coordinator names and/or participant
+               ids, e.g. --ai-for "Anita Rao,p_002". Everyone else gets the engine's picks.
 """
 import os
 import sys
@@ -26,6 +31,7 @@ from .channel import suggest_channel
 from .data_loader import Dataset, SIGNAL_COLUMNS, prepare_activities, prepare_contacts, prepare_participants
 from .journey import build_profiles
 from .learning import as_table, learned_rates
+from .messaging import draft, template_message
 from .pipeline import _llm_on
 from .web_export import WEB_STAGE, person_next_steps
 
@@ -131,8 +137,11 @@ def _num(value):
     return None if value is None or pd.isna(value) else float(value)
 
 
-def results(ds: Dataset, cat: pd.DataFrame, use_llm: bool) -> dict:
-    """Rows for journeys, recommendations and engine_runs, keyed by table name."""
+def results(ds: Dataset, cat: pd.DataFrame, use_llm: bool, ai_ids: set | None = None,
+            with_messages: bool = False) -> dict:
+    """Rows for journeys, recommendations and engine_runs, keyed by table name.
+
+    ai_ids limits the AI to those participants (None = everyone, when use_llm)."""
     offers = cat.set_index("offer_id")
     contacts_by = dict(tuple(ds.contacts.groupby("participant_id"))) if len(ds.contacts) else {}
     empty = ds.contacts.iloc[0:0]
@@ -141,7 +150,8 @@ def results(ds: Dataset, cat: pd.DataFrame, use_llm: bool) -> dict:
     for profile in build_profiles(ds).to_dict("records"):
         pid = profile["participant_id"]
         contacts = contacts_by.get(pid, empty)
-        next_steps, steps, choice = person_next_steps(profile, cat, offers, ds.as_of, contacts, use_llm)
+        ai_here = use_llm and (ai_ids is None or pid in ai_ids)
+        next_steps, steps, choice = person_next_steps(profile, cat, offers, ds.as_of, contacts, ai_here)
         out["journeys"].append({"participant_id": pid, "stage": WEB_STAGE[profile["journey_stage"]],
                                 "generated_at": now})
         for rank, ns in enumerate(next_steps, 1):
@@ -154,6 +164,14 @@ def results(ds: Dataset, cat: pd.DataFrame, use_llm: bool) -> dict:
         top = steps[0] if steps else None
         ai = choice is not None and choice.source == "ai"
         drift = profile.get("drift_date")
+        channel = suggest_channel(profile, top.action) if top else None
+        message, message_source = None, None
+        if with_messages and top and channel:
+            if ai_here:
+                d = draft(profile, top, channel, choice.message_angle if ai else "", contacts)
+                message, message_source = d.text, d.source
+            else:
+                message, message_source = template_message(profile, top, channel), "template"
         out["engine_runs"].append({
             "participant_id": pid,
             "journey_stage": profile["journey_stage"],
@@ -166,8 +184,8 @@ def results(ds: Dataset, cat: pd.DataFrame, use_llm: bool) -> dict:
             "chosen_offer_id": top.offer_id if top else None,
             "chosen_by": "ai" if ai else "engine",
             "coordinator_reason": choice.coordinator_reason if ai else (top.reason if top else None),
-            "channel": suggest_channel(profile, top.action) if top else None,
-            "message": None, "message_source": None,
+            "channel": channel,
+            "message": message, "message_source": message_source,
             "generated_at": now,
         })
     return out
@@ -200,7 +218,18 @@ def main(argv: list[str]) -> None:
         print(f"  {r.stage:<9} {r.offer_type:<9} {r.prior:.3f} -> {r.rate:.3f}  ({r.successes}/{r.trials} taken up)")
     print(f"{len(ds.participants)} participants, {len(ds.activities)} activities, "
           f"{len(ds.contacts)} contacts, {len(cat)} offers; as of {ds.as_of.date()}; AI {'on' if use_llm else 'off'}")
-    out = results(ds, cat, use_llm)
+    ai_ids = None
+    if use_llm and "--ai-for" in argv:
+        wanted = {w.strip() for w in argv[argv.index("--ai-for") + 1].split(",") if w.strip()}
+        people = ds.participants
+        ai_ids = set(people.loc[people["participant_id"].isin(wanted) | people["assigned_to"].isin(wanted),
+                                "participant_id"])
+        print(f"AI limited to {len(ai_ids)} people ({', '.join(sorted(wanted))})")
+    with_messages = "--messages" in argv
+    out = results(ds, cat, use_llm, ai_ids, with_messages)
+    if with_messages:
+        sources = pd.Series([r["message_source"] for r in out["engine_runs"] if r["message_source"]]).value_counts()
+        print(f"Messages: {sources.to_dict()}")
     stages = pd.Series([r["stage"] for r in out["journeys"]]).value_counts().to_dict()
     print(f"Stages: {stages}")
     print(f"Recommendations: {len(out['recommendations'])} for "
