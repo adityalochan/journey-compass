@@ -8,3 +8,7 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+// three.js ships without bundled types; these two imports are only used for the globe's bloom glow.
+declare module "three";
+declare module "three/examples/jsm/postprocessing/UnrealBloomPass.js";
