@@ -141,6 +141,23 @@ npm run dev                                                     # http://127.0.0
 npm run build
 ```
 
+## Database
+Supabase (Postgres) with row-level security on every table: a participant can only read their own
+rows, staff read everything, and staff-only tables (`notes`, `contacts`, `signals`, `engine_runs`,
+`outcomes`) never reach a participant's browser.
+
+| Group | Tables |
+|---|---|
+| People and logins | `participants`, `staff` |
+| History and signals | `activities`, `notes`, `contacts`, `signals` |
+| Catalogue | `offers` |
+| Engine output | `journeys`, `recommendations`, `engine_runs`, `acceptance_rates` |
+| Bookings and results | `interests` (requested / booked / cancelled), `outcomes` |
+
+Views: `next_steps` (participant site), `coordinator_people` and `coordinator_queue` (coordinator site).
+**Full schema** (relationship diagram, every column, every access rule): [`docs/schema.md`](docs/schema.md).
+Migrations: [`supabase/migrations/`](supabase/migrations/); details on applying them: [`supabase/README.md`](supabase/README.md).
+
 ## Tests
 Three test suites, one per layer. None of them touch the real Supabase project.
 
@@ -218,6 +235,7 @@ data/sample/                  small SYNTHETIC set (committed)
 data/raw/                     real hackathon data (git-ignored)
 models/stage_model.json       trained stage model (committed, so the demo works without training)
 Mock data/                    organisers' mock exports: kept local, git-ignored
+docs/schema.md                full database schema: diagram, columns, access rules
 docs/archive/                 earlier PRD, kept for reference only
 notebooks/                  exploration
 tests/                      pytest tests
