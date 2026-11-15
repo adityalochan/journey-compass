@@ -141,7 +141,10 @@ LLM_PROVIDERS = {
                "key_env": None, "requests_per_minute": 0, "local": True},
 }
 LLM_CACHE_FILE = OUTPUT_DIR / "llm_cache.json"
-LLM_TIMEOUT_SECONDS = 300
+LLM_TIMEOUT_SECONDS = 90
+# Caps each answer (reasoning included). Without it gpt-oss can write for minutes on one request
+# and use up Groq's free-tier tokens-per-minute allowance.
+LLM_MAX_OUTPUT_TOKENS = 2000
 LLM_RETRIES = 3
 # Volunteer notes go to a hosted provider only for synthetic data. For anyone real they go to a
 # local provider only, unless the organisation approves (JC_LLM_NOTES=1).
