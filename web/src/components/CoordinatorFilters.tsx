@@ -1,10 +1,11 @@
+import type { ReactNode } from "react";
 import { STAGES } from "../lib/insights";
 import "./insights.css";
 
 export interface Filters {
   q: string;
   stages: Set<string>;
-  drift: "any" | "7" | "30" | "past";
+  drift: "any" | "7" | "14" | "30" | "past";
   kind: string;
   pickedBy: "any" | "ai" | "engine";
   channel: string;
@@ -40,9 +41,9 @@ export function applyFilters<T extends Filterable>(people: T[], f: Filters): T[]
   });
 }
 
-interface Props<T extends Filterable> { people: T[]; value: Filters; onChange: (f: Filters) => void; shown: number }
+interface Props<T extends Filterable> { people: T[]; value: Filters; onChange: (f: Filters) => void; shown: number; children?: ReactNode }
 
-export default function CoordinatorFilters<T extends Filterable>({ people, value: f, onChange, shown }: Props<T>) {
+export default function CoordinatorFilters<T extends Filterable>({ people, value: f, onChange, shown, children }: Props<T>) {
   const set = (patch: Partial<Filters>) => onChange({ ...f, ...patch });
   const kinds = [...new Set(people.map(kindOf).filter(Boolean))].sort();
   const channels = [...new Set(people.map((p) => p.suggested_channel ?? "").filter(Boolean))].sort();
@@ -60,6 +61,7 @@ export default function CoordinatorFilters<T extends Filterable>({ people, value
       </div>
       <select value={f.drift} onChange={(e) => set({ drift: e.target.value as Filters["drift"] })} aria-label="Predicted drift">
         <option value="any">Any drift date</option><option value="7">Drifts within 7 days</option>
+        <option value="14">Drifts within 14 days</option>
         <option value="30">Drifts within 30 days</option><option value="past">Already drifted</option>
       </select>
       <select value={f.kind} onChange={(e) => set({ kind: e.target.value })} aria-label="Top next step">
@@ -73,6 +75,7 @@ export default function CoordinatorFilters<T extends Filterable>({ people, value
       </select>
       <span className="cof-count">{shown} of {people.length}</span>
       {active && <button type="button" className="co-link" onClick={() => onChange({ ...EMPTY_FILTERS, stages: new Set() })}>Clear</button>}
+      {children /* e.g. the Refresh button, kept at the end of the bar */}
     </div>
   );
 }
