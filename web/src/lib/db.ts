@@ -11,6 +11,8 @@ interface ParticipantRow {
 }
 interface ActivityRow { date: string; activity_type: string; name: string; subtype: string | null; city: string | null }
 
+const KINDS: NextStep["kind"][] = ["course", "retreat", "event", "seva", "call"];
+
 export interface MyJourney { me: Participant | null; stage: Stage; steps: NextStep[] }
 
 function toParticipant(row: ParticipantRow, acts: ActivityRow[]): Participant {
@@ -44,6 +46,7 @@ export async function loadMyJourney(): Promise<MyJourney> {
   return {
     me: me.data ? toParticipant(me.data as ParticipantRow, (acts.data ?? []) as ActivityRow[]) : null,
     stage: ((journey.data as { stage: Stage } | null)?.stage ?? "practicing"),
-    steps: (steps.data ?? []) as NextStep[],
+    // Unknown kinds fall back to "event" so a new offer type can never break the page.
+    steps: ((steps.data ?? []) as NextStep[]).map((st) => (KINDS.includes(st.kind) ? st : { ...st, kind: "event" })),
   };
 }
