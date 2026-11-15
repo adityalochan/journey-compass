@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { participants } from "./lib/data";
 import { currentSession, logout } from "./lib/auth";
 import { supabase } from "./lib/supabase";
-import type { Participant } from "../../src/types";
-import { getRecommendations, getStage, type NextStep } from "./lib/engine";
+import type { Participant, Stage } from "../../src/types";
+import type { NextStep } from "./lib/steps";
+import { loadMyJourney, type MyJourney } from "./lib/db";
 import { useEnrollments } from "./lib/enrollment";
 import EnrollDialog from "./components/EnrollDialog";
 import type { Mood } from "./components/Walker";
@@ -70,19 +70,41 @@ export default function App() {
     return <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>Loading...</div>;
   }
 
-  const person = email ? participants.find((p) => p.email.toLowerCase() === email.toLowerCase()) : null;
-
-  return (
-    <>
-      {person ? <Profile person={person} onLogout={() => { logout(); setEmail(null); }} /> : <Login />}
-    </>
-  );
+  if (!email) return <Login />;
+  return <SignedIn email={email} onLogout={() => { logout(); setEmail(null); }} />;
 }
 
-function Profile({ person, onLogout }: { person: Participant; onLogout: () => void }) {
-  const stage = getStage(person);
-  const steps = getRecommendations(person, stage);
-  const { enrolled, enroll, unenroll } = useEnrollments(person.id);
+/** Loads the signed-in person's own journey from Supabase, then shows their profile. */
+function SignedIn({ email, onLogout }: { email: string; onLogout: () => void }) {
+  const [state, setState] = useState<{ data?: MyJourney; error?: string }>({});
+
+  useEffect(() => {
+    let live = true;
+    setState({});
+    loadMyJourney()
+      .then((data) => live && setState({ data }))
+      .catch((e: Error) => live && setState({ error: e.message }));
+    return () => { live = false; };
+  }, [email]);
+
+  if (!state.data && !state.error) {
+    return <div className="page-message"><p>Loading your journey…</p></div>;
+  }
+  if (state.error || !state.data?.me) {
+    return (
+      <div className="page-message">
+        <h2>We couldn't find your journey</h2>
+        <p className="muted">{state.error ? `Something went wrong: ${state.error}` : `You're signed in as ${email}, but there's no participant journey for this account.`}</p>
+        <button className="btn btn-primary" onClick={onLogout}>Sign out</button>
+      </div>
+    );
+  }
+  const { me, stage, steps } = state.data;
+  return <Profile person={me} stage={stage} steps={steps} onLogout={onLogout} />;
+}
+
+function Profile({ person, stage, steps, onLogout }: { person: Participant; stage: Stage; steps: NextStep[]; onLogout: () => void }) {
+  const { enrolled, enroll, unenroll } = useEnrollments(person.id, steps);
   const [open, setOpen] = useState<NextStep | null>(null);
   // The walker reacts to the last enroll/unenroll once the dialog closes, so the person sees it.
   const [mood, setMood] = useState<Mood | null>(null);

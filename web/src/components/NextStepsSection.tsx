@@ -1,5 +1,5 @@
 import type { Participant, Stage } from "../../../src/types";
-import { daysUntil, isActive, type NextStep } from "../lib/engine";
+import { daysUntil, isActive, type NextStep } from "../lib/steps";
 
 const KIND_LABEL = { course: "Course", retreat: "Retreat", event: "Gathering", seva: "Seva", call: "Conversation" };
 

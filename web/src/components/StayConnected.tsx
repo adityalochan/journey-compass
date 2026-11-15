@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import type { Participant, Stage } from "../../../src/types";
-import { daysUntil, isActive, type NextStep } from "../lib/engine";
+import { daysUntil, isActive, type NextStep } from "../lib/steps";
 import { QUOTES } from "../lib/quotes";
 import { CENTRES, distanceKm, knownCity } from "../lib/geo";
 
