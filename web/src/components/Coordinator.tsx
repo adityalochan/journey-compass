@@ -2,6 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 import Login from "./Login";
+import TopControls from "./TopControls";
+import CoordinatorFilters, { applyFilters, EMPTY_FILTERS, type Filters } from "./CoordinatorFilters";
+import PersonInsights from "./PersonInsights";
+import CoordinatorHero from "./CoordinatorHero";
 import "./coordinator.css";
 
 type Result = "attended" | "accepted" | "declined" | "no_response";
@@ -36,6 +40,9 @@ interface Person {
   email_opt_in: boolean;
   whatsapp_opt_in: boolean;
   next_steps: { rank: number; offer_id: string; name: string; kind: string; when: string }[];
+  trend_points?: number | null;
+  journey_stage?: string | null;
+  chosen_offer_type?: string | null;
 }
 
 /** An email draft starts with "Subject: …" (or "Objet : …"); split it for the mailto link. */
@@ -119,6 +126,16 @@ function Queue({ session }: { session: Session }) {
   const [people, setPeople] = useState<Person[]>([]);
   const [filter, setFilter] = useState<Filter>("outreach");
   const [error, setError] = useState("");
+  const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
+  // In-page routing: /coordinator/person/<id> opens the model-insights page for that person.
+  const [path, setPath] = useState(window.location.pathname);
+  useEffect(() => {
+    const on = () => setPath(window.location.pathname);
+    window.addEventListener("popstate", on);
+    return () => window.removeEventListener("popstate", on);
+  }, []);
+  const go = (to: string) => { window.history.pushState(null, "", to); setPath(to); };
+  const personId = path.match(/^\/coordinator\/person\/([^/]+)/)?.[1];
 
   async function load() {
     const me = await supabase.from("staff").select("name,covers").eq("user_id", session.user.id).maybeSingle();
@@ -136,6 +153,7 @@ function Queue({ session }: { session: Session }) {
     filter === "all" ? true
       : filter === "requests" ? p.request_status === "requested"
       : !p.do_not_contact && OUTREACH_STAGES.has(p.stage ?? "")), [people, filter]);
+  const visible = useMemo(() => applyFilters(shown, filters), [shown, filters]);
   const requests = people.filter((p) => p.request_status === "requested").length;
   const outreach = people.filter((p) => !p.do_not_contact && OUTREACH_STAGES.has(p.stage ?? "")).length;
 
@@ -169,22 +187,33 @@ function Queue({ session }: { session: Session }) {
               : `${staff.name} · everyone`}
           </span>
           <button className="btn btn-sm btn-ghost" onClick={() => supabase.auth.signOut()}>Sign out</button>
+          <TopControls />
         </div>
       </header>
 
-      <main className="container co-main">
+      {personId ? (
+        <PersonInsights personId={decodeURIComponent(personId)} people={people}
+          onBack={() => go("/coordinator")} onOpen={(id) => go(`/coordinator/person/${encodeURIComponent(id)}`)} />
+      ) : (
+      <>
+      <CoordinatorHero name={staff.name} covers={staff.covers} people={people} tab={filter} onTab={setFilter} />
+      <main className="container co-main co-wide">
         <div className="co-tabs" role="tablist">
           <Tab on={filter === "outreach"} onClick={() => setFilter("outreach")}>Needs outreach ({outreach})</Tab>
           <Tab on={filter === "requests"} onClick={() => setFilter("requests")}>Requests ({requests})</Tab>
           <Tab on={filter === "all"} onClick={() => setFilter("all")}>Everyone ({people.length})</Tab>
           <button className="co-refresh" onClick={load}>Refresh</button>
         </div>
+        <CoordinatorFilters people={shown} value={filters} onChange={setFilters} shown={visible.length} />
         {error && <p className="form-error" role="alert">{error}</p>}
-        {shown.length === 0 && <p className="muted">Nobody here right now.</p>}
+        {visible.length === 0 && <p className="muted">Nobody here right now.</p>}
         <ul className="co-list">
-          {shown.map((p) => <Card key={p.participant_id} p={p} onRecord={record} />)}
+          {visible.map((p) => <Card key={p.participant_id} p={p} onRecord={record}
+            onVisualize={() => go(`/coordinator/person/${encodeURIComponent(p.participant_id)}`)} />)}
         </ul>
       </main>
+      </>
+      )}
     </div>
   );
 }
@@ -193,7 +222,7 @@ function Tab({ on, onClick, children }: { on: boolean; onClick: () => void; chil
   return <button role="tab" aria-selected={on} className={`co-tab${on ? " is-on" : ""}`} onClick={onClick}>{children}</button>;
 }
 
-function Card({ p, onRecord }: { p: Person; onRecord: (p: Person, r: Result) => void }) {
+function Card({ p, onRecord, onVisualize }: { p: Person; onRecord: (p: Person, r: Result) => void; onVisualize: () => void }) {
   const [copied, setCopied] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
   const step = p.request_status === "requested" ? p.request_offer_name : p.chosen_offer_name;
@@ -205,7 +234,7 @@ function Card({ p, onRecord }: { p: Person; onRecord: (p: Person, r: Result) => 
   }
 
   return (
-    <li className="co-card">
+    <li className={`co-card ins-st-${p.stage ?? "unknown"}`}>
       <div className="co-card-top">
         <div>
           <h3>{p.first_name} {p.last_name}</h3>
@@ -217,6 +246,7 @@ function Card({ p, onRecord }: { p: Person; onRecord: (p: Person, r: Result) => 
             <span className="co-drift" title={day(p.drift_date)}>{driftLabel(p.drift_date)}</span>}
           {p.request_status === "requested" && <span className="co-request">asked for this</span>}
           {p.do_not_contact && <span className="co-dnc">do not contact</span>}
+          <button className="btn btn-sm btn-primary co-visual" onClick={onVisualize}>Visualize</button>
         </div>
       </div>
 
