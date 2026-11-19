@@ -11,10 +11,10 @@ export interface Track {
 // Sitar by Rishab Rikhiram Sharma, used with the artist's permission. Audio from his official YouTube channel
 // (only his own compositions and ragas, no covers of other artists' songs), loudness-matched, 2 s fade in / 3 s out.
 export const TRACKS: Track[] = [
+  { title: "Rama Rama", composer: "Rishab Rikhiram Sharma", src: "/music/rama-rama.mp3", credit: "Used with permission of the artist" },
   { title: "Sitar for Mental Health", composer: "Rishab Rikhiram Sharma", src: "/music/sitar-for-mental-health.mp3", credit: "Used with permission of the artist" },
   { title: "Shiv Kailash (Live in Mumbai)", composer: "Rishab Rikhiram Sharma", src: "/music/shiv-kailash.mp3", credit: "Used with permission of the artist" },
   { title: "Chanakya", composer: "Rishab Rikhiram Sharma", src: "/music/chanakya.mp3", credit: "Used with permission of the artist" },
-  { title: "Rama Rama", composer: "Rishab Rikhiram Sharma", src: "/music/rama-rama.mp3", credit: "Used with permission of the artist" },
   { title: "The Burning Ghat", composer: "Rishab Rikhiram Sharma", src: "/music/burning-ghat.mp3", credit: "Used with permission of the artist" },
   { title: "Shankara", composer: "Rishab Rikhiram Sharma", src: "/music/shankara.mp3", credit: "Used with permission of the artist" },
   { title: "Raga Nat Bhairav", composer: "Rishab Rikhiram Sharma", src: "/music/raga-nat-bhairav.mp3", credit: "Used with permission of the artist" },
@@ -31,7 +31,8 @@ const isOff = () => { try { return sessionStorage.getItem("jc-music") === "off";
 const setOff = (off: boolean) => { try { if (off) sessionStorage.setItem("jc-music", "off"); else sessionStorage.removeItem("jc-music"); } catch { /* storage blocked */ } };
 try { localStorage.removeItem("jc-music"); } catch { /* older versions kept "off" forever; clear it */ }
 
-let state = { playing: false, track: Number(get("jc-track") ?? 0) % TRACKS.length };
+// Every visit starts with the first track (Rama Rama), not the one played last time.
+let state = { playing: false, track: 0 };
 const subs = new Set<() => void>();
 const emit = (patch: Partial<typeof state>) => { state = { ...state, ...patch }; subs.forEach((f) => f()); };
 let audio: HTMLAudioElement | null = null;
