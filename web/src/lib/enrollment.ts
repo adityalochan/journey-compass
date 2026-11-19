@@ -63,11 +63,52 @@ export function placeFor(step: NextStep, person: Participant): string {
 const stamp = (d: Date) => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
 const local = (iso: string) => iso.replace(/[-:]/g, "") + "00";
 
+/** End time as local ISO without zone, e.g. "2026-12-05T20:30". */
+function endIsoOf(step: NextStep): string {
+  const end = new Date(new Date(step.start!).getTime() + (step.durationMin ?? 60) * 60_000);
+  const p = (n: number) => String(n).padStart(2, "0");
+  return `${end.getFullYear()}-${p(end.getMonth() + 1)}-${p(end.getDate())}T${p(end.getHours())}:${p(end.getMinutes())}`;
+}
+
+/** Links that open the event, already filled in, in Google Calendar or Outlook.com (times are the visitor's local time). */
+export function calendarLinks(step: NextStep, person: Participant): { google: string; outlook: string } | null {
+  if (!step.start) return null;
+  const endIso = endIsoOf(step);
+  const details = `Your next step with Art of Living. Teacher: ${person.assignedTo}.`;
+  const where = placeFor(step, person);
+  const g = new URLSearchParams({ action: "TEMPLATE", text: step.name, dates: `${local(step.start)}/${local(endIso)}`, details, location: where });
+  const o = new URLSearchParams({ path: "/calendar/action/compose", rru: "addevent", subject: step.name,
+    startdt: `${step.start}:00`, enddt: `${endIso}:00`, body: details, location: where });
+  return {
+    google: `https://calendar.google.com/calendar/render?${g.toString()}`,
+    outlook: `https://outlook.live.com/calendar/0/deeplink/compose?${o.toString()}`,
+  };
+}
+
+/** Which calendar this device most likely uses: Apple devices and Windows open .ics files in their own calendar app;
+ *  Android, Chromebooks and Linux are usually on Google Calendar. */
+export function preferredCalendar(ua: string = navigator.userAgent, platform: string = navigator.platform || ""): "ics" | "google" {
+  if (/android|cros|linux/i.test(ua) && !/iphone|ipad/i.test(ua)) return "google";
+  if (/iphone|ipad|ipod|mac/i.test(ua) || /mac/i.test(platform)) return "ics";
+  if (/windows/i.test(ua) || /win/i.test(platform)) return "ics";
+  return "google";
+}
+
+/** "Add to calendar": the right thing for this device (Apple/Windows: .ics file; Android and others: Google Calendar). */
+export function addToCalendar(step: NextStep, person: Participant) {
+  if (!step.start) return;
+  if (preferredCalendar() === "google") {
+    const links = calendarLinks(step, person);
+    if (links) window.open(links.google, "_blank", "noopener");
+    return;
+  }
+  downloadIcs(step, person);
+}
+
 /** Download an .ics file so the person can add the session to their calendar. */
 export function downloadIcs(step: NextStep, person: Participant) {
   if (!step.start) return;
-  const end = new Date(new Date(step.start).getTime() + (step.durationMin ?? 60) * 60_000);
-  const endIso = `${end.getFullYear()}-${String(end.getMonth() + 1).padStart(2, "0")}-${String(end.getDate()).padStart(2, "0")}T${String(end.getHours()).padStart(2, "0")}:${String(end.getMinutes()).padStart(2, "0")}`;
+  const endIso = endIsoOf(step);
   const ics = [
     "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Journey Compass//EN", "BEGIN:VEVENT",
     `UID:${person.id}-${step.name.replace(/\W+/g, "-")}@journey-compass`,

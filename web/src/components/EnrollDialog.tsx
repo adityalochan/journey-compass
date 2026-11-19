@@ -1,15 +1,26 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { Participant } from "../../../src/types";
 import { daysUntil, type NextStep } from "../lib/steps";
-import { downloadIcs, placeFor } from "../lib/enrollment";
+import { addToCalendar, calendarLinks, downloadIcs, placeFor } from "../lib/enrollment";
 import { KIND_ICON } from "./Icons";
 
 interface Props { person: Participant; step: NextStep; alreadyBooked: boolean; onConfirm: () => void; onCancel: () => void; onClose: () => void }
 
 const COLORS = ["#7677f4", "#ff9004", "#67a20b", "#abacf8", "#ffd45c"];
 
+/** A registration link worth showing. The organisers' mock data has placeholder links that lead nowhere:
+ *  Eventbrite IDs like /e/eb-0700000592 (real ones end in a long number) and members.artofliving.org/reg/…
+ *  (no such site). Those are ignored, so the step books like any other: Request sent, then Confirmed. */
+export function usableRegistrationUrl(url?: string | null): string | null {
+  if (!url) return null;
+  if (/eventbrite\.[a-z.]+\/e\/eb-\d+\/?$/i.test(url)) return null;
+  if (/^https?:\/\/members\.artofliving\.org\/reg\//i.test(url)) return null;
+  return url;
+}
+
 export default function EnrollDialog({ person, step, alreadyBooked, onConfirm, onCancel, onClose }: Props) {
   // offer → justBooked (no cancel offered right away) · booked (opened later: can cancel) → justCancelled (no re-book offered)
+  const regUrl = usableRegistrationUrl(step.registrationUrl);
   const [phase, setPhase] = useState<"offer" | "booked" | "justBooked" | "justCancelled">(alreadyBooked ? "booked" : "offer");
   const done = phase === "booked" || phase === "justBooked";
   const justBooked = phase === "justBooked";
@@ -27,8 +38,7 @@ export default function EnrollDialog({ person, step, alreadyBooked, onConfirm, o
   }, [onClose, phase]);
 
   function confirm() {
-    // Courses/events with a sign-up page: open it now (still inside the click, so popups aren't blocked).
-    if (step.registrationUrl) window.open(step.registrationUrl, "_blank", "noopener");
+    // No new tab opens by itself; a real sign-up page is offered as a button on the next screen.
     onConfirm();
     setPhase("justBooked");
   }
@@ -88,16 +98,26 @@ export default function EnrollDialog({ person, step, alreadyBooked, onConfirm, o
             )}
             <span className="dialog-icon dialog-icon-done">✓</span>
             <h3 id="enroll-title">
-              {isCall ? `${teacher} will call you soon` : step.registrationUrl ? (justBooked ? "Almost there!" : `You asked to join ${step.name}`) : justBooked ? "Request sent" : `You asked to join ${step.name}`}
+              {isCall ? `${teacher} will call you soon` : regUrl ? (justBooked ? "Almost there!" : `You asked to join ${step.name}`) : justBooked ? "Request sent" : `You asked to join ${step.name}`}
             </h3>
             <p className="muted">
               {isCall
                 ? `${teacher} will reach out this week at a time that suits you.`
-                : step.registrationUrl ? "Finish signing up on the registration page. We've noted your interest." : "Request sent — we'll be in touch."}
+                : regUrl ? "Finish signing up on the registration page. We've noted your interest." : "Request sent — we'll be in touch."}
             </p>
             <div className="dialog-actions">
-              {step.registrationUrl && <a className="btn btn-primary" href={step.registrationUrl} target="_blank" rel="noopener noreferrer">Open registration page</a>}
-              {step.start && <button ref={firstBtn} className={step.registrationUrl ? "btn btn-ghost" : "btn btn-primary"} onClick={() => downloadIcs(step, person)}>Add to calendar</button>}
+              {regUrl && <a className="btn btn-primary" href={regUrl} target="_blank" rel="noopener noreferrer">Open registration page</a>}
+              {step.start && <button ref={firstBtn} className={regUrl ? "btn btn-ghost" : "btn btn-primary"} onClick={() => addToCalendar(step, person)}>Add to calendar</button>}
+              {step.start && (() => {
+                const links = calendarLinks(step, person)!;
+                return (
+                  <p className="cal-alt">Or add to{" "}
+                    <a href={links.google} target="_blank" rel="noopener noreferrer">Google Calendar</a> ·{" "}
+                    <a href={links.outlook} target="_blank" rel="noopener noreferrer">Outlook.com</a> ·{" "}
+                    <button type="button" className="cal-alt-btn" onClick={() => downloadIcs(step, person)}>Apple / Outlook (.ics)</button>
+                  </p>
+                );
+              })()}
               <button ref={step.start ? undefined : firstBtn} className="btn btn-ghost" onClick={onClose}>Back to my journey</button>
               {/* Cancelling is offered when you come back to a booking later, not in the moment you make it. */}
               {phase === "booked" && (

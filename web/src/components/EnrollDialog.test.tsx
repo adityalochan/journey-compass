@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import EnrollDialog from "./EnrollDialog";
+import EnrollDialog, { usableRegistrationUrl } from "./EnrollDialog";
 import { person, step } from "../test/fixtures";
 
 const sky = step({ name: "Sahaj Samadhi Meditation" });
@@ -38,13 +38,25 @@ describe("EnrollDialog", () => {
     expect(screen.queryByRole("button", { name: "Add to calendar" })).toBeNull();
   });
 
-  it("opens the registration page when the step has one", async () => {
+  it("a real registration page is offered as a button; no new tab opens by itself", async () => {
     const open = vi.spyOn(window, "open").mockImplementation(() => null);
     const p = props();
     render(<EnrollDialog {...p} step={step({ registrationUrl: "https://www.artofliving.org/ca-en/register" })} alreadyBooked={false} />);
     await userEvent.click(screen.getByRole("button", { name: "Confirm my spot" }));
-    expect(open).toHaveBeenCalledWith("https://www.artofliving.org/ca-en/register", "_blank", "noopener");
+    expect(open).not.toHaveBeenCalled();
     expect(screen.getByText("Almost there!")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Open registration page" })).toHaveAttribute("href", "https://www.artofliving.org/ca-en/register");
+  });
+
+  it("placeholder links from the mock data are ignored: the step books like any other", async () => {
+    for (const url of ["https://www.eventbrite.com/e/eb-0700000592", "https://members.artofliving.org/reg/HM-30002541"]) {
+      const p = props();
+      const { unmount } = render(<EnrollDialog {...p} step={step({ registrationUrl: url })} alreadyBooked={false} />);
+      await userEvent.click(screen.getByRole("button", { name: "Confirm my spot" }));
+      expect(screen.getByText("Request sent")).toBeInTheDocument();
+      expect(screen.queryByRole("link", { name: "Open registration page" })).toBeNull();
+      unmount();
+    }
   });
 
   it("closes on Escape, and on 'Not now'", async () => {
@@ -54,5 +66,14 @@ describe("EnrollDialog", () => {
     await userEvent.click(screen.getByRole("button", { name: "Not now" }));
     expect(p.onClose).toHaveBeenCalledTimes(2);
     expect(p.onConfirm).not.toHaveBeenCalled();
+  });
+});
+
+describe("usableRegistrationUrl", () => {
+  it("keeps real links and drops the mock placeholders", () => {
+    expect(usableRegistrationUrl("https://www.eventbrite.ca/e/happiness-program-tickets-123456789012")).toContain("eventbrite.ca");
+    expect(usableRegistrationUrl("https://www.eventbrite.com/e/eb-0700000592")).toBeNull();
+    expect(usableRegistrationUrl("https://members.artofliving.org/reg/HM-30002541")).toBeNull();
+    expect(usableRegistrationUrl(null)).toBeNull();
   });
 });
