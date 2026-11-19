@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { downloadIcs, placeFor, useEnrollments } from "./enrollment";
+import { addToCalendar, calendarLinks, downloadIcs, placeFor, preferredCalendar, useEnrollments } from "./enrollment";
 import { person, step } from "../test/fixtures";
 
 // A fake Supabase: records what would have been written, never touches the real database.
@@ -144,5 +144,55 @@ describe("downloadIcs", () => {
     URL.createObjectURL = vi.fn();
     downloadIcs(step({ start: null }), person());
     expect(URL.createObjectURL).not.toHaveBeenCalled();
+  });
+});
+
+describe("Add to calendar, per device", () => {
+  const UA = {
+    mac: "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 Safari/605.1.15",
+    iphone: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148",
+    windows: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126 Safari/537.36",
+    android: "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 Chrome/126 Mobile Safari/537.36",
+    chromebook: "Mozilla/5.0 (X11; CrOS x86_64 15886.0.0) AppleWebKit/537.36 Chrome/126 Safari/537.36",
+  };
+  it("Apple devices and Windows get the .ics file; Android and Chromebooks get Google Calendar", () => {
+    expect(preferredCalendar(UA.mac)).toBe("ics");
+    expect(preferredCalendar(UA.iphone)).toBe("ics");
+    expect(preferredCalendar(UA.windows)).toBe("ics");
+    expect(preferredCalendar(UA.android)).toBe("google");
+    expect(preferredCalendar(UA.chromebook)).toBe("google");
+  });
+
+  it("builds filled-in Google Calendar and Outlook.com links", () => {
+    const links = calendarLinks(step({ start: "2026-12-05T19:00", durationMin: 90 }), person())!;
+    const g = new URL(links.google), o = new URL(links.outlook);
+    expect(g.hostname).toBe("calendar.google.com");
+    expect(g.searchParams.get("dates")).toBe("20261205T190000/20261205T203000");
+    expect(g.searchParams.get("text")).toBe("Sahaj Samadhi Meditation");
+    expect(g.searchParams.get("location")).toBe("Art of Living Centre, Toronto");
+    expect(o.hostname).toBe("outlook.live.com");
+    expect(o.searchParams.get("startdt")).toBe("2026-12-05T19:00:00");
+    expect(o.searchParams.get("enddt")).toBe("2026-12-05T20:30:00");
+    expect(calendarLinks(step({ start: null }), person())).toBeNull();
+  });
+
+  it("on Android, Add to calendar opens Google Calendar instead of downloading a file", () => {
+    vi.spyOn(navigator, "userAgent", "get").mockReturnValue(UA.android);
+    const open = vi.spyOn(window, "open").mockImplementation(() => null);
+    URL.createObjectURL = vi.fn();
+    addToCalendar(step({ start: "2026-12-05T19:00" }), person());
+    expect(String(open.mock.calls[0][0])).toContain("calendar.google.com");
+    expect(URL.createObjectURL).not.toHaveBeenCalled();
+  });
+
+  it("on a Mac, Add to calendar downloads the .ics file", () => {
+    vi.spyOn(navigator, "userAgent", "get").mockReturnValue(UA.mac);
+    const open = vi.spyOn(window, "open").mockImplementation(() => null);
+    URL.createObjectURL = vi.fn(() => "blob:test");
+    URL.revokeObjectURL = vi.fn();
+    vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
+    addToCalendar(step({ start: "2026-12-05T19:00" }), person());
+    expect(URL.createObjectURL).toHaveBeenCalled();
+    expect(open).not.toHaveBeenCalled();
   });
 });
