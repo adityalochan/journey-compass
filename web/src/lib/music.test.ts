@@ -23,6 +23,15 @@ describe("music player", () => {
     expect(before).toBeDefined();
   });
 
+  it("every visit starts with Rama Rama, even if another track was playing last time", async () => {
+    localStorage.setItem("jc-track", "5");
+    const m = await import("./music");
+    expect(m.TRACKS[0].title).toBe("Rama Rama");
+    m.toggleMusic();
+    const played = vi.mocked(HTMLMediaElement.prototype.play).mock.contexts.at(-1) as HTMLAudioElement;
+    expect(played.src).toContain("/music/rama-rama.mp3");
+  });
+
   it("preloads the following track so the switch doesn't wait for a download", async () => {
     const m = await import("./music");
     m.toggleMusic();
