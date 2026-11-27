@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { Analytics } from "@vercel/analytics/react";
 import App from "./App";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Coordinator from "./components/Coordinator";
@@ -12,5 +13,6 @@ createRoot(document.getElementById("root")!).render(
     <ErrorBoundary fallback={<p style={{ padding: 40, fontFamily: "sans-serif" }}>Something went wrong. Please refresh the page.</p>}>
       {isCoordinator ? <Coordinator /> : <App />}
     </ErrorBoundary>
+    <Analytics />
   </StrictMode>,
 );
